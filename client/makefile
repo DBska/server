@@ -10,7 +10,7 @@ CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG
 CC = g++
 
 # Sources:
-SOURCES = client.cpp menu.cpp oda.pb.cpp
+SOURCES = client.cpp oda.pb.cpp
 OBJS = $(SOURCES:.cpp=.o)
 
 # Executable:
