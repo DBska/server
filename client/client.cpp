@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr;
     struct hostent *server;
 
-    string buffer;
 
 	// Checking is the command is called with the appropriate sintax:
 	// $ client hostname port
@@ -66,6 +65,9 @@ int main(int argc, char *argv[])
         error("ERROR connecting");
 
 	/* Connection with the Server is now established */
+
+	/*
+    string buffer;
     cout<<"Please enter the message: ";
     getline(cin,buffer);
     n = write(sockfd,buffer.c_str(),buffer.length());
@@ -79,6 +81,27 @@ int main(int argc, char *argv[])
     if (n < 0) 
          error("ERROR reading from socket");
     cout<<buffer.c_str()<<endl;
+	*/
+
+	// Setting up a new proposal without any reviewer:
+	Oda oda_data;
+	Proposal* proposal = oda_data.add_proposal();
+	proposal->set_id(5543);
+	proposal->set_title("Milky-way galaxy radio detection in X-band");
+	
+	// Serializing to a string the data to send
+	string message;
+	if (!oda_data.SerializeToString(&message))
+		error("ERROR. Can not serialize the message.\n");
+	
+	uint32_t dataLength = htonl(message.size()); // convert int to network byte order
+    n = write(sockfd,&dataLength,sizeof(uint32_t));
+	if (n < 0) 
+         error("ERROR writing to socket the message length");
+    n = write(sockfd,message.c_str(),message.size());
+	if (n < 0) 
+         error("ERROR writing to the message socket");
+
 
 	/* Closing the connection */
     close(sockfd);
