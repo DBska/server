@@ -1,16 +1,16 @@
 # inlude files directories:
-INC=-I/usr/local/include/soci -I/usr/include/mysql
+INC=-I.
 
 # Libraries and Libraries paths:
-LIBS= -lmysqlclient -lpthread -lz -lm -ldl  -lsoci_core -lsoci_mysql
-LIBS_PATH=-L/usr/lib/x86_64-linux-gnu -L/usr/local/lib64
+LIBS= -lprotobuf -lpthread
+LIBS_PATH=
 
 # Compiler flags and compiler:
 CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG 
 CC = g++
 
 # Sources:
-SOURCES = client.cpp
+SOURCES = client.cpp menu.cpp oda.pb.cpp
 OBJS = $(SOURCES:.cpp=.o)
 
 # Executable:
@@ -20,9 +20,9 @@ EXE = client
 all: $(SOURCES) $(EXE)
 
 $(EXE): $(OBJS)
-	$(CC) $< -o $@ $(LIBS_PATH) $(LIBS)
+	$(CC) $(OBJS) -o $@ $(LIBS_PATH) $(LIBS)
 
-%.o: %.cc
+%.o: %.cpp
 	$(CC) $(INC)  $(CFLAGS) -c $< 
 
 .PHONY: clean
