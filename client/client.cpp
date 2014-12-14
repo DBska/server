@@ -16,6 +16,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h> 
+#include "oda.pb.h"
 
 using namespace std;
 using namespace oda;
