@@ -105,16 +105,12 @@ void processing(int sock)
 	int dataLength = static_cast<int>(mLength);
 
 	cout<<"Message of "<<dataLength<<" elements arrived!\n";
-	char* buff[dataLength];
+	char buff[dataLength]; // Allocating a buffer of approriate length
 	read(sock,buff,dataLength); // Receive the string data
 
-	//string receivedString;                        // assign buffered data to a 
-	//receivedString.assign(&(rcvBuf[0]),rcvBuf.size()); // string
-	string message(buff[0],buff[0]+dataLength);    // Allocate a receive buffer
-	cout<<dataLength<<endl;
-	//message.assign(buff[0],dataLength); // with the necessary size
-	cout<<"2\n";
-	cout<<message.size()<<endl;
+	string message;
+	message = buff;   // Convert char [] buf into string for de-serialization 
+	
 	Oda oda_data;
 	if (!oda_data.ParseFromString(message))
 		error("ERROR. Can not parse the received message.");
