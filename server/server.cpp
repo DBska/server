@@ -7,13 +7,17 @@
 #include <string.h>
 #include <signal.h>
 #include <unistd.h>
+#include <sstream>
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include "oda.pb.h"
+#include "soci.h"
+#include "mysql/soci-mysql.h"
 
 using namespace std;
 using namespace oda; // namespace for using google protocol buffer
+using namespace soci; // namespace for using soci library 
 
 void processing(int sock);
 void error(string msg)
@@ -53,7 +57,7 @@ int main(int argc, char *argv[])
      
 	clilen = sizeof(cli_addr);
 
-	// starting the listening loop. It is a brutal stop: Ctrl-Z....
+	// starting the listening loop. It is a brutal stop: Ctrl-C....
     while (1)
     {
     	newsockfd = accept(sockfd, 
@@ -71,7 +75,7 @@ int main(int argc, char *argv[])
 	    	error("ERROR on fork");
 	 	if (pid==0)
 	 	{
-	    	close(sockfd);
+	    	close(sockfd); // why here??
 	     	processing(newsockfd);
 	     	exit(0);
 	 	}
@@ -106,15 +110,20 @@ void processing(int sock)
 
 	cout<<"Message of "<<dataLength<<" elements arrived!\n";
 	char buff[dataLength]; // Allocating a buffer of approriate length
-	read(sock,buff,dataLength); // Receive the string data
+	int n;
+	n = read(sock,buff,dataLength); // Receive the string data
+	cout<<"n= "<<n<<endl;
 
 	string message;
-	message = buff;   // Convert char [] buf into string for de-serialization 
+	message = buff;   // Convert char [] buff into string for de-serialization 
 	
 	Oda oda_data;
+	cout<<buff[dataLength]<<endl;
 	if (!oda_data.ParseFromString(message))
-		error("ERROR. Can not parse the received message.");
-
+	{
+		cerr<<"ERROR. Can not parse the received message.";
+		exit(-1);
+	}
 	// parsing the data
 	for (int i=0; i<oda_data.proposal_size(); i++)
 	{
@@ -127,4 +136,21 @@ void processing(int sock)
 		}
 	}
 	cout<<"done\n";
+    /*
+	// Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
+	// should be put in the for(i) above.
+	session sql(mysql, "db=oda user=marco password=marco");
+	const Proposal& proposal = oda_data.proposal(0); // ad-hoc retrieving of the only data present in the message
+
+	// before inserting, printing the currente number of Proposals
+	int count;
+	sql<<"select count(*) from Proposal", into(count);
+	cout<<"Table Proposal has "<<count<<" entries"<<endl;
+
+
+	// Inserting the data
+	sql<<"insert into Proposal (id,title) values(:idp, :titlep)", use(proposal.id()), use(proposal.title());
+	sql<<"select count(*) from Proposal", into(count);
+	cout<<"Table Proposal now has "<<count<<" entries"<<endl; 
+	*/
 }

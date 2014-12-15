@@ -94,14 +94,16 @@ int main(int argc, char *argv[])
 	if (!oda_data.SerializeToString(&message))
 		error("ERROR. Can not serialize the message.\n");
 	
-	uint32_t dataLength = htonl(message.size()); // convert int to network byte order
+	uint32_t dataLength = htonl(message.size()+1); // convert int to network byte order
     n = write(sockfd,&dataLength,sizeof(uint32_t));
 	if (n < 0) 
          error("ERROR writing to socket the message length");
-    n = write(sockfd,message.c_str(),message.size());
+    n = write(sockfd,message.c_str(),message.size()+1);
+	cout<<n<<endl;
 	if (n < 0) 
          error("ERROR writing to the message socket");
-
+	if (n!=message.size()+1)
+		cerr<<"ERROR in sending data...\n";
 
 	/* Closing the connection */
     close(sockfd);
