@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
      
 	clilen = sizeof(cli_addr);
 
-	// starting the listening loop. It is a brutal stop: Ctrl-C....
+	// starting the listening loop. It has a brutal stop: Ctrl-C....
     while (1)
     {
     	newsockfd = accept(sockfd, 
@@ -103,28 +103,32 @@ void processing(int sock)
     if (n < 0) cerr<<"ERROR writing to socket";
 	*/
 
+
+	// The message is received in two parts.
+	// 1) The length of the message to be received
 	uint32_t mLength;
 	read(sock,&mLength,sizeof(uint32_t)); // Receive the message length
 	mLength = ntohl(mLength); // Ensure host system byte order
 	int dataLength = static_cast<int>(mLength);
-
 	cout<<"Message of "<<dataLength<<" elements arrived!\n";
+	
+	// 2) The message itself. It is stored in a char [], however a vector<char> could and should be used.
 	char buff[dataLength]; // Allocating a buffer of approriate length
 	int n;
 	n = read(sock,buff,dataLength); // Receive the string data
-	cout<<"n= "<<n<<endl;
 
 	string message;
 	message = buff;   // Convert char [] buff into string for de-serialization 
-	
+
+	// De-serialization starts here
 	Oda oda_data;
-	cout<<buff[dataLength]<<endl;
+	// The following check should fail only if the message is corrupted.
 	if (!oda_data.ParseFromString(message))
 	{
 		cerr<<"ERROR. Can not parse the received message.";
 		exit(-1);
 	}
-	// parsing the data
+	// parsing the data and printing to screen the proposal submitted. The loop allows for more than one submission.
 	for (int i=0; i<oda_data.proposal_size(); i++)
 	{
 		const Proposal& proposal = oda_data.proposal(i);
@@ -151,6 +155,20 @@ void processing(int sock)
 	// Inserting the data
 	sql<<"insert into Proposal (id,title) values(:idp, :titlep)", use(proposal.id()), use(proposal.title());
 	sql<<"select count(*) from Proposal", into(count);
-	cout<<"Table Proposal now has "<<count<<" entries"<<endl; 
-	
+	cout<<"Table Proposal now has "<<count<<" entries"<<endl;
+
+	// Printing the new table on screen
+	rowset<row> rs = (sql.prepare << "select id, title from Proposal");
+
+	// iteration through the resultset:
+	int r = 1;
+	for (rowset<row>::const_iterator it = rs.begin(); it != rs.end(); ++it)
+	{
+    	row const& row = *it;
+
+    	// dynamic data extraction from each row:
+    	cout << r <<") " << "Id: " << row.get<int>(0)
+        	 << " Title: " << row.get<string>(1)  << endl;
+		r++;
+	}
 }
