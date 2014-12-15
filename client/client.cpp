@@ -94,12 +94,18 @@ int main(int argc, char *argv[])
 	if (!oda_data.SerializeToString(&message))
 		error("ERROR. Can not serialize the message.\n");
 	
-	uint32_t dataLength = htonl(message.size()+1); // convert int to network byte order
+	uint32_t dataLength = htonl(message.size()+1); // convert int to network byte order. The size is message.size()+1
+												   // because C string terminates with '\0' character, which is missing
+												   // in string C++.
+
+	// The message is divided in two parts:
+	// 1) First message sent is the length of the message with the serialization
     n = write(sockfd,&dataLength,sizeof(uint32_t));
 	if (n < 0) 
          error("ERROR writing to socket the message length");
-    n = write(sockfd,message.c_str(),message.size()+1);
-	cout<<n<<endl;
+    
+	// 2) The actual message is sent. n stores the actual length sent.
+	n = write(sockfd,message.c_str(),message.size()+1);
 	if (n < 0) 
          error("ERROR writing to the message socket");
 	if (n!=message.size()+1)
