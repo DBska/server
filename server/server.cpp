@@ -136,7 +136,7 @@ void processing(int sock)
 		}
 	}
 	cout<<"done\n";
-    /*
+    
 	// Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
 	// should be put in the for(i) above.
 	session sql(mysql, "db=oda user=marco password=marco");
@@ -152,5 +152,5 @@ void processing(int sock)
 	sql<<"insert into Proposal (id,title) values(:idp, :titlep)", use(proposal.id()), use(proposal.title());
 	sql<<"select count(*) from Proposal", into(count);
 	cout<<"Table Proposal now has "<<count<<" entries"<<endl; 
-	*/
+	
 }
