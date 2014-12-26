@@ -1,7 +1,7 @@
 Downloading Server Code
 =======================
 
-Use:
+Usage:
 
 for complete repository:
 git clone  https://github.com/DarthVeder/server.git
