@@ -12,7 +12,7 @@ git clone -b *branch* --single-branch https://github.com/DarthVeder/server.git
 Directory structure
 ===================
 
-After downloading the repository you will find the following structure:
+After downloading the repository you will find the following structure inside the server directory:
 ```
 server
 ├── client
