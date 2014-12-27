@@ -6,18 +6,23 @@ Usage:
 for complete repository:
 git clone  https://github.com/DarthVeder/server.git
 
-for only v2 branch version:
-git clone -b v2 --single-branch https://github.com/DarthVeder/server.git
-
-The branch v2 has not yet been merged with the master, however it is the only one working as
-expected. Do not download the complete repository untill the merge has been performed.
+for only branch *branch* version:
+git clone -b *branch* --single-branch https://github.com/DarthVeder/server.git
 
 Directory structure
 ===================
 
 After downloading the repository you will find the following structure:
-client
-server
+/client
+  -client.cpp
+  -makefile
+  -oda.pb.cpp
+  -oda.pb.h
+/server
+  -makefile
+  -oda.pb.cpp
+  -oda.pb.h
+  -server.cpp
 oda.proto
 README.md (this file)
 makefile
