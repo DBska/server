@@ -4,9 +4,11 @@ Downloading Server Code
 Usage:
 
 for complete repository:
+
 git clone  https://github.com/DarthVeder/server.git
 
 for only branch *branch* version:
+
 git clone -b *branch* --single-branch https://github.com/DarthVeder/server.git
 
 Directory structure
@@ -50,7 +52,7 @@ port numbers.
 
 $ ./client *host_name* *port_number*
 
-*host_name* can be also localhost. *port_nuber* is obviously the same number used for the server.
+*host_name* can also be localhost. *port_nuber* is obviously the same number used for the server.
 If everything goes well, the server should be able to add a new row in the database and print the
 new table on screen.
 
