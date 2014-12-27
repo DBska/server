@@ -13,22 +13,22 @@ Directory structure
 ===================
 
 After downloading the repository you will find the following structure:
-
-> server
-> ├── client
-> │   ├── client.cpp
-> │   ├── makefile
-> │   ├── oda.pb.cpp
-> │   └── oda.pb.h
-> ├── makefile
-> ├── oda.proto
-> ├── README.md
-> └── server
->     ├── makefile
->     ├── oda.pb.cpp
->     ├── oda.pb.h
->     └── server.cpp
-
+```
+server
+├── client
+│   ├── client.cpp
+│   ├── makefile
+│   ├── oda.pb.cpp
+│   └── oda.pb.h
+├── makefile
+├── oda.proto
+├── README.md
+└── server
+   ├── makefile
+   ├── oda.pb.cpp
+   ├── oda.pb.h
+   └── server.cpp
+```
 
 Installation
 ============
@@ -43,12 +43,12 @@ before the client is invoked.
 Usage
 =====
 
-$ server *port_number*
+$ ./server *port_number*
 
 *port_number* should be any integer number above 3000. Attention should be used for reserved
 port numbers.
 
-$ client *host_name* *port_number*
+$ ./client *host_name* *port_number*
 
 *host_name* can be also localhost. *port_nuber* is obviously the same number used for the server.
 If everything goes well, the server should be able to add a new row in the database and print the
