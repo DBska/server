@@ -13,6 +13,7 @@ Directory structure
 ===================
 
 After downloading the repository you will find the following structure:
+
 /client
   -client.cpp
   -makefile
@@ -25,6 +26,7 @@ After downloading the repository you will find the following structure:
   -server.cpp
 oda.proto
 README.md (this file)
+
 makefile
 
 Installation
