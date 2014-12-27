@@ -5,11 +5,11 @@ Usage:
 
 for complete repository:
 
-git clone  https://github.com/DarthVeder/server.git
+$ git clone  https://github.com/DarthVeder/server.git
 
 for only branch *branch* version:
 
-git clone -b *branch* --single-branch https://github.com/DarthVeder/server.git
+$ git clone -b *branch* --single-branch https://github.com/DarthVeder/server.git
 
 Directory structure
 ===================
