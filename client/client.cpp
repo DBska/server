@@ -83,7 +83,9 @@ int main(int argc, char *argv[])
     cout<<buffer.c_str()<<endl;
 	*/
 
-	// Setting up a new proposal without any reviewer:
+	// Setting up a new proposal without any reviewer.
+	// The proposal is:
+	// 5542 Milky-way galaxy radio detection in X-Band
 	Oda oda_data;
 	Proposal* proposal = oda_data.add_proposal();
 	proposal->set_id(5543);

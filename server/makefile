@@ -6,7 +6,7 @@ LIBS= -lmysqlclient -lpthread -lz -lm -ldl  -lsoci_core -lsoci_mysql -lprotobuf 
 LIBS_PATH=-L/usr/lib/x86_64-linux-gnu -L/usr/local/lib64
 
 # Compiler flags and compiler:
-CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG 
+CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g #-DNDEBUG 
 CC = g++
 
 # Sources:

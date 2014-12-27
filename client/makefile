@@ -6,7 +6,7 @@ LIBS= -lprotobuf -lpthread
 LIBS_PATH=
 
 # Compiler flags and compiler:
-CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG 
+CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g # -DNDEBUG 
 CC = g++
 
 # Sources:
