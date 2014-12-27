@@ -14,20 +14,21 @@ Directory structure
 
 After downloading the repository you will find the following structure:
 
-/client
-  -client.cpp
-  -makefile
-  -oda.pb.cpp
-  -oda.pb.h
-/server
-  -makefile
-  -oda.pb.cpp
-  -oda.pb.h
-  -server.cpp
-oda.proto
-README.md (this file)
-
-makefile
+'''
++--client
+|  +--client.cpp
+|  +--makefile
+|  +--oda.pb.cpp
+|  +--oda.pb.h
++--server
+|  +--makefile
+|  +--oda.pb.cpp
+|  +--oda.pb.h
+|  +--server.cpp
++--oda.proto
++--README.md (this file)
++--makefile
+'''
 
 Installation
 ============
