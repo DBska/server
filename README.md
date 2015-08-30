@@ -11,6 +11,14 @@ for only branch *branch* version:
 
 $ git clone -b *branch* --single-branch https://github.com/DarthVeder/server.git
 
+The repository is as follows:
+
+*master*: A fictitious oda.proto is used between client and server. The code
+works, however one MUST define in mysql a table Proposal with the following
+fields: id (int) and title (varchar(40)). Otherwise soci lib does not work.
+
+*pht*: a new PHT message more realistic. Code is still under development.
+
 Directory structure
 ===================
 
@@ -41,6 +49,12 @@ $ make
 
 This should generate the two executables *client/client* and *server/server*. The server should be running
 before the client is invoked. 
+
+Print at server directory level:
+
+$ make help
+
+To see all the possible make options.
 
 Usage
 =====

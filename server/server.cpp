@@ -11,7 +11,8 @@
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "oda.pb.h"
+//#include "oda.pb.h"
+#include "PHTmessage.pb.h"
 #include "soci.h"
 #include "mysql/soci-mysql.h"
 
@@ -23,7 +24,6 @@ void processing(int sock);
 void error(string msg)
 {
     perror(msg.c_str());
-    exit(1);
 }
 
 int main(int argc, char *argv[])
@@ -32,16 +32,19 @@ int main(int argc, char *argv[])
     pid_t pid;
     socklen_t clilen;
      
-	string buffer; // a vector<char> should be better...
+    string buffer; // a vector<char> should be better...
     struct sockaddr_in serv_addr, cli_addr;
     int n;
 
-	// Checking the calling statement of the program is correct:
-	// server port
-    if (argc < 2) 
-        error("ERROR, no port provided\n");
-
-	// Opening the socket
+    // Checking the calling statement of the program is correct:
+    // server port
+    if (argc < 2)
+    {
+        //error("ERROR, no port provided\n");
+        cerr<<"usage: "<<argv[0]<<" port\n";
+        exit(1);
+    }
+    // Opening the socket
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) 
        error("ERROR opening socket");
@@ -55,9 +58,9 @@ int main(int argc, char *argv[])
              error("ERROR on binding");
     listen(sockfd,5);
      
-	clilen = sizeof(cli_addr);
+    clilen = sizeof(cli_addr);
 
-	// starting the listening loop. It has a brutal stop: Ctrl-C....
+    // starting the listening loop. It has a brutal stop: Ctrl-C....
     while (1)
     {
     	newsockfd = accept(sockfd, 
@@ -68,22 +71,22 @@ int main(int argc, char *argv[])
 
         signal(SIGCHLD,SIG_IGN); // this is needed to avoid zombies until the parent is dead
 
-	    // The following fork() is used to allow different client to connect to the server
+        // The following fork() is used to allow different client to connect to the server
         pid = fork();
-	 	if (pid>0) cout<<"Forking with child PID "<<pid<<endl; // Parent process
- 	 	if (pid<0)
-	    	error("ERROR on fork");
-	 	if (pid==0)
-	 	{
-	    	close(sockfd); // why here??
-	     	processing(newsockfd);
-	     	exit(0);
-	 	}
-	 	else close(newsockfd);
+	if (pid>0) cout<<"Forking with child PID "<<pid<<endl; // Parent process
+ 	if (pid<0)
+            error("ERROR on fork");
+	 if (pid==0)
+	 {
+	    close(sockfd); // why here??
+	    processing(newsockfd);
+	    exit(0);
+	 }
+	 else close(newsockfd);
     } /* end of while for server listening */
     
-	//Closing the socket
-	close(sockfd);
+    //Closing the socket
+    close(sockfd);
     return 0; /* never here */
 }	    
 
@@ -143,7 +146,7 @@ void processing(int sock)
     
 	// Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
 	// should be put in the for(i) above.
-	session sql(mysql, "db=oda user=marco password=marco");
+	session sql(mysql, "db=oda user=marco password=Marco74");
 	const Proposal& proposal = oda_data.proposal(0); // ad-hoc retrieving of the only data present in the message
 
 	// before inserting, printing the currente number of Proposals

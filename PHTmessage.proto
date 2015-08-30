@@ -1,8 +1,0 @@
-package PHT;
-
-import "Proposals.proto";
-
-message PHTmessage
-{
-    repeated Proposals proposal = 1;
-}
