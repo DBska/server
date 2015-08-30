@@ -1,16 +1,16 @@
 # inlude files directories:
-INC=-I. -I/usr/local/include/soci -I/usr/include/mysql
+INC=-I/usr/local/include/soci -I/usr/include/mysql -I../proto
 
 # Libraries and Libraries paths:
-LIBS= -lmysqlclient -lpthread -lz -lm -ldl  -lsoci_core -lsoci_mysql -lprotobuf -lpthread
-LIBS_PATH=-L/usr/lib/x86_64-linux-gnu -L/usr/local/lib64
+LIBS= -lmysqlclient -lpthread -lz -lm -ldl  -lsoci_core -lsoci_mysql -lprotobuf -lpthread -lproto
+LIBS_PATH=-L/usr/lib/x86_64-linux-gnu -L/usr/local/lib64 -L../proto
 
 # Compiler flags and compiler:
 CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG 
 CC = g++
 
 # Sources:
-SOURCES = server.cpp PHTmessage.pb.cpp
+SOURCES = $(wildcard *.cpp)
 OBJS = $(SOURCES:.cpp=.o)
 
 # Executable:
@@ -20,7 +20,7 @@ EXE = server
 all: $(SOURCES) $(EXE)
 
 $(EXE): $(OBJS)
-	$(CC) $(OBJS) -o $@ $(LIBS_PATH) $(LIBS)
+	$(CC) $(OBJS) $(LIBS_PATH) $(LIBS) -o $@ 
 
 %.o: %.cpp
 	$(CC) $(INC) $(CFLAGS) -c $< 
