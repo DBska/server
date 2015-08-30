@@ -1,26 +1,24 @@
 all:
+	$(MAKE) -C proto
 	$(MAKE) -C server
 	$(MAKE) -C client
 
-clientproto:
-	protoc oda.proto --cpp_out=client
+proto:
+	$(MAKE) -C proto
 
-serverproto:
-	protoc oda.proto --cpp_out=server
 
-allproto: clientproto serverproto
-
-.PHONY: clean help
+.PHONY: clean help proto
 
 help:
 	@echo "Usage:"
-	@echo "make allproto"
-	@echo "make clientproto"
-	@echo "make serverproto"
+	@echo "make all builds proto classes, server and client"
+	@echo "make proto builds only pb classes"
+	@echo "make clean clean both client and server"
 
 
 clean:
 	$(MAKE) -C server clean
 	$(MAKE) -C client clean
+	$(MAKE) -C proto clean
 
 
