@@ -11,13 +11,12 @@
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
-//#include "oda.pb.h"
 #include "PHTmessage.pb.h"
 #include "soci.h"
 #include "mysql/soci-mysql.h"
 
 using namespace std;
-using namespace oda; // namespace for using google protocol buffer
+using namespace PHT; // namespace for using google protocol buffer
 using namespace soci; // namespace for using soci library 
 
 void processing(int sock);
@@ -28,7 +27,7 @@ void error(string msg)
 
 int main(int argc, char *argv[])
 {
-	int sockfd, newsockfd, portno;
+    int sockfd, newsockfd, portno;
     pid_t pid;
     socklen_t clilen;
      
@@ -107,7 +106,7 @@ void processing(int sock)
 	*/
 
 
-	// The message is received in two parts.
+	// The message is received in two parts: 1) its lengths 2) the message
 	// 1) The length of the message to be received
 	uint32_t mLength;
 	read(sock,&mLength,sizeof(uint32_t)); // Receive the message length
@@ -124,26 +123,26 @@ void processing(int sock)
 	message = buff;   // Convert char [] buff into string for de-serialization 
 
 	// De-serialization starts here
-	Oda oda_data;
+	PHTmessage pht_data;
 	// The following check should fail only if the message is corrupted.
-	if (!oda_data.ParseFromString(message))
+	if (!pht_data.ParseFromString(message))
 	{
 		cerr<<"ERROR. Can not parse the received message.";
 		exit(-1);
 	}
 	// parsing the data and printing to screen the proposal submitted. The loop allows for more than one submission.
-	for (int i=0; i<oda_data.proposal_size(); i++)
+	for (int i=0; i<pht_data.proposal_size(); i++)
 	{
-		const Proposal& proposal = oda_data.proposal(i);
-		cout<<"ID: "<<proposal.id()<<endl;
-		cout<<"TITLE: "<<proposal.title()<<endl;
-		if (proposal.reviewer_size()==0)
-		{
-			cout<<"No reviewers assigned"<<endl;
-		}
+		//const Proposal& proposal = oda_data.proposal(i);
+		//cout<<"ID: "<<proposal.id()<<endl;
+		//cout<<"TITLE: "<<proposal.title()<<endl;
+		//if (proposal.reviewer_size()==0)
+		//{
+		//	cout<<"No reviewers assigned"<<endl;
+		//}
 	}
 	cout<<"done\n";
-    
+/*
 	// Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
 	// should be put in the for(i) above.
 	session sql(mysql, "db=oda user=marco password=Marco74");
@@ -174,4 +173,5 @@ void processing(int sock)
         	 << " Title: " << row.get<string>(1)  << endl;
 		r++;
 	}
+*/
 }
