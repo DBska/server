@@ -6,9 +6,12 @@ CC = g++
 SOURCES = $(wildcard *.cc)
 OBJS = $(SOURCES:.cc=.o)
 
-all: $(OBJS) proto.a
+# Library name:
+LIBNAME=libproto
 
-libproto.a: $(OBJS)
+all: $(OBJS) $(LIBNAME).a
+
+$(LIBNAME).a: $(OBJS)
 	ar rvs libproto.a $(OBJS)
 
 # makefile rules
@@ -18,6 +21,6 @@ libproto.a: $(OBJS)
 .PHONY: clean
 
 clean:
-	rm -f *.o libproto.a
+	rm -f $(OBJS) $(LIBNAME).a
 
 
