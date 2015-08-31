@@ -1,0 +1,4 @@
+Use the following command to load MySQL database for PHT:
+mysql -p < DDL.sql
+
+This step must be performed before runnig the server - client codes.
