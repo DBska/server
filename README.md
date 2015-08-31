@@ -24,20 +24,38 @@ Directory structure
 
 After downloading the repository you will find the following structure inside the server directory:
 ```
-server
+server/
 ├── client
-│   ├── client.cpp
-│   ├── makefile
-│   ├── oda.pb.cpp
-│   └── oda.pb.h
+│   ├── client.cpp
+│   ├── makefile
 ├── makefile
-├── oda.proto
+├── proto
+│   ├── CoAuthors.pb.cc
+│   ├── CoAuthors.pb.h
+│   ├── makefile
+│   ├── PHTmessage.pb.cc
+│   ├── PHTmessage.pb.h
+│   ├── ProposalEditors.pb.cc
+│   ├── ProposalEditors.pb.h
+│   ├── Proposals.pb.cc
+│   ├── Proposals.pb.h
+│   ├── ProposalStatus.pb.cc
+│   ├── ProposalStatus.pb.h
+│   ├── ProposalType.pb.cc
+│   ├── ProposalType.pb.h
+│   ├── Reviews.pb.cc
+│   ├── Reviews.pb.h
+│   ├── ScienceGoals.pb.cc
+│   ├── ScienceGoals.pb.h
+│   ├── SupportingDocuments.pb.cc
+│   ├── SupportingDocuments.pb.h
+│   ├── TACReviews.pb.cc
+│   └── TACReviews.pb.h
 ├── README.md
-└── server
-   ├── makefile
-   ├── oda.pb.cpp
-   ├── oda.pb.h
-   └── server.cpp
+├── server
+│   ├── makefile
+│   └── server.cpp
+└── TODO
 ```
 
 Installation
@@ -61,7 +79,7 @@ Usage
 
 $ ./server *port_number*
 
-*port_number* should be any integer number above 3000. Attention should be used for reserved
+*port_number* should be any integer number above 3000. Attention should be given for any reserved
 port numbers.
 
 $ ./client *host_name* *port_number*
@@ -73,4 +91,5 @@ new table on screen.
 Warning
 =======
 
-For the time being, the database is assumed to be on alcor and there is no option for selecting another DB. If you are not on alcor, then you have a problem.....
+For the time being, the database is assumed to be on alcor and there is no option for selecting 
+another DB. If you are not on alcor, then you have a problem.....
