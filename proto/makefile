@@ -1,26 +1,14 @@
-# Compiler flags and compiler:
-CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG 
-CC = g++
 
-# Sources:
-SOURCES = $(wildcard *.cc)
-OBJS = $(SOURCES:.cc=.o)
+all: proto
+	$(MAKE) -C src
 
-# Library name:
-LIBNAME=libproto
+proto:  
+ifeq ($(wildcard src/*.cc),)
+	protoc --cpp_out=./src *.proto
+endif
 
-all: $(OBJS) $(LIBNAME).a
-
-$(LIBNAME).a: $(OBJS)
-	ar rvs libproto.a $(OBJS)
-
-# makefile rules
-%.o: %.cc
-	$(CC) $(INC) $(CFLAGS) -c $< -o $@
-
-.PHONY: clean
+.PHONY: clean 
 
 clean:
-	rm -f $(OBJS) $(LIBNAME).a
-
+	$(MAKE) -C src clean
 

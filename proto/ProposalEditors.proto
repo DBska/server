@@ -1,0 +1,9 @@
+package PHT;
+
+message ProposalEditors
+{
+	optional string author_id = 1;
+	optional bool isPI = 2;
+	optional string more_info = 3;
+	optional int64 proposal_id = 4;
+}

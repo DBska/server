@@ -33,10 +33,11 @@ void error(string msg)
 
 int main(int argc, char *argv[])
 {
+    GOOGLE_PROTOBUF_VERIFY_VERSION;
+
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
-
 
     // Checking is the command is called with the appropriate sintax:
     // $ client hostname port
@@ -72,29 +73,44 @@ int main(int argc, char *argv[])
     PHTmessage pht_data;
     Proposals* proposal = pht_data.add_proposal();
     proposal->set_abstract("Milky-way galaxy radio detection in X-band");
-	
+    proposal->set_proposal_status(PHT::DRAFT);
+    proposal->set_proposal_type(PHT::TOOproposal);
+    proposal->set_more_info("bla bla");	
     // Serializing to a string the data to send
     string message;
     if (!pht_data.SerializeToString(&message))
 	    error("ERROR. Can not serialize the message.\n");
-	
-    uint32_t dataLength = htonl(message.size()+1); // convert int to network byte order. 
+
+    /* Fake sending */
+    bool fake_test = false;
+    if (fake_test)
+    {
+        uint32_t msgLength = message.size();
+        string messageRecv;
+        messageRecv.assign(&(message[0]),message.size());
+        if (!pht_data.ParseFromString(messageRecv))
+        {
+            cerr<<"ERROR. Can not parse the received message.\n";
+	    exit(-1);
+        }
+    }
+
+    uint32_t dataLength = htonl(message.size()); // convert int to network byte order. 
     // The size is message.size()+1 because C string terminates with '\0' character, which is missing
     // in string C++.
 
-    // The message is divided in two parts:
+    // The message e is divided in two parts:
     // 1) First message sent is the length of the message with the serialization
+    cout<<"Sending "<<message.size()<<" elements\n";
     n = write(sockfd,&dataLength,sizeof(uint32_t));
     if (n < 0) 
         error("ERROR writing to socket the message length");
     
     // 2) The actual message is sent. n stores the actual length sent.
-    n = write(sockfd,message.c_str(),message.size()+1);
+    n = write(sockfd,message.c_str(),dataLength);
     if (n < 0) 
         error("ERROR writing to the message socket");
-    if (n!=message.size()+1)
-        cerr<<"ERROR in sending data...\n";
-
+    
     /* Closing the connection */
     close(sockfd);
     

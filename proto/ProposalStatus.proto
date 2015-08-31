@@ -1,0 +1,10 @@
+package PHT;
+
+enum ProposalStatus
+{
+	DRAFT = 0;
+	ACCEPTED = 1;
+	REJECTED = 2;
+	SUBMITTED = 3;
+	MERGED = 4;
+}

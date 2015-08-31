@@ -1,0 +1,9 @@
+package PHT;
+
+message Reviews
+{
+	optional string grade_rank = 1;
+	optional int64 proposal_id = 2;
+	optional string review_comments = 3;
+	optional int64 reviewer_id = 4;
+}

@@ -1,0 +1,25 @@
+package PHT;
+
+import "ProposalStatus.proto";
+import "ProposalType.proto";
+import "CoAuthors.proto";
+import "ProposalEditors.proto";
+import "Reviews.proto";
+import "ScienceGoals.proto";
+import "SupportingDocuments.proto";
+import "TACReviews.proto";
+
+message Proposals
+{
+	optional string abstract = 1;
+	optional string more_info = 2;
+	optional int64 proposal_id = 3;
+	optional ProposalStatus proposal_status = 4;
+	optional ProposalType proposal_type = 5;
+	optional CoAuthors m_CoAuthors = 6; 
+	optional ProposalEditors m_ProposalEditors = 7;
+	optional TACReviews m_TACReviews = 8;
+	optional Reviews m_Reviews = 9;
+	optional SupportingDocuments m_SupportingDocuments = 10;
+	optional ScienceGoals m_ScienceGoals = 11;
+}

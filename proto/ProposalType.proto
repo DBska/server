@@ -1,0 +1,9 @@
+package PHT;
+
+enum ProposalType
+{
+	TOOproposal = 0;
+	DDTproposal = 1;
+	PIproposal = 2;
+	KeyScienceProjectProposal = 3;
+}

@@ -1,0 +1,8 @@
+package PHT;
+
+message SupportingDocuments
+{
+	optional string preprints = 1;
+	optional string scientific_justification = 2;
+	optional string technical_justification = 3;
+}

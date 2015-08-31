@@ -100,12 +100,14 @@ void processing(int sock)
     cout<<"Message of "<<dataLength<<" elements arrived!\n";
 	
     // 2) The message itself. It is stored in a char [], however a vector<char> could and should be used.
-    char buff[dataLength]; // Allocating a buffer of approriate length
-    int n;
-    n = read(sock,buff,dataLength); // Receive the string data
+    vector<uint8_t> msg; // Allocating a buffer of approriate length
+    msg.resize(mLength,0x00);
 
-    string message;
-    message = buff;   // Convert char [] buff into string for de-serialization 
+    int n;
+    n = read(sock,&(msg[0]),mLength); // Receive the string data
+
+    string message;   // Convert message data into a string for de-serialization
+    message.assign(reinterpret_cast<const char*>(&(msg[0])),msg.size());
 
     // De-serialization starts here
     PHTmessage pht_data;

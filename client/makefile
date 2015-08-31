@@ -1,9 +1,9 @@
 # inlude files directories:
-INC=-I../proto
+INC=-I../proto/src
 
 # Libraries and Libraries paths:
 LIBS= -lprotobuf -lpthread -lproto
-LIBS_PATH=-L../proto
+LIBS_PATH=-L../proto/src
 
 # Compiler flags and compiler:
 CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG 

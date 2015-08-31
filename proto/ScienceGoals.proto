@@ -1,0 +1,9 @@
+package PHT;
+
+message ScienceGoals
+{
+	optional double frequence = 1;
+	optional string instrument_configurations = 2;
+	optional string more_info = 3;
+	optional string target_details = 4;
+}

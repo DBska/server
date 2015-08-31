@@ -1,0 +1,8 @@
+package PHT;
+
+message TACReviews
+{
+	optional string comments = 1;
+	optional string final_grade = 2;
+	optional int64 tac_id = 3;
+}
