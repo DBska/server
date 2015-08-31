@@ -1,16 +1,16 @@
 # inlude files directories:
-INC=-I.
+INC=-I../proto
 
 # Libraries and Libraries paths:
-LIBS= -lprotobuf -lpthread
-LIBS_PATH=
+LIBS= -lprotobuf -lpthread -lproto
+LIBS_PATH=-L../proto
 
 # Compiler flags and compiler:
 CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG 
 CC = g++
 
 # Sources:
-SOURCES = client.cpp oda.pb.cpp
+SOURCES = $(wildcard *.cpp)
 OBJS = $(SOURCES:.cpp=.o)
 
 # Executable:

@@ -91,57 +91,42 @@ int main(int argc, char *argv[])
 
 void processing(int sock)
 {
-	/*
-    string buffer;
-    char string_tmp[256];
-    int n;
-
-    bzero(string_tmp,256);
-    n = read(sock,string_tmp,255);
-    buffer = string_tmp;
-    if (n < 0) cerr<<"ERROR reading from socket";
-    cout<<"Here is the message: "<<buffer<<endl;
-    n = write(sock,"I got your message",18);
-    if (n < 0) cerr<<"ERROR writing to socket";
-	*/
-
-
-	// The message is received in two parts: 1) its lengths 2) the message
-	// 1) The length of the message to be received
-	uint32_t mLength;
-	read(sock,&mLength,sizeof(uint32_t)); // Receive the message length
-	mLength = ntohl(mLength); // Ensure host system byte order
-	int dataLength = static_cast<int>(mLength);
-	cout<<"Message of "<<dataLength<<" elements arrived!\n";
+    // The message is received in two parts: 1) its lengths 2) the message
+    // 1) The length of the message to be received
+    uint32_t mLength;
+    read(sock,&mLength,sizeof(uint32_t)); // Receive the message length
+    mLength = ntohl(mLength); // Ensure host system byte order
+    int dataLength = static_cast<int>(mLength);
+    cout<<"Message of "<<dataLength<<" elements arrived!\n";
 	
-	// 2) The message itself. It is stored in a char [], however a vector<char> could and should be used.
-	char buff[dataLength]; // Allocating a buffer of approriate length
-	int n;
-	n = read(sock,buff,dataLength); // Receive the string data
+    // 2) The message itself. It is stored in a char [], however a vector<char> could and should be used.
+    char buff[dataLength]; // Allocating a buffer of approriate length
+    int n;
+    n = read(sock,buff,dataLength); // Receive the string data
 
-	string message;
-	message = buff;   // Convert char [] buff into string for de-serialization 
+    string message;
+    message = buff;   // Convert char [] buff into string for de-serialization 
 
-	// De-serialization starts here
-	PHTmessage pht_data;
-	// The following check should fail only if the message is corrupted.
-	if (!pht_data.ParseFromString(message))
-	{
-		cerr<<"ERROR. Can not parse the received message.";
-		exit(-1);
-	}
-	// parsing the data and printing to screen the proposal submitted. The loop allows for more than one submission.
-	for (int i=0; i<pht_data.proposal_size(); i++)
-	{
-		//const Proposal& proposal = oda_data.proposal(i);
-		//cout<<"ID: "<<proposal.id()<<endl;
-		//cout<<"TITLE: "<<proposal.title()<<endl;
-		//if (proposal.reviewer_size()==0)
-		//{
-		//	cout<<"No reviewers assigned"<<endl;
-		//}
-	}
-	cout<<"done\n";
+    // De-serialization starts here
+    PHTmessage pht_data;
+    // The following check should fail only if the message is corrupted.
+    if (!pht_data.ParseFromString(message))
+    {
+        cerr<<"ERROR. Can not parse the received message.";
+	exit(-1);
+    }
+    // parsing the data and printing to screen the proposal submitted. The loop allows for more than one submission.
+    for (int i=0; i<pht_data.proposal_size(); i++)
+    {
+        const Proposals& proposal = pht_data.proposal(i);
+	//cout<<"ID: "<<proposal.id()<<endl;
+	cout<<"ABSTRACT: "<<proposal.abstract()<<endl;
+	//if (proposal.reviewer_size()==0)
+	//{
+	//	cout<<"No reviewers assigned"<<endl;
+	//}
+    }
+    cout<<"done\n";
 /*
 	// Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
 	// should be put in the for(i) above.
