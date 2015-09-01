@@ -17,7 +17,12 @@ The repository is as follows:
 works, however one MUST define in mysql a table Proposal with the following
 fields: id (int) and title (varchar(40)). Otherwise soci lib does not work.
 
-*pht*: a new PHT message more realistic. Code is still under development.
+*pht*: a new PHT message structure. A proto directory is also present,
+describing the structure of the message. A makefile is provided to generate all
+the necessary C++ classes. In directory server/server is also present a
+directory mysql with a DDL.sql that should be used to build a db named PHT for
+testing the soci connection with the db from the server code. The db should be
+build before running the code.
 
 Directory structure
 ===================
@@ -61,18 +66,23 @@ server/
 Installation
 ============
 
-Simply perform:
+First, the mysql db PHT  must be build. Inside server/server/mysql one must run:
+
+$ mysql -p < DDL.sql
+
+Connect to mysql to check that a database named PHT is present. There should be
+a certain number of tables inside it.
+
+Then, to compile both the server and client codes, in server/ write:
 
 $ make
 
 This should generate the two executables *client/client* and *server/server*. The server should be running
 before the client is invoked. 
 
-Print at server directory level:
+For different make options, at server directory level use:
 
 $ make help
-
-To see all the possible make options.
 
 Usage
 =====
@@ -92,4 +102,4 @@ Warning
 =======
 
 For the time being, the database is assumed to be on alcor and there is no option for selecting 
-another DB. If you are not on alcor, then you have a problem.....
+a db on another machine. If you are not on alcor, then you have a problem.....
