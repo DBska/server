@@ -129,25 +129,25 @@ void processing(int sock)
 	//}
     }
     cout<<"done\n";
-/*
+
 	// Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
 	// should be put in the for(i) above.
-	session sql(mysql, "db=oda user=marco password=Marco74");
-	const Proposal& proposal = oda_data.proposal(0); // ad-hoc retrieving of the only data present in the message
+	session sql(mysql, "db=PHT user=marco password=Marco74");
+	const Proposals& proposal = pht_data.proposal(0); // ad-hoc retrieving of the only data present in the message
 
 	// before inserting, printing the currente number of Proposals
 	int count;
-	sql<<"select count(*) from Proposal", into(count);
-	cout<<"Table Proposal has "<<count<<" entries"<<endl;
+	sql<<"select count(*) from Proposals", into(count);
+	cout<<"Table Proposals has "<<count<<" entries"<<endl;
 
 
 	// Inserting the data
-	sql<<"insert into Proposal (id,title) values(:idp, :titlep)", use(proposal.id()), use(proposal.title());
-	sql<<"select count(*) from Proposal", into(count);
-	cout<<"Table Proposal now has "<<count<<" entries"<<endl;
+	sql<<"insert into Proposals (abstract) values(:abstractp)", use(proposal.abstract());
+	sql<<"select count(*) from Proposals", into(count);
+	cout<<"Table Proposals now has "<<count<<" entries"<<endl;
 
 	// Printing the new table on screen
-	rowset<row> rs = (sql.prepare << "select id, title from Proposal");
+	rowset<row> rs = (sql.prepare << "select proposal_id, abstract from Proposals");
 
 	// iteration through the resultset:
 	int r = 1;
@@ -157,8 +157,7 @@ void processing(int sock)
 
     	// dynamic data extraction from each row:
     	cout << r <<") " << "Id: " << row.get<int>(0)
-        	 << " Title: " << row.get<string>(1)  << endl;
+        	 << " Abstract: " << row.get<string>(1)  << endl;
 		r++;
 	}
-*/
 }
