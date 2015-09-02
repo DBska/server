@@ -1,0 +1,2 @@
+v2.0: client and server interact on a PHTmessage. No error handling. mySQL file
+      for building the test DB.
