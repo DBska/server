@@ -77,17 +77,30 @@ int main(int argc, char *argv[])
             error("ERROR on fork");
 	 if (pid==0)
 	 {
-	    close(sockfd); // why here??
-	    processing(newsockfd);
-	    exit(0);
+	    close(sockfd);
+            // The following try-catch block prints error from DB operations to
+            // cerr.
+            try
+            {
+	        processing(newsockfd);
+	        exit(0);
+            }
+            catch (mysql_soci_error const &e)
+            {
+                cerr<<"MySQL error: "<<e.err_num_<<" "<<e.what()<<endl;
+            }
+            catch (exception const &e)
+            {
+                cerr<<"Soci error: "<<e.what()<<endl;
+            }
 	 }
 	 else close(newsockfd);
     } /* end of while for server listening */
-    
+
     //Closing the socket
     close(sockfd);
     return 0; /* never here */
-}	    
+   }	    
 
 void processing(int sock)
 {
