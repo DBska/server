@@ -2,6 +2,7 @@
    The port number is passed as an argument */
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +28,12 @@ void error(string msg)
 
 int main(int argc, char *argv[])
 {
+    // Redirecting cerr to a stringstream. It is then possible to sent it back
+    // to the client.
+    stringstream mysql_error_message;
+    streambuf *old_cerr = cerr.rdbuf();
+    cerr.rdbuf( mysql_error_message.rdbuf() );
+
     int sockfd, newsockfd, portno;
     pid_t pid;
     socklen_t clilen;
@@ -40,7 +47,7 @@ int main(int argc, char *argv[])
     if (argc < 2)
     {
         //error("ERROR, no port provided\n");
-        cerr<<"usage: "<<argv[0]<<" port\n";
+        cout<<"usage: "<<argv[0]<<" port\n";
         exit(1);
     }
     // Opening the socket
@@ -99,6 +106,9 @@ int main(int argc, char *argv[])
 
     //Closing the socket
     close(sockfd);
+    // Redirecting cerr to original stream
+    cerr.rdbuf(old_cerr);
+
     return 0; /* never here */
    }	    
 
@@ -143,34 +153,33 @@ void processing(int sock)
     }
     cout<<"done\n";
 
-	// Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
-	// should be put in the for(i) above.
-	session sql(mysql, "db=PHT user=marco password=Marco74");
-	const Proposals& proposal = pht_data.proposal(0); // ad-hoc retrieving of the only data present in the message
+    // Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
+    // should be put in the for(i) above.
+    session sql(mysql, "db=PHT user=marco password=Marco74");
+    const Proposals& proposal = pht_data.proposal(0); // ad-hoc retrieving of the only data present in the message
 
-	// before inserting, printing the currente number of Proposals
-	int count;
-	sql<<"select count(*) from Proposals", into(count);
-	cout<<"Table Proposals has "<<count<<" entries"<<endl;
+    // before inserting, printing the currente number of Proposals
+    int count;
+    sql<<"select count(*) from Proposals", into(count);
+    cout<<"Table Proposals has "<<count<<" entries"<<endl;
 
+    // Inserting the data
+    sql<<"insert into Proposals (abstract) values(:abstractp)", use(proposal.abstract());
+    sql<<"select count(*) from Proposals", into(count);
+    cout<<"Table Proposals now has "<<count<<" entries"<<endl;
 
-	// Inserting the data
-	sql<<"insert into Proposals (abstract) values(:abstractp)", use(proposal.abstract());
-	sql<<"select count(*) from Proposals", into(count);
-	cout<<"Table Proposals now has "<<count<<" entries"<<endl;
+    // Printing the new table on screen
+    rowset<row> rs = (sql.prepare << "select proposal_id, abstract from Proposals");
 
-	// Printing the new table on screen
-	rowset<row> rs = (sql.prepare << "select proposal_id, abstract from Proposals");
+    // iteration through the resultset:
+    int r = 1;
+    for (rowset<row>::const_iterator it = rs.begin(); it != rs.end(); ++it)
+    {
+        row const& row = *it;
 
-	// iteration through the resultset:
-	int r = 1;
-	for (rowset<row>::const_iterator it = rs.begin(); it != rs.end(); ++it)
-	{
-    	row const& row = *it;
-
-    	// dynamic data extraction from each row:
-    	cout << r <<") " << "Id: " << row.get<int>(0)
-        	 << " Abstract: " << row.get<string>(1)  << endl;
-		r++;
-	}
+        // dynamic data extraction from each row:
+        cout << r <<") " << "Id: " << row.get<int>(0)
+             << " Abstract: " << row.get<string>(1)  << endl;
+        r++;
+    }
 }
