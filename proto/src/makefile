@@ -12,7 +12,7 @@ LIBNAME=libproto
 all: $(OBJS) $(LIBNAME).a
 
 $(LIBNAME).a: $(OBJS)
-	ar rvs libproto.a $(OBJS)
+	ar rvs $(LIBNAME).a $(OBJS)
 
 # makefile rules
 %.o: %.cc
