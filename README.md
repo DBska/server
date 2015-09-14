@@ -22,7 +22,9 @@ describing the structure of the message. A makefile is provided to generate all
 the necessary C++ classes. In directory server/server is also present a
 directory mysql with a DDL.sql that should be used to build a db named PHT for
 testing the soci connection with the db from the server code. The db should be
-build before running the code.
+build before running the code. This is the current working code.
+
+
 
 Directory structure
 ===================

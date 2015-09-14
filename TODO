@@ -1,7 +1,8 @@
-1 - Server code needs a search of different message parts
-2 - DONE Client needs update to the new message. 
-3 - DONE Client makefile needs updating to link with the new library libproto.a
-4 - Redirect cerr to a string for handling soci error in server.cpp try-catch block. 
-5 - Add client read of soci error string
-6 - Adding server write of soci error string. If error string == NULL, operation success must be sent to clent 
-7 - Add locking table and rollback to server DB interaction
+1 - DONE Server code needs a search of different message parts
+2 - Redirect cerr to a string for handling soci error in server.cpp try-catch block. 
+3 - Add client read of soci error string
+4 - Adding server message back to tool with any soci error string. If error string == NULL, operation success must be sent to the tool.
+5 - Add locking table and rollback to server DB interaction
+6 - Tool should stay in the loop until a SUCCESS message is received from server
+7 - a tool directory is under development: it simulates the compilation of
+odaclient interface. Must be added to repository.
