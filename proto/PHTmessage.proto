@@ -4,5 +4,8 @@ import "Proposals.proto";
 
 message PHTmessage
 {
-    repeated Proposals proposal = 1;
+    enum MessageType { DATA = 1; QUERY = 2; ANSWER = 3; }
+
+    required MessageType type = 1;
+    optional Proposals proposal = 2;
 }

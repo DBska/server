@@ -71,11 +71,12 @@ int main(int argc, char *argv[])
 
     // Setting up a new proposal without any reviewer:
     PHTmessage pht_data;
-    Proposals* proposal = pht_data.add_proposal();
+    Proposals* proposal = new Proposals; 
     proposal->set_abstract("Milky-way galaxy radio detection in X-band");
     proposal->set_proposal_status(PHT::DRAFT);
     proposal->set_proposal_type(PHT::TOOproposal);
     proposal->set_more_info("bla bla");	
+    pht_data.set_allocated_proposal(proposal);
     // Serializing to a string the data to send
     string message;
     if (!pht_data.SerializeToString(&message))
