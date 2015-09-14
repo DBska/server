@@ -4,5 +4,7 @@
 4 - Adding server message back to tool with any soci error string. If error string == NULL, operation success must be sent to the tool.
 5 - Add locking table and rollback to server DB interaction
 6 - Tool should stay in the loop until a SUCCESS message is received from server
-7 - a tool directory is under development: it simulates the compilation of
-odaclient interface. Must be added to repository.
+7 - a tool directory is under development: it simulates the compilation of odaclient interface. Must be added to repository.
+8 - A test must be performed to see if a message m1(int, string, m2, m3) is
+parsed correctly. I suspect that the m2 part is not examined. URGENT. The code
+is in parser.cpp:156.
