@@ -132,16 +132,16 @@ vector<string> writeTableCommand(const Message *m, const Descriptor *d, const Re
             data<<name[n]<<",";
         }
     }
-    data<<" VALUES (";
+    data<<" VALUES (\"";
     for (int v=0; v<value.size(); v++)
     {
         if ( v==value.size()-1 )
         {
-            data<<value[v]<<")";
+            data<<value[v]<<"\")";
         }
         else
         {
-            data<<value[v]<<",";
+            data<<value[v]<<"\",\"";
         }
     }
 
