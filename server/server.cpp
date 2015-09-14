@@ -16,6 +16,9 @@
 #include "soci.h"
 #include "mysql/soci-mysql.h"
 
+//#include "connectDB.h"
+#include "parser.h"
+
 using namespace std;
 using namespace PHT; // namespace for using google protocol buffer
 using namespace soci; // namespace for using soci library 
@@ -133,53 +136,26 @@ void processing(int sock)
     message.assign(reinterpret_cast<const char*>(&(msg[0])),msg.size());
 
     // De-serialization starts here
-    PHTmessage pht_data;
+    PHTmessage *p_oda = new PHTmessage;
     // The following check should fail only if the message is corrupted.
-    if (!pht_data.ParseFromString(message))
+    if (!p_oda->ParseFromString(message))
     {
         cerr<<"ERROR. Can not parse the received message.";
 	exit(-1);
     }
-    // parsing the data and printing to screen the proposal submitted. The loop allows for more than one submission.
-    for (int i=0; i<pht_data.proposal_size(); i++)
-    {
-        const Proposals& proposal = pht_data.proposal(i);
-	//cout<<"ID: "<<proposal.id()<<endl;
-	cout<<"ABSTRACT: "<<proposal.abstract()<<endl;
-	//if (proposal.reviewer_size()==0)
-	//{
-	//	cout<<"No reviewers assigned"<<endl;
-	//}
-    }
+    // Parsing the message. Only one proposal at a time can be inserted.
+    vector<string> command;
+    command = parsingMessage(p_oda);
+    cout<<"Command(s) detected:"<<endl;
+    for (int i=0; i<command.size(); i++)
+        cout<<command[i]<<endl;
+
+    // Cleaning memory
+    delete p_oda;
+
+    // inserting the data into the DB
+    //writeToDB();
+
     cout<<"done\n";
 
-    // Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
-    // should be put in the for(i) above.
-    session sql(mysql, "db=PHT user=marco password=Marco74");
-    const Proposals& proposal = pht_data.proposal(0); // ad-hoc retrieving of the only data present in the message
-
-    // before inserting, printing the currente number of Proposals
-    int count;
-    sql<<"select count(*) from Proposals", into(count);
-    cout<<"Table Proposals has "<<count<<" entries"<<endl;
-
-    // Inserting the data
-    sql<<"insert into Proposals (abstract) values(:abstractp)", use(proposal.abstract());
-    sql<<"select count(*) from Proposals", into(count);
-    cout<<"Table Proposals now has "<<count<<" entries"<<endl;
-
-    // Printing the new table on screen
-    rowset<row> rs = (sql.prepare << "select proposal_id, abstract from Proposals");
-
-    // iteration through the resultset:
-    int r = 1;
-    for (rowset<row>::const_iterator it = rs.begin(); it != rs.end(); ++it)
-    {
-        row const& row = *it;
-
-        // dynamic data extraction from each row:
-        cout << r <<") " << "Id: " << row.get<int>(0)
-             << " Abstract: " << row.get<string>(1)  << endl;
-        r++;
-    }
 }

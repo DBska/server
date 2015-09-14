@@ -71,6 +71,9 @@ int main(int argc, char *argv[])
 
     // Setting up a new proposal without any reviewer:
     PHTmessage pht_data;
+
+    pht_data.set_type(PHTmessage::DATA);
+
     Proposals* proposal = new Proposals; 
     proposal->set_abstract("Milky-way galaxy radio detection in X-band");
     proposal->set_proposal_status(PHT::DRAFT);
