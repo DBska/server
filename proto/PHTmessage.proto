@@ -2,10 +2,23 @@ package PHT;
 
 import "Proposals.proto";
 
+message Answer
+{
+    optional string answer = 1;
+}
+
+message Query
+{
+    optional string query = 2;
+}
+
+
 message PHTmessage
 {
     enum MessageType { DATA = 1; QUERY = 2; ANSWER = 3; }
 
     required MessageType type = 1;
     optional Proposals proposal = 2;
+    optional Query query = 3;
+    optional Answer answer = 4;
 }
