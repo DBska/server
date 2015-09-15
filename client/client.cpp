@@ -16,6 +16,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h> 
+#include <algorithm>
 #include "PHTmessage.pb.h"
 
 using namespace std;
@@ -75,7 +76,12 @@ int main(int argc, char *argv[])
     pht_data.set_type(PHTmessage::DATA);
 
     Proposals* proposal = new Proposals; 
-    proposal->set_abstract("Milky-way galaxy radio detection in X-band");
+    // Shuffling the abstract string
+    srand ( unsigned ( time(0) ) );
+    string abstract = "Milky-way galaxy radio detection in X-band";
+
+    random_shuffle(abstract.begin(),abstract.end());
+    proposal->set_abstract(abstract);
     proposal->set_proposal_status(PHT::DRAFT);
     proposal->set_proposal_type(PHT::TOOproposal);
     proposal->set_more_info("bla bla");	
