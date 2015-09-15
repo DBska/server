@@ -15,15 +15,18 @@
 #include "PHTmessage.pb.h"
 #include "soci.h"
 #include "mysql/soci-mysql.h"
-
-//#include "connectDB.h"
+#include "connectDB.h"
 #include "parser.h"
 
 using namespace std;
 using namespace PHT; // namespace for using google protocol buffer
 using namespace soci; // namespace for using soci library 
 
+void error(string msg);
 void processing(int sock);
+
+
+
 void error(string msg)
 {
     perror(msg.c_str());
@@ -150,11 +153,12 @@ void processing(int sock)
     for (int i=0; i<command.size(); i++)
         cout<<command[i]<<endl;
 
+    // inserting the data into the DB
+    writeToDB(command);
+    
     // Cleaning memory
     delete p_oda;
 
-    // inserting the data into the DB
-    //writeToDB();
 
     cout<<"done\n";
 
