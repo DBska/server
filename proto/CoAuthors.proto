@@ -4,4 +4,5 @@ message CoAuthors
 {
 	optional int64 author_id = 1;
 	optional int64 proposal_id = 2;
+	optional int64 coAuthorsID = 3;
 }
