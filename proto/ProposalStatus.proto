@@ -2,9 +2,9 @@ package PHT;
 
 enum ProposalStatus
 {
-	DRAFT = 0;
-	ACCEPTED = 1;
-	REJECTED = 2;
-	SUBMITTED = 3;
-	MERGED = 4;
+	Draft = 0;
+	Accepted = 1;
+	Rejected = 2;
+	Submitted = 3;
+	Merged = 4;
 }

@@ -2,8 +2,8 @@ package PHT;
 
 enum ProposalType
 {
-	TOOproposal = 0;
-	DDTproposal = 1;
-	PIproposal = 2;
-	KeyScienceProjectProposal = 3;
+	TOO = 0;
+	DDT = 1;
+	PI = 2;
+	KeyScienceProject = 3;
 }
