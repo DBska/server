@@ -21,6 +21,8 @@ all: $(LIBNAME).a $(OBJS)
 
 $(LIBNAME).a: $(OBJS)
 	ar rvs $(LIBNAME).a $(OBJS)
+	cp $(LIBNAME).a ../tool/library/ 
+	cp *.h ../tool/include/ 
 
 %.o: %.cpp
 	$(CC) $(INC)  $(CFLAGS) -c $< 
