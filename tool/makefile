@@ -2,7 +2,7 @@
 INC=-I./include
 
 # Libraries and Libraries paths:
-LIBS= -lprotobuf -lpthread -lproto
+LIBS= -linterface -lprotobuf -lpthread -lproto
 LIBS_PATH=-L./library
 
 # Compiler flags and compiler:

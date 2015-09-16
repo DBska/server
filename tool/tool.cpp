@@ -17,6 +17,7 @@
 #include <netinet/in.h>
 #include <netdb.h> 
 #include "Proposals.pb.h"
+#include "interface.h"
 
 using namespace std;
 using namespace PHT;
@@ -30,12 +31,12 @@ void setFullProposal(Proposals *proposal)
     proposal->set_proposal_status(PHT::DRAFT);
     proposal->set_proposal_type(PHT::TOOproposal);
     proposal->set_more_info("bla bla");	
-    
 
     CoAuthors *coa = new CoAuthors;
     coa->set_author_id(56);
     proposal->set_allocated_m_coauthors(coa);
-    
+
+    //delete coa;
 }
 
 
@@ -54,13 +55,17 @@ int main(int argc, char *argv[])
     cout<<"Building a test proposal\n";
     
     // Setting up the message to send
-    Proposals *proposal= new Proposals;
+    Proposals *proposal = new Proposals;
     
     // Setting up a new proposal:
     //setProposal(proposal);
     
     // Setting up full proposal:
     setFullProposal(proposal);
+
+    cout<<"Sending the proposal to DB\n";
+    // Sending proposal to database via ODA_API:
+    API_ODA::insertNewProposal(*proposal);
 
     // Cleaning up memory
     delete proposal;
