@@ -1,2 +1,4 @@
-v2.0: client and server interact on a PHTmessage. No error handling. mySQL file
-      for building the test DB.
+v2.0 : client and server interact on a PHTmessage. No error handling. mySQL file
+       for building the test DB.
+
+v3.0 : interface library added. Server can parse a generic PHT message. 
