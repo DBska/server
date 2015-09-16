@@ -13,6 +13,7 @@ all: $(OBJS) $(LIBNAME).a
 
 $(LIBNAME).a: $(OBJS)
 	ar rvs $(LIBNAME).a $(OBJS)
+	cp $(LIBNAME).a ../../tool/library
 
 # makefile rules
 %.o: %.cc

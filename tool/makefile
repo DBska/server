@@ -29,5 +29,6 @@ $(EXE): $(OBJS)
 
 clean:
 	rm -f $(OBJS) $(EXE)
+	rm -f library/*.a
 
 
