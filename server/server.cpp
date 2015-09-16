@@ -3,12 +3,15 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
 #include <unistd.h>
 #include <sstream>
+#include <ctime>
+#include <algorithm>
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -22,23 +25,17 @@ using namespace std;
 using namespace PHT; // namespace for using google protocol buffer
 using namespace soci; // namespace for using soci library 
 
-void error(string msg);
 void processing(int sock);
 
-
-
-void error(string msg)
-{
-    perror(msg.c_str());
-}
 
 int main(int argc, char *argv[])
 {
     // Redirecting cerr to a stringstream. It is then possible to sent it back
     // to the client.
-    stringstream mysql_error_message;
+    //stringstream error_message;
+    ofstream out("server_error.txt",ios_base::app);
     streambuf *old_cerr = cerr.rdbuf();
-    cerr.rdbuf( mysql_error_message.rdbuf() );
+    cerr.rdbuf( out.rdbuf() );
 
     int sockfd, newsockfd, portno;
     pid_t pid;
@@ -59,7 +56,7 @@ int main(int argc, char *argv[])
     // Opening the socket
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) 
-       error("ERROR opening socket");
+       cerr<<"ERROR opening socket";
     bzero((char *) &serv_addr, sizeof(serv_addr));
     portno = atoi(argv[1]);
     serv_addr.sin_family = AF_INET;
@@ -67,7 +64,7 @@ int main(int argc, char *argv[])
     serv_addr.sin_port = htons(portno);
     if (bind(sockfd, (struct sockaddr *) &serv_addr,
              sizeof(serv_addr)) < 0) 
-             error("ERROR on binding");
+             cerr<<"ERROR on binding";
     listen(sockfd,5);
      
     clilen = sizeof(cli_addr);
@@ -78,8 +75,15 @@ int main(int argc, char *argv[])
     	newsockfd = accept(sockfd, 
                           (struct sockaddr *) &cli_addr, 
               	           &clilen);
-        if (newsockfd < 0) 
-           error("ERROR on accept");
+        cout<<newsockfd<<endl;
+        if (newsockfd < 0)
+        {
+            time_t now = time(0);
+            string dt = ctime(&now);
+            dt.erase( remove(dt.begin(), dt.end(), '\n'), dt.end() );
+            cerr<<dt<<" "<<"ERROR on accept\n";
+            exit(1);
+        }
 
         signal(SIGCHLD,SIG_IGN); // this is needed to avoid zombies until the parent is dead
 
@@ -87,7 +91,7 @@ int main(int argc, char *argv[])
         pid = fork();
 	if (pid>0) cout<<"Forking with child PID "<<pid<<endl; // Parent process
  	if (pid<0)
-            error("ERROR on fork");
+            cerr<<"ERROR on fork";
 	 if (pid==0)
 	 {
 	    close(sockfd);
@@ -141,6 +145,7 @@ void processing(int sock)
     // De-serialization starts here
     PHTmessage *p_oda = new PHTmessage;
     // The following check should fail only if the message is corrupted.
+    cout<<"Parsing...\n"<<endl;
     if (!p_oda->ParseFromString(message))
     {
         cerr<<"ERROR. Can not parse the received message.";

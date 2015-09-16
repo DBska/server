@@ -51,7 +51,7 @@ vector<string> parsingMessage(PHTmessage *p_oda)
     else
     {
         // If here the PHTmessage.type has not be set
-        cout<<"Error: expecting Message type\n";
+        cerr<<"ERROR: expecting Message type\n";
         exit(1);
     }
  
@@ -114,6 +114,7 @@ vector<string> writeTableCommand(const Message *m, const Descriptor *d, const Re
             // discarded
             if ( r->HasField(*m,fj[i]) )
             {
+                cout<<"----"<<fj[i]->name()<<endl;
                 name.push_back( fj[i]->name() );
                 value.push_back( returnField(m,fj[i],r) );
                 //data<<"("<<fj[i]->name()<<";"<<returnField(m,fj[i],r)<<") ";
@@ -144,7 +145,7 @@ vector<string> writeTableCommand(const Message *m, const Descriptor *d, const Re
             data<<value[v]<<"\",\"";
         }
     }
-
+    data<<";";
     // Storing the SQL insert command 
     command.push_back(data.str());
     cout<<"OUT\n";
@@ -183,9 +184,11 @@ string returnField(const Message *m, const FieldDescriptor *fd, const Reflection
         case FieldDescriptor::TYPE_ENUM:
             sstr<<(r->GetEnum(*m,fd))->name();
             break;
+        case FieldDescriptor::TYPE_INT64:
+            sstr<<(r->GetInt64(*m,fd));
+            break;
 
 /*    TYPE_FLOAT = = 2;
-    TYPE_INT64 = = 3,
     TYPE_UINT64 = = 4,
     TYPE_INT32 = = 5,
     TYPE_FIXED64 = = 6,
