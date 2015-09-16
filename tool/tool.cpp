@@ -34,6 +34,7 @@ void setFullProposal(Proposals *proposal)
 
     CoAuthors *coa = new CoAuthors;
     coa->set_author_id(56);
+    coa->set_coauthorsid(6);
     proposal->set_allocated_m_coauthors(coa);
 
     //delete coa;
