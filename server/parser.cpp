@@ -10,9 +10,11 @@
  * \param *p_oda a pointer to the global message
  * \return a vector<string> where each line is an SQL command
  */
-vector<string> parsingMessage(PHTmessage *p_oda)
+//vector<string> parsingMessage(PHTmessage *p_oda)
+data_s parsingMessage(PHTmessage *p_oda)
 {
-    vector<string> command;
+    //vector<string> command;
+    data_s dat;
     const Descriptor *d = p_oda->GetDescriptor();
     const Reflection *r = p_oda->GetReflection();
     const FieldDescriptor *msg_type = d->FindFieldByName("type");
@@ -37,7 +39,7 @@ vector<string> parsingMessage(PHTmessage *p_oda)
                 assert (fdData != 0);
                 const Message *mData = &(r->GetMessage(*p_oda,fdData));
                 assert (mData != 0);
-                command = writeTableCommand(mData,fdData->message_type(),mData->GetReflection());
+                dat = writeTableCommand(mData,fdData->message_type(),mData->GetReflection());
             }
             if ( type->number() == PHTmessage::QUERY )
                 cout<<"QUERY Message Found. Not Implemented yet.\n";
@@ -54,10 +56,26 @@ vector<string> parsingMessage(PHTmessage *p_oda)
         cerr<<"ERROR: expecting Message type\n";
         exit(1);
     }
- 
+
     // Here I am returning all the commands. If the vector<string> is empty, no
     // commands have been defined.
-    return command;
+
+
+    // printing all tables and field on screen:
+    int nt = dat.table.size();
+    for (int t = 0; t<nt; t++)
+    {
+        cout<<"Table: "<<dat.table[t]<<endl;
+        cout<<" Fields Values "<<endl;
+        int nf = dat.name[t].size();
+        for (int c = 0; c<nf; c++)
+        {
+            cout<<dat.name[t][c]<<" "<<dat.value[t][c]<<endl;
+        }
+    }
+
+    return dat;
+    // return command;
 }
 
 /*! This function is recursive, and decompose the data in the PHTmessage into
@@ -69,12 +87,9 @@ vector<string> parsingMessage(PHTmessage *p_oda)
  * INSERT INTO message_name (name1,name2,..) VALUES (value1,value2,...);
  *
  */ 
-vector<string> writeTableCommand(const Message *m, const Descriptor *d, const Reflection *r)
+//vector<string> writeTableCommand(const Message *m, const Descriptor *d, const Reflection *r)
+data_s writeTableCommand(const Message *m, const Descriptor *d, const Reflection *r)
 {
-    // The following two commands extract all the fields set into this message.
-    vector< const FieldDescriptor * > fj;
-    r->ListFields(*m,&fj);
-   
     // The vector<string> contains the SQL commands for inserting values
     vector<string> command;
     stringstream data;
@@ -82,87 +97,116 @@ vector<string> writeTableCommand(const Message *m, const Descriptor *d, const Re
     cout<<"IN\n";
     data<<"INSERT INTO "<<d->name()<<" (";
 
-    bool found_new_message = false;
-    bool build_new_commands = false;
-    const Message *mnew = 0;
-    const Reflection *rnew = 0;
-    const Descriptor *dnew = 0;
-    vector<string> name;
-    vector<string> value;
+    bool loop_message = true;
+    //bool build_new_commands = false;
+    const Message *mc = m;
+    const Reflection *rc = r;
+    const Descriptor *dc = d;
+    const Message *mnew = m;
+    const Reflection *rnew = r;
+    const Descriptor *dnew = d;
+    //vector<string> table;
+    //vector<string> name;
+    //vector<string> value;
+    data_s dat;
 
-    // The strategy of this block of code is as follows: of the message m
+        // The strategy of this block of code is as follows: of the message m
     // examined a reflection r is extracted. All the field data are stored in
     // fj. Looping (i) on all fj, if the fj[i] TYPE_MESSAGE is found a new table
     // is identified. Before examining the new table, all basic types (string,
     // float,...) are stored in two vectors: one for the names (name) and one
     // for the corresponding values (value). A check on value to see if it is
     // set is also done.
-    for (int i=0; i<fj.size(); i++) 
+    while (loop_message)
     {
-        if ( fj[i]->type() == FieldDescriptor::TYPE_MESSAGE)
-        {
-            found_new_message = true;
-            mnew = &(r->GetMessage(*m,fj[i]));
-            dnew = fj[i]->message_type();
-            rnew = mnew->GetReflection();
+        bool found_new_message = false;
+        // The following two commands extract all the fields set into this message.
+        vector< const FieldDescriptor * > fj;
+        rc->ListFields(*mc,&fj);
+        dat.table.push_back(dc->name());
+        int t = dat.table.size() - 1;
 
-            cout<<"Found new table:"<<fj[i]->name()<<endl;
-        }
-        else
+        for (int i=0; i<fj.size(); i++) 
         {
-            // Check to see if the value has been inserted. If not, the field is
-            // discarded
-            if ( r->HasField(*m,fj[i]) )
+            if ( fj[i]->type() == FieldDescriptor::TYPE_MESSAGE)
             {
-                cout<<"----"<<fj[i]->name()<<endl;
-                name.push_back( fj[i]->name() );
-                value.push_back( returnField(m,fj[i],r) );
-                //data<<"("<<fj[i]->name()<<";"<<returnField(m,fj[i],r)<<") ";
+                found_new_message = true;
+                mnew = &(rc->GetMessage(*mc,fj[i]));
+                dnew = fj[i]->message_type();
+                rnew = mnew->GetReflection();
+
+                cout<<"Found new table:"<<fj[i]->name()<<endl;
+            }
+            else
+            {
+                // Check to see if the value has been inserted. If not, the field is
+                // discarded
+                if ( rc->HasField(*mc,fj[i]) )
+                {
+                    cout<<"----"<<fj[i]->name()<<endl;
+                    dat.name[t].push_back( fj[i]->name() );
+                    dat.value[t].push_back( returnField(mc,fj[i],rc) );
+                    data<<"("<<fj[i]->name()<<";"<<returnField(mc,fj[i],rc)<<") ";
+                }
             }
         }
-    }
-    assert( name.size()==value.size() ); // the number of names must be equal to the number of values
-    for (int n=0; n<name.size(); n++)
-    {
-        if ( n==name.size()-1 )
+        // Checking if the message and its structure has been fully parsed
+        if ( !found_new_message ) 
         {
-            data<<name[n]<<")";
+            loop_message = false;
         }
         else
         {
-            data<<name[n]<<",";
+            mc = mnew;
+            rc = rnew;
+            dc = dnew;
+        }
+    }
+    //assert( name.size()==value.size() ); // the number of names must be equal to the number of values
+    /*
+    for (int n=0; n<dat.name[t].size(); n++)
+    {
+        if ( n==dat.name[t].size()-1 )
+        {
+            data<<dat.name[t][n]<<")";
+        }
+        else
+        {
+            data<<dat.name[t][n]<<",";
         }
     }
     data<<" VALUES (\"";
-    for (int v=0; v<value.size(); v++)
+    for (int v=0; v<dat.value[t].size(); v++)
     {
-        if ( v==value.size()-1 )
+        if ( v==dat.value[t].size()-1 )
         {
-            data<<value[v]<<"\")";
+            data<<dat.value[t][v]<<"\")";
         }
         else
         {
-            data<<value[v]<<"\",\"";
+            data<<dat.value[t][v]<<"\",\"";
         }
     }
     data<<";";
     // Storing the SQL insert command 
-    command.push_back(data.str());
+    command.push_back(data.str());*/
     cout<<"OUT\n";
 
 
     // This block is the recursive part. If a table has been identified, now it
     // is parsed. I think that if the message contains two tables, this part of
     // code does not work. A test must be performed.
+    /*
     if (found_new_message)
     {
         vector<string> new_command;
         new_command = writeTableCommand(mnew,dnew,rnew);
         for (int j=0; j<new_command.size(); j++)
             command.push_back(new_command[j]);
-    }
+    }*/
 
-    return command;
+    //return command;
+    return dat;
 }
 
 

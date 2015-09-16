@@ -115,8 +115,9 @@ int main(int argc, char *argv[])
     } /* end of while for server listening */
 
     //Closing the socket
-    close(sockfd);
+    close(sockfd); // Should also be moved into try-catch block (?)
     // Redirecting cerr to original stream
+    out.close();
     cerr.rdbuf(old_cerr);
 
     return 0; /* never here */
@@ -152,14 +153,17 @@ void processing(int sock)
 	exit(-1);
     }
     // Parsing the message. Only one proposal at a time can be inserted.
-    vector<string> command;
-    command = parsingMessage(p_oda);
-    cout<<"Command(s) detected:"<<endl;
-    for (int i=0; i<command.size(); i++)
-        cout<<command[i]<<endl;
+    //vector<string> command;
+    //command = parsingMessage(p_oda);
+    data_s dat;
+    dat = parsingMessage(p_oda);
+    //cout<<"Command(s) detected:"<<endl;
+    //for (int i=0; i<command.size(); i++)
+    //    cout<<command[i]<<endl;
 
     // inserting the data into the DB
-    writeToDB(command);
+    //writeToDB(command);
+    writeToDB(dat);
     
     // Cleaning memory
     delete p_oda;
