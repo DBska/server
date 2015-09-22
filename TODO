@@ -18,4 +18,6 @@ is in parser.cpp:156.
 - Correct behaviour at point 8
 
 - in server.cpp close(newsockfd) should be done before try-catch block.
-  Otherwise an error on accept() is generated: the sock is still binded!
+  Otherwise an error on accept() is generated: the sock is still binded!!
+
+
