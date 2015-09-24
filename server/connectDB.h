@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 #include <iostream>
 #include "data_struct.h"
 // Soci header files. Required!
@@ -13,7 +14,7 @@ using namespace std;
 using namespace soci; // namespace for using soci library 
 
 //void writeToDB(vector<string> );
-void writeToDB(data_s );
+string writeToDB(data_s );
 void readFromDB();
 
 #endif

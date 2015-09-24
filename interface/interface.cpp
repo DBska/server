@@ -12,7 +12,7 @@
 namespace API_ODA {
 
 
-int insertNewProposal(Proposals &proposal)
+string insertNewProposal(Proposals &proposal)
 {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -36,12 +36,15 @@ int insertNewProposal(Proposals &proposal)
 
     connection.sendMessage(message);
 
+    string reply;
+    connection.receiveMessage(reply);
+
     // Closing connection
     connection.Close();
 
     //delete pht_data;
 
-    return 0;
+    return reply;
 }
 
 

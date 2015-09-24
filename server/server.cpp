@@ -163,8 +163,24 @@ void processing(int sock)
 
     // inserting the data into the DB
     //writeToDB(command);
-    writeToDB(dat);
+    string new_proposal_id;
+    new_proposal_id = writeToDB(dat);
+
+    uint32_t dataLength_s = htonl(new_proposal_id.size()); // convert int to network byte order. 
+
+    // The message e is divided in two parts:
+    // 1) First message sent is the length of the message with the serialization
+    cout<<"Sending "<<new_proposal_id.size()<<" elements\n";
+    n = write(sock,&dataLength_s,sizeof(uint32_t));
+    if (n < 0) 
+        cerr<"ERROR writing to socket the message length";
     
+    // 2) The actual message is sent. n stores the actual length sent.
+    n = write(sock,new_proposal_id.c_str(),dataLength);
+    if (n < 0) 
+        cerr<"ERROR writing to the message socket";
+
+
     // Cleaning memory
     delete p_oda;
 

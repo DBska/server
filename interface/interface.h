@@ -19,7 +19,7 @@ using namespace PHT;
 
 namespace API_ODA {
 
-    int insertNewProposal(Proposals &);
+    string insertNewProposal(Proposals &);
     //int modifyProposal(int , Proposals &);
     int modifyProposal();
 

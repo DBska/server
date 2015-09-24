@@ -28,13 +28,13 @@ void setFullProposal(Proposals *);
 void setFullProposal(Proposals *proposal)
 {
     proposal->set_abstract("Milky-way galaxy radio detection in X-band");
-    proposal->set_proposal_status(PHT::DRAFT);
-    proposal->set_proposal_type(PHT::TOOproposal);
+    proposal->set_proposal_status(PHT::Draft);
+    proposal->set_proposal_type(PHT::TOO);
     proposal->set_more_info("bla bla");	
 
     CoAuthors *coa = new CoAuthors;
     coa->set_author_id(56);
-    coa->set_coauthorsid(6);
+    coa->set_coauthorsid(7);
     proposal->set_allocated_m_coauthors(coa);
 
     //delete coa;
@@ -45,8 +45,8 @@ void setFullProposal(Proposals *proposal)
 void setProposal(Proposals *proposal)
 {
     proposal->set_abstract("Milky-way galaxy radio detection in X-band");
-    proposal->set_proposal_status(PHT::DRAFT);
-    proposal->set_proposal_type(PHT::TOOproposal);
+    proposal->set_proposal_status(PHT::Draft);
+    proposal->set_proposal_type(PHT::TOO);
     proposal->set_more_info("bla bla");	
 }
 
@@ -66,7 +66,9 @@ int main(int argc, char *argv[])
 
     cout<<"Sending the proposal to DB\n";
     // Sending proposal to database via ODA_API:
-    API_ODA::insertNewProposal(*proposal);
+    string proposal_id;
+    proposal_id = API_ODA::insertNewProposal(*proposal);
+    cout<<"Inserted new proposal with ID: "<<proposal_id<<endl;
 
     // Cleaning up memory
     delete proposal;

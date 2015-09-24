@@ -31,6 +31,29 @@ int Connect::openSocket()
     return 0;
 }
 
+int Connect::receiveMessage(string &message)
+{
+    // The message is received in two parts: 1) its lengths 2) the message
+    // 1) The length of the message to be received
+    uint32_t mLength;
+    read(sockfd,&mLength,sizeof(uint32_t)); // Receive the message length
+    mLength = ntohl(mLength); // Ensure host system byte order
+    int dataLength = static_cast<int>(mLength);
+    cout<<"Message of "<<dataLength<<" elements arrived!\n";
+	
+    // 2) The message itself. It is stored in a char [], however a vector<char> could and should be used.
+    vector<uint8_t> msg; // Allocating a buffer of approriate length
+    msg.resize(mLength,0x00);
+
+    int n;
+    n = read(sockfd,&(msg[0]),mLength); // Receive the string data
+
+    // Convert message data into a string for de-serialization
+    message.assign(reinterpret_cast<const char*>(&(msg[0])),msg.size());
+
+    return n;
+}
+    
 int Connect::sendMessage(string &message)
 {
     int n;

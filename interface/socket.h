@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <netdb.h> 
 #include <strings.h>
+#include <vector>
 
 using namespace std;
 
@@ -28,6 +29,7 @@ class Connect
         void Close() { close(sockfd); };
         int openSocket();
         int sendMessage(string &);
+        int receiveMessage(string &);
 };
 
 #endif

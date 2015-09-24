@@ -2,8 +2,9 @@
 
 
 //void writeToDB(vector<string> command)
-void writeToDB(data_s dat)
+string writeToDB(data_s dat)
 {
+    string proposal_id = "";
     // Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
     // should be put in the for(i) above.
     session sql(mysql, "db=PHT user=marco password=Marco74");
@@ -24,7 +25,7 @@ void writeToDB(data_s dat)
     // known)
     bool new_insertion = true;
     
-    if ( new_insertion )
+    if ( new_insertion ) // new insertion and assignement of proposal_id.
     {
         stringstream cmd;
         // First insertion is Proposal
@@ -44,19 +45,20 @@ void writeToDB(data_s dat)
         cout<<cmd.str()<<endl;
         sql<<cmd.str();
         // Retrieving newly assigned proposal_id
-        int proposal_id;
         rowset<row> rs = (sql.prepare << "select proposal_id from Proposals order by proposal_id desc limit 1");
 
         // iteration through the resultset:
+        stringstream s_tmp;
         int r = 1;
         for (rowset<row>::const_iterator it = rs.begin(); it != rs.end(); ++it)
         {
             row const& row = *it;
 
             // dynamic data extraction from each row:
-            proposal_id = row.get<int>(0);
+            s_tmp<< row.get<int>(0);
             r++;
         }
+        proposal_id = s_tmp.str();
         cout<<"proposal_id: "<<proposal_id<<endl;
         cmd.str( string() );
 
@@ -83,9 +85,18 @@ void writeToDB(data_s dat)
             cmd.str( string() );
         }
     }
-    else // a modification is requested
+    else // a modification is requested.
     {
+        // The proposal_id is available inside the message.
+        int nf = dat.name[0].size();
+        for (int i=0; i<nf; i++)
+        {
+            if ( dat.name[0][i] == "proposal_id" )
+                proposal_id = dat.value[0][i];
+        }
+        cout<<"Arrived a request for proposal_id "<<proposal_id<<endl;
 
+        proposal_id = ""; // No proposal_id has been set
     }
 
 
@@ -106,6 +117,8 @@ void writeToDB(data_s dat)
              << " Abstract: " << row.get<string>(1)  << endl;
         r++;
     }
+
+    return proposal_id;
 }
 
 
