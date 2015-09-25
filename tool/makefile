@@ -3,7 +3,7 @@ INC=-I./include
 
 # Libraries and Libraries paths:
 LIBS= -linterface -lprotobuf -lpthread -lproto
-LIBS_PATH=-L./library
+LIBS_PATH=-L./library -L/usr/local/lib -L/usr/lib
 
 # Compiler flags and compiler:
 CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG 

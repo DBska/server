@@ -3,7 +3,8 @@ INC=-I../proto/src
 
 # Libraries and Libraries paths:
 LIBS= -lprotobuf -lpthread -lproto
-LIBS_PATH=-L../proto/src -L/usr/lib
+LIBS_PATH=-L../proto/src -L/usr/lib -L/usr/local/lib
+
 
 # Compiler flags and compiler:
 CFLAGS = -DBIG_JOINS=1  -fno-strict-aliasing   -g -DNDEBUG 
