@@ -1,7 +1,9 @@
 Downloading Server Code
 =======================
+Downloading *pht* branch:
+$ git clone -b pht --single-branch https://github.com/DarthVeder/server.git
 
-Usage:
+Generic usage:
 
 for complete repository:
 
@@ -11,7 +13,7 @@ for only branch *branch* version:
 
 $ git clone -b *branch* --single-branch https://github.com/DarthVeder/server.git
 
-The repository is as follows:
+The repository contains the following branches:
 
 *master*: A fictitious oda.proto is used between client and server. The code
 works, however one MUST define in mysql a table Proposal with the following
@@ -19,12 +21,18 @@ fields: id (int) and title (varchar(40)). Otherwise soci lib does not work.
 
 *pht*: a new PHT message structure. A proto directory is also present,
 describing the structure of the message. A makefile is provided to generate all
-the necessary C++ classes. In directory server/server is also present a
-directory mysql with a DDL.sql that should be used to build a db named PHT for
-testing the soci connection with the db from the server code. The db should be
+the necessary C++ classes. In directory server/server it is also present a
+directory mysql with a DDL.sql. That file should be used to build a db named PHT for
+testing the soci connection from the server code. The db should be
 build before running the code. This is the current working code.
 
+Required libraries
+==================
 
+To run, the software requires the following libraries:
+1. SOCI - The C++ Database Access Library. Version: 3.2.2
+2. BOOST C++ Libraries. Version: 1.59.0
+3. Google Protocol Buffer. Version: 3.0.0
 
 Directory structure
 ===================
@@ -34,35 +42,61 @@ After downloading the repository you will find the following structure inside th
 server/
 ├── client
 │   ├── client.cpp
+│   └── makefile
+├── interface
+│   ├── interface.cpp
+│   ├── interface.h
 │   ├── makefile
+│   ├── socket.cpp
+│   └── socket.h
 ├── makefile
 ├── proto
-│   ├── CoAuthors.pb.cc
-│   ├── CoAuthors.pb.h
+│   ├── CoAuthors.proto
 │   ├── makefile
-│   ├── PHTmessage.pb.cc
-│   ├── PHTmessage.pb.h
-│   ├── ProposalEditors.pb.cc
-│   ├── ProposalEditors.pb.h
-│   ├── Proposals.pb.cc
-│   ├── Proposals.pb.h
-│   ├── ProposalStatus.pb.cc
-│   ├── ProposalStatus.pb.h
-│   ├── ProposalType.pb.cc
-│   ├── ProposalType.pb.h
-│   ├── Reviews.pb.cc
-│   ├── Reviews.pb.h
-│   ├── ScienceGoals.pb.cc
-│   ├── ScienceGoals.pb.h
-│   ├── SupportingDocuments.pb.cc
-│   ├── SupportingDocuments.pb.h
-│   ├── TACReviews.pb.cc
-│   └── TACReviews.pb.h
+│   ├── PHT Class DiagramV2.png
+│   ├── PHTmessage.proto
+│   ├── ProposalEditors.proto
+│   ├── Proposals.proto
+│   ├── ProposalStatus.proto
+│   ├── ProposalType.proto
+│   ├── Reviews.proto
+│   ├── ScienceGoals.proto
+│   ├── src
+│   │   └── makefile
+│   ├── SupportingDocuments.proto
+│   └── TACReviews.proto
 ├── README.md
 ├── server
+│   ├── connectDB.cpp
+│   ├── connectDB.h
+│   ├── data_struct.h
 │   ├── makefile
-│   └── server.cpp
-└── TODO
+│   ├── mysql
+│   │   ├── DDL.sql
+│   │   └── README
+│   ├── parser.cpp
+│   ├── parser.h
+│   ├── server.cpp
+│   └── server_error.txt
+├── TODO
+├── tool
+│   ├── include
+│   │   ├── CoAuthors.pb.h
+│   │   ├── interface.h
+│   │   ├── PHTmessage.pb.h
+│   │   ├── ProposalEditors.pb.h
+│   │   ├── Proposals.pb.h
+│   │   ├── ProposalStatus.pb.h
+│   │   ├── ProposalType.pb.h
+│   │   ├── Reviews.pb.h
+│   │   ├── ScienceGoals.pb.h
+│   │   ├── socket.h
+│   │   ├── SupportingDocuments.pb.h
+│   │   └── TACReviews.pb.h
+│   ├── library
+│   ├── makefile
+│   └── tool.cpp
+└── VERSION
 ```
 
 Installation
@@ -73,7 +107,9 @@ First, the mysql db PHT  must be build. Inside server/server/mysql one must run:
 $ mysql -p < DDL.sql
 
 Connect to mysql to check that a database named PHT is present. There should be
-a certain number of tables inside it.
+a certain number of tables inside it. 
+
+Install the required software.
 
 Then, to compile both the server and client codes, in server/ write:
 
@@ -104,4 +140,5 @@ Warning
 =======
 
 For the time being, the database is assumed to be on alcor and there is no option for selecting 
-a db on another machine. If you are not on alcor, then you have a problem.....
+a db on another machine, or a specific user. If you are not on alcor or do not know the user for connection, 
+then you have a problem.....
