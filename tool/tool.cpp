@@ -54,24 +54,33 @@ void setProposal(Proposals *proposal)
 int main(int argc, char *argv[])
 {
     cout<<"Building a test proposal\n";
+    bool set_full_proposal = true;
     
     // Setting up the message to send
     Proposals *proposal = new Proposals;
     
-    // Setting up a new proposal:
-    //setProposal(proposal);
-    
-    // Setting up full proposal:
-    setFullProposal(proposal);
-
+    if ( set_full_proposal )
+    {
+        // Setting up full proposal:
+        setFullProposal(proposal);
+    }
+    else
+    {
+        // Setting up a new proposal:
+        setProposal(proposal);
+    }
     cout<<"Sending the proposal to DB\n";
     // Sending proposal to database via ODA_API:
     string proposal_id;
-    proposal_id = API_ODA::insertNewProposal(*proposal);
-    cout<<"Inserted new proposal with ID: "<<proposal_id<<endl;
+    string error_message;
+    proposal_id = API_ODA::insertNewProposal(*proposal, error_message);
+    cout<<"Server message: "<<error_message<<endl;
+    cout<<"Proposal ID: "<<proposal_id<<endl;
 
     // Cleaning up memory
-    delete proposal;
+    cout<<proposal<<endl;
+    
+   // delete proposal;
 
     return 0;
 }

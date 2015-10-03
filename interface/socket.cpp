@@ -62,15 +62,19 @@ int Connect::sendMessage(string &message)
     // The message e is divided in two parts:
     // 1) First the length of the message with the serialization
     n = write(sockfd,&dataLength,sizeof(uint32_t));
-    cout<<n<<endl;
+    cout<<"Sending message of length: "<<n<<endl;
     if (n < 0) 
+    {
         cerr<<"ERROR: sending the message length failed";
+    }
     
     // 2) The actual message. n stores the actual length sent.
     n = write(sockfd,message.c_str(),dataLength);
-    cout<<n<<endl;
-    if (n < 0) 
+    cout<<"Sending message..."<<n<<endl;
+    if (n < 0)
+    {
         cerr<<"ERROR: sending message via socket failed";
-
+    }
+    
     return n;
 }

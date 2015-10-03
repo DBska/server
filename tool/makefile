@@ -17,7 +17,12 @@ OBJS = $(SOURCES:.cpp=.o)
 EXE = tool
 
 # makefile rules
-all: $(SOURCES) $(EXE)
+all: lib $(SOURCES) $(EXE)
+
+lib:
+	cp ../interface/libinterface.a library/
+	cp ../proto/src/libproto.a library/
+
 
 $(EXE): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LIBS_PATH) $(LIBS)
@@ -25,7 +30,7 @@ $(EXE): $(OBJS)
 %.o: %.cpp
 	$(CC) $(INC)  $(CFLAGS) -c $< 
 
-.PHONY: clean
+.PHONY: clean lib
 
 clean:
 	rm -f $(OBJS) $(EXE)

@@ -10,32 +10,41 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sstream>
-#include <ctime>
-#include <algorithm>
+//#include <ctime>
+//#include <algorithm>
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include "PHTmessage.pb.h"
-#include "soci.h"
-#include "mysql/soci-mysql.h"
+//#include "soci.h"
+//#include "mysql/soci-mysql.h"
 #include "connectDB.h"
 #include "parser.h"
+#include "error.h"
+#include "message.h"
+#include "data_struct.h"
 
 using namespace std;
 using namespace PHT; // namespace for using google protocol buffer
 using namespace soci; // namespace for using soci library 
 
-void processing(int sock);
+
+void processing(int sock, Error &err);
 
 
 int main(int argc, char *argv[])
 {
-    // Redirecting cerr to a stringstream. It is then possible to sent it back
-    // to the client.
-    //stringstream error_message;
-    ofstream out("server_error.txt",ios_base::app);
-    streambuf *old_cerr = cerr.rdbuf();
-    cerr.rdbuf( out.rdbuf() );
+    // Creating lerr stringstream to send back to the client for managing
+    // errors.
+    //stringstream lerr;
+    
+    // Redirecting cerr output to file "server_error.txt" in server/server
+    // directory:
+    //ofstream out("server_error.txt",ios_base::app);
+    //streambuf *old_cerr = cerr.rdbuf();
+    //cerr.rdbuf( out.rdbuf() );
+
+    Error err("server_error.txt");
 
     int sockfd, newsockfd, portno;
     pid_t pid;
@@ -56,7 +65,10 @@ int main(int argc, char *argv[])
     // Opening the socket
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) 
-       cerr<<"ERROR opening socket";
+    {
+        err.writeErrorMessage("ERROR: socket not opened");
+       //cerr<<"ERROR opening socket";
+    }
     bzero((char *) &serv_addr, sizeof(serv_addr));
     portno = atoi(argv[1]);
     serv_addr.sin_family = AF_INET;
@@ -64,7 +76,11 @@ int main(int argc, char *argv[])
     serv_addr.sin_port = htons(portno);
     if (bind(sockfd, (struct sockaddr *) &serv_addr,
              sizeof(serv_addr)) < 0) 
-             cerr<<"ERROR on binding";
+    {
+             //cerr<<"ERROR on binding";
+             err.writeErrorMessage("ERROR: binding");
+    }
+
     listen(sockfd,5);
      
     clilen = sizeof(cli_addr);
@@ -78,10 +94,11 @@ int main(int argc, char *argv[])
         cout<<newsockfd<<endl;
         if (newsockfd < 0)
         {
-            time_t now = time(0);
-            string dt = ctime(&now);
-            dt.erase( remove(dt.begin(), dt.end(), '\n'), dt.end() );
-            cerr<<dt<<" "<<"ERROR on accept\n";
+            //time_t now = time(0);
+            //string dt = ctime(&now);
+            //dt.erase( remove(dt.begin(), dt.end(), '\n'), dt.end() );
+            //cerr<<dt<<" "<<"ERROR on accept\n";
+            err.writeErrorMessage("ERROR: on accept");
             exit(1);
         }
 
@@ -91,25 +108,36 @@ int main(int argc, char *argv[])
         pid = fork();
 	if (pid>0) cout<<"Forking with child PID "<<pid<<endl; // Parent process
  	if (pid<0)
-            cerr<<"ERROR on fork";
+        {
+            err.writeErrorMessage("ERROR: no fork");
+            //cerr<<"ERROR on fork";
+        }
 	 if (pid==0)
 	 {
 	    close(sockfd);
             // The following try-catch block prints error from DB operations to
-            // cerr.
-            try
-            {
-	        processing(newsockfd);
+            // err.
+            //try
+            //{
+	        processing(newsockfd,err);
 	        exit(0);
-            }
-            catch (mysql_soci_error const &e)
-            {
-                cerr<<"MySQL error: "<<e.err_num_<<" "<<e.what()<<endl;
-            }
-            catch (exception const &e)
-            {
-                cerr<<"Soci error: "<<e.what()<<endl;
-            }
+            //}
+            //catch (mysql_soci_error const &e)
+            //{
+            //    string msg;
+            //    msg = "MYSQL ERROR: " + e.err_num_ + space + e.what() + "\n";
+            //    err.writeErrorMessage(msg);
+                //cerr<<"MySQL error: "<<e.err_num_<<" "<<e.what()<<endl;
+            //}
+            //catch (exception const &e)
+            //{
+            //    stringstream tmp;
+            //    string msg;
+            //    tmp<<e.what();
+            //   msg = "SOCI ERROR: " + tmp.str() + "\n";
+            //    err.writeErrorMessage(msg);
+                //cerr<<"Soci error: "<<e.what()<<endl;
+            //}
 	 }
 	 else close(newsockfd);
     } /* end of while for server listening */
@@ -117,13 +145,13 @@ int main(int argc, char *argv[])
     //Closing the socket
     close(sockfd); // Should also be moved into try-catch block (?)
     // Redirecting cerr to original stream
-    out.close();
-    cerr.rdbuf(old_cerr);
+    //out.close();
+    //cerr.rdbuf(old_cerr);
 
     return 0; /* never here */
    }	    
 
-void processing(int sock)
+void processing(int sock, Error &err)
 {
     // The message is received in two parts: 1) its lengths 2) the message
     // 1) The length of the message to be received
@@ -161,30 +189,21 @@ void processing(int sock)
     //for (int i=0; i<command.size(); i++)
     //    cout<<command[i]<<endl;
 
-    // inserting the data into the DB
-    //writeToDB(command);
-    string new_proposal_id;
-    new_proposal_id = writeToDB(dat);
-
-    uint32_t dataLength_s = htonl(new_proposal_id.size()); // convert int to network byte order. 
-
-    // The message e is divided in two parts:
-    // 1) First message sent is the length of the message with the serialization
-    cout<<"Sending "<<new_proposal_id.size()<<" elements\n";
-    n = write(sock,&dataLength_s,sizeof(uint32_t));
-    if (n < 0) 
-        cerr<"ERROR writing to socket the message length";
-    
-    // 2) The actual message is sent. n stores the actual length sent.
-    n = write(sock,new_proposal_id.c_str(),dataLength);
-    if (n < 0) 
-        cerr<"ERROR writing to the message socket";
-
+    // Check message type:
+    switch ( p_oda->type() )
+    {
+        case PHTmessage::DATA:
+            insertProposal(sock,dat,err);
+            break;
+        case PHTmessage::QUERY:
+            allProposalsWithStatus(sock);
+            break;
+        default:
+            cerr<<"ERROR: message type not yet implemented\n";
+    }
 
     // Cleaning memory
     delete p_oda;
 
-
     cout<<"done\n";
-
 }

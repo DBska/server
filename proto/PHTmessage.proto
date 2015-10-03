@@ -15,7 +15,7 @@ message Query
 
 message PHTmessage
 {
-    enum MessageType { DATA = 1; QUERY = 2; ANSWER = 3; }
+    enum MessageType { DATA = 1; QUERY = 2; ANSWER = 3; ERROR = 4;}
 
     required MessageType type = 1;
     optional Proposals proposal = 2;

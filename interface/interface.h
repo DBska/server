@@ -19,10 +19,17 @@ using namespace PHT;
 
 namespace API_ODA {
 
-    string insertNewProposal(Proposals &);
+    enum messageType_data
+    {
+        DATA = 1,
+        QUERY,
+        ANSWER,
+        ERROR
+    };
+    string insertNewProposal(Proposals &, string &error_message);
     //int modifyProposal(int , Proposals &);
     int modifyProposal();
-
+    messageType_data checkMessageType(PHTmessage *);
 }
 
 #endif
