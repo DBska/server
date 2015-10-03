@@ -1,0 +1,53 @@
+use PHT;
+
+/* INSERTING FULL PROPOSAL FIELDS. ID = 110 */
+
+insert into Proposals
+(abstract,more_info,proposal_id,proposal_status,proposal_type) values
+("distruzione luna","distruzione totale",110,'Draft','PI');
+
+insert into TACReviews (comments,final_grade,tac_id,tACReviewsID,proposal_id)
+values ('good work','Excellent',23,12,110);
+
+insert into SupportingDocuments
+(preprints,scientific_justification,technical_justification,supportingDocumentsID,proposal_id) 
+values ("Mazinga Z","Mr Bean","Pippo Franco",11233,110);
+
+insert into ScienceGoals
+(frequence,instrument_configurations,more_info,target_details,scienceGoalsID,proposal_id) values
+(112.20,"Laser distruttore","nothing","La Luna",113,110);
+
+insert into Reviews
+(grade_rank,proposal_id,review_comments,reviewer_id,reviewsID) values
+("It is horrible",110,"Fa schifo",3,123);
+
+insert into ProposalEditors
+(author_id,isPI,more_info,proposal_id,proposalEditorsID) values
+("FFJ6657",TRUE,"Nothing",110,357);
+
+insert into CoAuthors
+(author_id,proposal_id,coAuthorsID) values
+(345,110,3334);
+
+/* INSERTING PROPOSAL ID 111 */
+insert into Proposals
+(abstract,more_info,proposal_id,proposal_status,proposal_type) values
+("A morte i vegani","W Goldrake",111,'Draft','PI');
+
+/* INSERTING PROPOSAL ID 112 */
+insert into Proposals
+(abstract,more_info,proposal_id,proposal_status,proposal_type) values
+("Marte il pianeta rosso","",112,'Accepted','PI');
+
+/* INSERTING PROPOSAL ID 113 */
+insert into Proposals
+(abstract,more_info,proposal_id,proposal_status,proposal_type) values
+("Centro della Galassia","Capitan Futuro",113,'Draft','TOO');
+
+insert into CoAuthors
+(author_id,proposal_id,coAuthorsID) values
+(321,113,2134);
+
+
+
+

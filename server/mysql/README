@@ -1,4 +1,10 @@
 Use the following command to load MySQL database for PHT:
-mysql -p < DDL.sql
+$ mysql -u user -p < DDL.sql
 
 This step must be performed before runnig the server - client codes.
+
+To insert a fictitious set of data stored in file pht.data, use the following syntax:
+
+mysql>source /absolute_path/to_file/file.name; /* non usare apici */
+
+
