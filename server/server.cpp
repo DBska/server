@@ -66,7 +66,8 @@ int main(int argc, char *argv[])
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) 
     {
-        err.writeErrorMessage("ERROR: socket not opened");
+        string emsg = "ERROR: socket not opened";
+        err.writeErrorMessage(emsg);
        //cerr<<"ERROR opening socket";
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -78,7 +79,8 @@ int main(int argc, char *argv[])
              sizeof(serv_addr)) < 0) 
     {
              //cerr<<"ERROR on binding";
-             err.writeErrorMessage("ERROR: binding");
+             string emsg = "ERROR: binding";
+             err.writeErrorMessage(emsg);
     }
 
     listen(sockfd,5);
@@ -98,7 +100,8 @@ int main(int argc, char *argv[])
             //string dt = ctime(&now);
             //dt.erase( remove(dt.begin(), dt.end(), '\n'), dt.end() );
             //cerr<<dt<<" "<<"ERROR on accept\n";
-            err.writeErrorMessage("ERROR: on accept");
+            string emsg = "ERROR: on accept";
+            err.writeErrorMessage(emsg);
             exit(1);
         }
 
@@ -109,7 +112,8 @@ int main(int argc, char *argv[])
 	if (pid>0) cout<<"Forking with child PID "<<pid<<endl; // Parent process
  	if (pid<0)
         {
-            err.writeErrorMessage("ERROR: no fork");
+            string emsg = "ERROR: no fork";
+            err.writeErrorMessage(emsg);
             //cerr<<"ERROR on fork";
         }
 	 if (pid==0)
@@ -177,7 +181,8 @@ void processing(int sock, Error &err)
     cout<<"Parsing...\n"<<endl;
     if (!p_oda->ParseFromString(message))
     {
-        cerr<<"ERROR. Can not parse the received message.";
+        string emsg = "ERROR. Can not parse the received message.";
+        err.writeErrorMessage(emsg);
 	exit(-1);
     }
     // Parsing the message. Only one proposal at a time can be inserted.
@@ -199,7 +204,8 @@ void processing(int sock, Error &err)
             allProposalsWithStatus(sock);
             break;
         default:
-            cerr<<"ERROR: message type not yet implemented\n";
+            string emsg = "ERROR: message type not yet implemented";
+            err.writeErrorMessage(emsg);
     }
 
     // Cleaning memory

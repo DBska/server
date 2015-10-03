@@ -4,6 +4,7 @@ void insertProposal(int sock, data_s dat, Error &err)
 {
     // inserting the data into the DB
     string new_proposal_id;
+    stringstream e_msg_;
     string e_msg;
 
     try
@@ -12,20 +13,17 @@ void insertProposal(int sock, data_s dat, Error &err)
     }
     catch (mysql_soci_error const &e)
     {
-    //    string msg;
-        string space = " ";
-        e_msg = "MYSQL ERROR: " + e.err_num_ + space + e.what() + "\n";
-        err.writeErrorMessage(e_msg);
+        e_msg_ <<"MYSQL ERROR: " << e.err_num_ << " " <<  e.what();
+        string tmp = e_msg_.str();
+        err.writeErrorMessage(tmp);
     }
     catch (exception const &e)
     {
-        stringstream tmp;
-        //string msg;
-        tmp<<e.what();
-        e_msg = "SOCI ERROR: " + tmp.str() + "\n";
-        err.writeErrorMessage(e_msg);
+        e_msg_ << "SOCI ERROR: " <<e.what();
+        string tmp = e_msg_.str();
+        err.writeErrorMessage(tmp);
     }
-
+    e_msg = e_msg_.str();
 
     // If msg.size() == 0 no error has been detected by soci: the proposal id
     // can be returned. Otherwise there are some errors that must be returned to

@@ -7,7 +7,8 @@
 #include <ctime>
 #include <algorithm>
 #include <fstream>
-
+#include <time.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ class Error
     public:
         Error(string file_name);
         ~Error();
-        void writeErrorMessage(string message);
+        void writeErrorMessage(string &message);
         string ErrorMessages();
 };
 

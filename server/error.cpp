@@ -1,11 +1,16 @@
 
 #include "error.h"
 
-void Error::writeErrorMessage(string message)
+void Error::writeErrorMessage(string &message)
 {
     time_t now = time(0);
-    string dt = ctime(&now);
-    dt.erase( remove(dt.begin(), dt.end(), '\n'), dt.end() );
+    //string dt = ctime(&now);
+    //dt.erase( remove(dt.begin(), dt.end(), '\n'), dt.end() );
+    struct tm *timeinfo;
+    char dt[80];
+    time(&now);
+    timeinfo = localtime(&now);
+    strftime(dt,80,"%x %T ",timeinfo);
     cerr<<dt<<" "<<message<<endl;
     lerr<<dt<<" "<<message<<endl;
 }
@@ -13,7 +18,6 @@ void Error::writeErrorMessage(string message)
 
 string Error::ErrorMessages()
 {
-
     return lerr.str();
 }
 
