@@ -40,6 +40,7 @@ void insertProposal(int sock, data_s dat, Error &err)
         p_msg.set_type(PHTmessage::ANSWER);
 
         a->set_answer(reply_msg);
+        cout<<"   sending ANSWER\n";
     }
     else // error(s). Must return the error.
     {
@@ -47,9 +48,9 @@ void insertProposal(int sock, data_s dat, Error &err)
         p_msg.set_type(PHTmessage::ERROR);
 
         a->set_answer(reply_msg);
+        cout<<"   sending ERROR\n";
     }
 
-    cout<<"Preparing the reply..\n";
     // Serializing and sending of reply
     p_msg.set_allocated_answer(a);
 

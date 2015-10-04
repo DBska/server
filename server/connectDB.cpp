@@ -24,6 +24,16 @@ string writeToDB(data_s dat)
     // proposal_id yet) or 2) modification of an existing proposal (proposal_id
     // known)
     bool new_insertion = true;
+
+    // Check wheater this is a new proposal or an update of an old one
+    int nf = dat.name[0].size();
+    for (int i=0; i<nf; i++)
+    {
+        if ( dat.name[0][i] == "proposal_id" )
+            new_insertion = false;
+    }
+
+
     
     if ( new_insertion ) // new insertion and assignement of proposal_id.
     {
@@ -85,8 +95,13 @@ string writeToDB(data_s dat)
             cmd.str( string() );
         }
     }
-    else // a modification is requested.
+    else // a modification is requested. In mysql the command is:
+         // update tab_name set col1=val1 where proposal_id=ID;
+         // for each value that must be changed. The command can be shortened,
+         // but for the time being this is ok.
     {
+        stringstream cmd; // This variable stores update command for each table's fields
+
         // The proposal_id is available inside the message.
         int nf = dat.name[0].size();
         for (int i=0; i<nf; i++)
@@ -94,8 +109,24 @@ string writeToDB(data_s dat)
             if ( dat.name[0][i] == "proposal_id" )
                 proposal_id = dat.value[0][i];
         }
-        cout<<"Arrived a request for proposal_id "<<proposal_id<<endl;
+        cout<<"Arrived a request for updating proposal_id "<<proposal_id<<endl;
 
+        // Updating requested values:
+        int nt = dat.table.size();
+        for (int t=0; t<nt; t++)
+        {
+            int nf = dat.name[t].size();
+            for (int i=0; i<nf; i++)
+            {
+                if ( dat.name[0][i] == "proposal_id" ) continue;
+                cmd<<"UPDATE "<<dat.table[t]<<" SET ";
+                cmd<<dat.name[t][i]<<"=\""<<dat.value[t][i]<<"\" WHERE proposal_id="<<proposal_id<<";";
+                // Executing mysql command 
+                cout<<cmd.str()<<endl;
+                sql<<cmd.str();
+                cmd.str( string() );  // cleaning command string
+            }
+        }
         proposal_id = ""; // No proposal_id has been set
     }
 

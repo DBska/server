@@ -8,10 +8,11 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
+//#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -24,6 +25,15 @@ using namespace PHT;
 
 void setProposal(Proposals *);
 void setFullProposal(Proposals *);
+void updateProposal(int , Proposals *);
+
+
+void updateProposal(int ID, Proposals *proposal)
+{
+    proposal->set_proposal_id(ID);
+    proposal->clear_proposal_type();
+    proposal->set_proposal_type(PHT::PI);
+}
 
 void setFullProposal(Proposals *proposal)
 {
@@ -34,10 +44,8 @@ void setFullProposal(Proposals *proposal)
 
     CoAuthors *coa = new CoAuthors;
     coa->set_author_id(56);
-    coa->set_coauthorsid(7);
+    coa->set_coauthorsid(35);
     proposal->set_allocated_m_coauthors(coa);
-
-    //delete coa;
 }
 
 
@@ -74,13 +82,28 @@ int main(int argc, char *argv[])
     string proposal_id;
     string error_message;
     proposal_id = API_ODA::insertNewProposal(*proposal, error_message);
-    cout<<"Server message: "<<error_message<<endl;
+    cout<<"Server message for insert NEW: "<<error_message<<endl;
     cout<<"Proposal ID: "<<proposal_id<<endl;
 
-    // Cleaning up memory
-    cout<<proposal<<endl;
-    
-   // delete proposal;
+
+    // Updating last inserted proposal if insertion is ok
+    stringstream tmp;
+    tmp<<proposal_id;
+    int p_id;
+    tmp>>p_id;
+    cout<<"INT p_id: "<<p_id<<endl;
+    error_message = "";
+    Proposals *proposal2 = new Proposals;
+
+
+    if ( p_id > 0 )
+    {
+        updateProposal(p_id,proposal2);
+        cout<<"Local update done\n";
+        API_ODA::modifyProposal(*proposal2,error_message);
+        cout<<"Server message for UPDATE: "<<error_message<<endl;
+    }
+
 
     return 0;
 }
