@@ -60,9 +60,27 @@ void insertProposal(int sock, data_s dat, Error &err)
 }
 
 
-void allProposalsWithStatus(int sock)
+void allProposalsWithStatus(int sock, int p_stat)
 {
+    cout<<"HERE\n";
+    vector<Proposals *> p_s;
 
+    p_s = readAllProposalsFromDB(p_stat);
+    cout<<"Size: "<<p_s.size()<<endl;
+    PHTmessage p_msg;
+    p_msg.set_type(PHTmessage::DATA);
+
+    Proposals *p = new Proposals;
+    p = p_s[0];
+    p_msg.set_allocated_proposal(p);
+
+    // Serializing to a string the data to send
+    string message;
+    if (!p_msg.SerializeToString(&message))
+    {
+	    cerr<<"ERROR: Can not serialize the message.\n";
+    }
+    replyToClient(sock,message);
 }
 
 void replyToClient(int sock, string reply_msg)

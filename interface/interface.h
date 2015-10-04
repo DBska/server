@@ -28,6 +28,7 @@ namespace API_ODA {
     };
     string insertNewProposal(Proposals &, string &error_message);
     void modifyProposal(Proposals &, string &error_message );
+    vector<Proposals *> requestProposalsWithStatus(int );
     messageType_data checkMessageType(PHTmessage *);
 }
 

@@ -18,6 +18,7 @@
 #include <netinet/in.h>
 #include <netdb.h> 
 #include "Proposals.pb.h"
+#include "ProposalStatus.pb.h"
 #include "interface.h"
 
 using namespace std;
@@ -26,7 +27,14 @@ using namespace PHT;
 void setProposal(Proposals *);
 void setFullProposal(Proposals *);
 void updateProposal(int , Proposals *);
+void requestProposalsWithStatus();
 
+void requestProposalsWithStatus()
+{
+    int status = PHT::Draft + 1; // NB: ENUM IN MYSQL STARTS FROM 1!!!!!!!
+    cout<<"Draft: "<<PHT::Draft<<endl;
+    API_ODA::requestProposalsWithStatus(status);
+}
 
 void updateProposal(int ID, Proposals *proposal)
 {
@@ -62,7 +70,7 @@ void setProposal(Proposals *proposal)
 int main(int argc, char *argv[])
 {
     cout<<"Building a test proposal\n";
-    bool set_full_proposal = true;
+    bool set_full_proposal = false;
     
     // Setting up the message to send
     Proposals *proposal = new Proposals;
@@ -104,6 +112,9 @@ int main(int argc, char *argv[])
         cout<<"Server message for UPDATE: "<<error_message<<endl;
     }
 
+
+    // Retrieving proposals list
+    requestProposalsWithStatus();
 
     return 0;
 }

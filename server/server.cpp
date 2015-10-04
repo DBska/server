@@ -201,8 +201,13 @@ void processing(int sock, Error &err)
             insertProposal(sock,dat,err);
             break;
         case PHTmessage::QUERY:
-            allProposalsWithStatus(sock);
-            break;
+            {
+                cout<<"Query found...\n";
+                //cout<< (p_oda->mutable_query())->query() <<endl;
+                int p_status = (p_oda->mutable_query())->query();
+                allProposalsWithStatus(sock,p_status);
+                break;
+            }
         default:
             string emsg = "ERROR: message type not yet implemented";
             err.writeErrorMessage(emsg);

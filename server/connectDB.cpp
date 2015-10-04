@@ -8,6 +8,7 @@ string writeToDB(data_s dat)
     // Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
     // should be put in the for(i) above.
     session sql(mysql, "db=PHT user=marco password=Marco74");
+    transaction tr(sql);
 
     // before inserting, printing the currente number of Proposals
     int count;
@@ -149,13 +150,121 @@ string writeToDB(data_s dat)
         r++;
     }
 
+    tr.commit();
+    sql.close();
+
     return proposal_id;
 }
 
 
-void readFromDB()
+vector<Proposals *> readAllProposalsFromDB(int p_status)
 {
+    cout<<"Reading DB..\n";
+    vector<Proposals *> p_w_s;
+    vector<string> tab_name;
 
+    // Inserting all DB table names for PHT
+    tab_name.push_back("Proposals");
+    tab_name.push_back("CoAuthors");
+    tab_name.push_back("ProposalEditors");
+    tab_name.push_back("Reviews");
+    tab_name.push_back("ScienceGoals");
+    tab_name.push_back("SupportingDocuments");
+    tab_name.push_back("TACReviews");
 
+    session sql(mysql, "db=PHT user=marco password=Marco74");
 
+    // Extracting the total number of proposals and storing each proposal_id in
+    // vector<int> p_id
+    row r;
+    stringstream cmd;
+   p_status = 1; 
+    cmd<<"select proposal_id from Proposals where proposal_status = "<<p_status<<";";
+    cout<<cmd.str()<<endl;
+    sql << cmd.str(), into(r);
+
+    vector<int> ps;
+    for ( size_t i=0; i != r.size(); i++ )
+    {
+        ps.push_back( r.get<int>(i) );
+    }
+
+    // Looping thorughout all other tables collecting data.
+    /*
+    for (int i=0; i<tab_name.size(); i++)
+    {
+       for (int id=0; id<ps.size(); id++)
+       {
+           cmd.str( string() );
+           row r;
+           cmd<<"select * from "<<tab_name[i]<<" where proposal_id=\""<<ps[id]<<"\";";
+           sql << cmd.str(), into(r);
+           for ( size_t i=0; i != r.size(); i++ )
+           {
+               string nam_val;
+               nam_val = getDataValue(r,i);
+               stringstream tmp;
+               tmp<<nam_val;
+               string name;
+               string value; // value as string
+               tmp>>name>>value;
+           }
+       }
+    }*/
+
+    for (int id=0; id<ps.size(); id++)
+    {
+        cout<<"Retieving proposal "<<ps[id]<<endl;
+        // Proposals
+        Proposals *p = new Proposals;
+        string abstract;
+        string more_info;
+        //cmd<<"select abstract, more_info from Proposals where proposal_id="<<ps[id]<<";";
+        //cmd<<"select abstract from Proposals where proposal_id=110;";
+        //sql<<cmd.str(), into(abstract); //,into(more_info);
+        sql<<"select abstract, more_info from Proposals where proposal_id=:id;", use(ps[id]), 
+            into(abstract), into(more_info);
+
+        p->set_proposal_id(ps[id]);
+        p->set_abstract(abstract);
+        p->set_more_info(more_info);
+
+        p_w_s.push_back(p);
+    }
+    
+    sql.close();
+
+    return p_w_s;
 }
+
+string getDataValue(row &r, int i)
+{
+    stringstream doc;
+    const column_properties & props = r.get_properties(i);
+
+    doc << props.get_name() << " ";
+    switch(props.get_data_type())
+    {
+        case dt_string:
+            doc << r.get<string>(i);
+            break;
+        case dt_double:
+            doc << r.get<double>(i);
+            break;
+        case dt_integer:
+            doc << r.get<int>(i);
+            break;
+        case dt_long_long:
+            doc << r.get<long long>(i);
+            break;
+        case dt_unsigned_long_long:
+            doc << r.get<unsigned long long>(i);
+            break;
+        default:
+            cerr<<"ERROR: in getDataValue dt_type not recognized\n";
+    }
+
+    return doc.str();
+}
+    
+

@@ -38,7 +38,7 @@ enum messageType_data
 
 messageType_data selectMessageType();
 void insertProposal(int sock, data_s dat, Error &err); // either new or updating an existing one
-void allProposalsWithStatus(int sock);
+void allProposalsWithStatus(int sock, int );
 void replyToClient(int sock, string reply_msg);
 
 

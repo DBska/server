@@ -9,7 +9,7 @@ message Answer
 
 message Query
 {
-    optional string query = 2;
+    optional int64 query = 1;
 }
 
 

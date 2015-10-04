@@ -41,13 +41,6 @@ data_s parsingMessage(PHTmessage *p_oda)
                 assert (mData != 0);
                 dat = writeTableCommand(mData,fdData->message_type(),mData->GetReflection());
             }
-            if ( type->number() == PHTmessage::QUERY )
-                cout<<"QUERY Message Found. Not Implemented yet.\n";
-            if ( type->number() == PHTmessage::ANSWER )
-            {
-                cout<<"ANSWER Message Found. Error.\n";
-                exit(1);
-            }
         }
     }
     else

@@ -9,13 +9,16 @@
 // Soci header files. Required!
 #include "soci.h"
 #include "mysql/soci-mysql.h"
+#include "ProposalStatus.pb.h"
+#include "Proposals.pb.h"
 
 using namespace std;
+using namespace PHT;
 using namespace soci; // namespace for using soci library 
 
-//void writeToDB(vector<string> );
 string writeToDB(data_s );
-void readFromDB();
+vector<Proposals *> readAllProposalsFromDB(int p_status);
+string getDataValue(row &r, int i);
 
 #endif
 
