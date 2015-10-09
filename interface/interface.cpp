@@ -12,7 +12,7 @@
 namespace API_ODA {
 
 
-string insertNewProposal(Proposals &proposal, string &error_message)
+string insertNewProposal(Proposals *proposal, string &error_message)
 {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -31,8 +31,8 @@ string insertNewProposal(Proposals &proposal, string &error_message)
     // Preparing the message to send
     PHTmessage *pht_data = new PHTmessage;
     pht_data->set_type(PHTmessage::DATA);
-    pht_data->set_allocated_proposal(&proposal);
-
+    pht_data->set_allocated_proposal(proposal);
+    //proposal = pht_data->add_proposal();
     // Serializing to a string the data to send
     string message;
     if (!pht_data->SerializeToString(&message))
@@ -94,6 +94,8 @@ void modifyProposal(Proposals &proposal, string &error_message)
     // Preparing the message to send
     PHTmessage *pht_data = new PHTmessage;
     pht_data->set_type(PHTmessage::DATA);
+    Proposals *p_p = &proposal;
+    //p_p = pht_data->add_proposal();
     pht_data->set_allocated_proposal(&proposal);
     
     // Serializing to a string the data to send
@@ -173,7 +175,7 @@ vector<Proposals *> requestProposalsWithStatus(int )
     pht_data->set_type(PHTmessage::QUERY);
 
     Query *q = new Query;
-    q->set_query(PHT::Draft);
+    q->set_query(PHT::Draft+1); // +1 due to mySQL Enum starting from 0
     pht_data->set_allocated_query(q);
 
     // Serializing to a string the data to send
@@ -192,11 +194,18 @@ vector<Proposals *> requestProposalsWithStatus(int )
     messageType_data m_t;
     m_t = checkMessageType(&p_r);
     cout<<"Checking reply from server...\n";
+
     switch ( m_t )
     {
         case PHTmessage::DATA:
+            {
                 cout<<"       DATA found\n";
+                //Proposals *p = p_r.mutable_proposal(0);
+                Proposals *p = p_r.mutable_proposal();
+                cout<<p<<endl;
+                cout<<p->proposal_id()<<endl;
                 break;
+            }
         case PHTmessage::ERROR:
                 cout<<"       ERROR found\n";
                 break;

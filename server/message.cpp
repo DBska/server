@@ -17,6 +17,7 @@ void insertProposal(int sock, data_s dat, Error &err)
         string tmp = e_msg_.str();
         err.writeErrorMessage(tmp);
     }
+    //catch (soci_error const &e)
     catch (exception const &e)
     {
         e_msg_ << "SOCI ERROR: " <<e.what();
@@ -70,9 +71,8 @@ void allProposalsWithStatus(int sock, int p_stat)
     PHTmessage p_msg;
     p_msg.set_type(PHTmessage::DATA);
 
-    Proposals *p = new Proposals;
-    p = p_s[0];
-    p_msg.set_allocated_proposal(p);
+    //p_s[0] = p_msg.add_proposal();
+    p_msg.set_allocated_proposal(p_s[0]);
 
     // Serializing to a string the data to send
     string message;

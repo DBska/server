@@ -176,58 +176,68 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
 
     // Extracting the total number of proposals and storing each proposal_id in
     // vector<int> p_id
-    row r;
     stringstream cmd;
-   p_status = 1; 
+    
     cmd<<"select proposal_id from Proposals where proposal_status = "<<p_status<<";";
     cout<<cmd.str()<<endl;
-    sql << cmd.str(), into(r);
-
-    vector<int> ps;
-    for ( size_t i=0; i != r.size(); i++ )
-    {
-        ps.push_back( r.get<int>(i) );
-    }
-
-    // Looping thorughout all other tables collecting data.
-    /*
-    for (int i=0; i<tab_name.size(); i++)
-    {
-       for (int id=0; id<ps.size(); id++)
-       {
-           cmd.str( string() );
-           row r;
-           cmd<<"select * from "<<tab_name[i]<<" where proposal_id=\""<<ps[id]<<"\";";
-           sql << cmd.str(), into(r);
-           for ( size_t i=0; i != r.size(); i++ )
-           {
-               string nam_val;
-               nam_val = getDataValue(r,i);
-               stringstream tmp;
-               tmp<<nam_val;
-               string name;
-               string value; // value as string
-               tmp>>name>>value;
-           }
-       }
-    }*/
+    vector<int> ps(2000);
+    sql << cmd.str(), into(ps);
+    cout<<"Found "<<ps.size()<<" proposals\n";
 
     for (int id=0; id<ps.size(); id++)
     {
-        cout<<"Retieving proposal "<<ps[id]<<endl;
+        cout<<"Retrieving proposal "<<ps[id]<<endl;
         // Proposals
         Proposals *p = new Proposals;
         string abstract;
         string more_info;
-        //cmd<<"select abstract, more_info from Proposals where proposal_id="<<ps[id]<<";";
-        //cmd<<"select abstract from Proposals where proposal_id=110;";
-        //sql<<cmd.str(), into(abstract); //,into(more_info);
-        sql<<"select abstract, more_info from Proposals where proposal_id=:id;", use(ps[id]), 
-            into(abstract), into(more_info);
+        string pst;
+        string pty;
+        sql<<"select abstract, more_info, proposal_status, proposal_type from Proposals where proposal_id=:id;", use(ps[id]), 
+            into(abstract), into(more_info), into(pst), into(pty);
 
         p->set_proposal_id(ps[id]);
         p->set_abstract(abstract);
         p->set_more_info(more_info);
+
+        ProposalStatus proposal_status;
+        ProposalType proposal_type;
+        switch ( atoi(pst.c_str()) )
+        {
+            case PHT::Draft:
+                proposal_status = PHT::Draft;
+                break;
+            case PHT::Accepted:
+                proposal_status = PHT::Accepted;
+                break;
+            case PHT::Rejected:
+                proposal_status = PHT::Rejected;
+                break;
+            case PHT::Submitted:
+                proposal_status = PHT::Submitted;
+                break;
+            case PHT::Merged:
+                proposal_status = PHT::Merged;
+                break;
+        }
+        p->set_proposal_status(proposal_status);
+        
+        switch ( atoi(pty.c_str()) )
+        {
+            case PHT::TOO:
+                proposal_type = PHT::TOO;
+                break;
+            case PHT::DDT:
+                proposal_type = PHT::DDT;
+                break;
+            case PHT::PI:
+                proposal_type = PHT::PI;
+                break;
+            case PHT::KeyScienceProject:
+                proposal_type = PHT::KeyScienceProject;
+                break;
+        }
+        p->set_proposal_type(proposal_type);
 
         p_w_s.push_back(p);
     }

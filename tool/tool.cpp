@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     // Sending proposal to database via ODA_API:
     string proposal_id;
     string error_message;
-    proposal_id = API_ODA::insertNewProposal(*proposal, error_message);
+    proposal_id = API_ODA::insertNewProposal(proposal, error_message);
     cout<<"Server message for insert NEW: "<<error_message<<endl;
     cout<<"Proposal ID: "<<proposal_id<<endl;
 

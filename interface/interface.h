@@ -12,10 +12,12 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h> 
+#include <google/protobuf/message.h>
 #include "PHTmessage.pb.h"
 
 using namespace std;
 using namespace PHT;
+using namespace google::protobuf;
 
 namespace API_ODA {
 
@@ -26,10 +28,11 @@ namespace API_ODA {
         ANSWER,
         ERROR
     };
-    string insertNewProposal(Proposals &, string &error_message);
+    string insertNewProposal(Proposals *, string &error_message);
     void modifyProposal(Proposals &, string &error_message );
     vector<Proposals *> requestProposalsWithStatus(int );
     messageType_data checkMessageType(PHTmessage *);
+    void setProposalData(const Message *, const Descriptor *, const Reflection *);
 }
 
 #endif

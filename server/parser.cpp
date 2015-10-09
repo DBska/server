@@ -37,6 +37,7 @@ data_s parsingMessage(PHTmessage *p_oda)
                 cout<<"DATA Message Found\n";
                 const FieldDescriptor *fdData = d->FindFieldByName("proposal");
                 assert (fdData != 0);
+                //const Message *mData = &(r->GetRepeatedMessage(*p_oda,fdData,0));
                 const Message *mData = &(r->GetMessage(*p_oda,fdData));
                 assert (mData != 0);
                 dat = writeTableCommand(mData,fdData->message_type(),mData->GetReflection());
@@ -59,14 +60,14 @@ data_s parsingMessage(PHTmessage *p_oda)
     for (int t = 0; t<nt; t++)
     {
         cout<<"Table: "<<dat.table[t]<<endl;
-        cout<<" Fields Values "<<endl;
+        cout<<" Fields Values: "<<endl;
         int nf = dat.name[t].size();
         for (int c = 0; c<nf; c++)
         {
             cout<<dat.name[t][c]<<" "<<dat.value[t][c]<<endl;
         }
     }
-
+    cout<<"out of parser...\n";
     return dat;
     // return command;
 }
@@ -91,19 +92,15 @@ data_s writeTableCommand(const Message *m, const Descriptor *d, const Reflection
     data<<"INSERT INTO "<<d->name()<<" (";
 
     bool loop_message = true;
-    //bool build_new_commands = false;
     const Message *mc = m;
     const Reflection *rc = r;
     const Descriptor *dc = d;
     const Message *mnew = m;
     const Reflection *rnew = r;
     const Descriptor *dnew = d;
-    //vector<string> table;
-    //vector<string> name;
-    //vector<string> value;
     data_s dat;
 
-        // The strategy of this block of code is as follows: of the message m
+    // The strategy of this block of code is as follows: of the message m
     // examined a reflection r is extracted. All the field data are stored in
     // fj. Looping (i) on all fj, if the fj[i] TYPE_MESSAGE is found a new table
     // is identified. Before examining the new table, all basic types (string,
@@ -155,50 +152,8 @@ data_s writeTableCommand(const Message *m, const Descriptor *d, const Reflection
             dc = dnew;
         }
     }
-    //assert( name.size()==value.size() ); // the number of names must be equal to the number of values
-    /*
-    for (int n=0; n<dat.name[t].size(); n++)
-    {
-        if ( n==dat.name[t].size()-1 )
-        {
-            data<<dat.name[t][n]<<")";
-        }
-        else
-        {
-            data<<dat.name[t][n]<<",";
-        }
-    }
-    data<<" VALUES (\"";
-    for (int v=0; v<dat.value[t].size(); v++)
-    {
-        if ( v==dat.value[t].size()-1 )
-        {
-            data<<dat.value[t][v]<<"\")";
-        }
-        else
-        {
-            data<<dat.value[t][v]<<"\",\"";
-        }
-    }
-    data<<";";
-    // Storing the SQL insert command 
-    command.push_back(data.str());*/
     cout<<"OUT\n";
 
-
-    // This block is the recursive part. If a table has been identified, now it
-    // is parsed. I think that if the message contains two tables, this part of
-    // code does not work. A test must be performed.
-    /*
-    if (found_new_message)
-    {
-        vector<string> new_command;
-        new_command = writeTableCommand(mnew,dnew,rnew);
-        for (int j=0; j<new_command.size(); j++)
-            command.push_back(new_command[j]);
-    }*/
-
-    //return command;
     return dat;
 }
 
