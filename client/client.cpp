@@ -85,8 +85,8 @@ int main(int argc, char *argv[])
     proposal->set_proposal_status(PHT::Draft);
     proposal->set_proposal_type(PHT::TOO);
     proposal->set_more_info("bla bla");
-    pht_data.set_allocated_proposal(proposal);
-    //proposal = pht_data.add_proposal();
+    //pht_data.set_allocated_proposal(proposal);
+    proposal = pht_data.add_proposal();
     // Serializing to a string the data to send
     string message;
     if (!pht_data.SerializeToString(&message))

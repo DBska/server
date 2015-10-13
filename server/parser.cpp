@@ -37,8 +37,8 @@ data_s parsingMessage(PHTmessage *p_oda)
                 cout<<"DATA Message Found\n";
                 const FieldDescriptor *fdData = d->FindFieldByName("proposal");
                 assert (fdData != 0);
-                //const Message *mData = &(r->GetRepeatedMessage(*p_oda,fdData,0));
-                const Message *mData = &(r->GetMessage(*p_oda,fdData));
+                const Message *mData = &(r->GetRepeatedMessage(*p_oda,fdData,0));
+                //const Message *mData = &(r->GetMessage(*p_oda,fdData));
                 assert (mData != 0);
                 dat = writeTableCommand(mData,fdData->message_type(),mData->GetReflection());
             }

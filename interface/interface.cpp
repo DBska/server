@@ -31,8 +31,8 @@ string insertNewProposal(Proposals *proposal, string &error_message)
     // Preparing the message to send
     PHTmessage *pht_data = new PHTmessage;
     pht_data->set_type(PHTmessage::DATA);
-    pht_data->set_allocated_proposal(proposal);
-    //proposal = pht_data->add_proposal();
+    //pht_data->set_allocated_proposal(proposal);
+    proposal = pht_data->add_proposal();
     // Serializing to a string the data to send
     string message;
     if (!pht_data->SerializeToString(&message))
@@ -95,8 +95,8 @@ void modifyProposal(Proposals &proposal, string &error_message)
     PHTmessage *pht_data = new PHTmessage;
     pht_data->set_type(PHTmessage::DATA);
     Proposals *p_p = &proposal;
-    //p_p = pht_data->add_proposal();
-    pht_data->set_allocated_proposal(&proposal);
+    p_p = pht_data->add_proposal();
+    //pht_data->set_allocated_proposal(&proposal);
     
     // Serializing to a string the data to send
     string message;
@@ -189,10 +189,10 @@ vector<Proposals *> requestProposalsWithStatus(int )
 
     string reply;
     connection.receiveMessage(reply);
-    PHTmessage p_r;
-    p_r.ParseFromString(reply);
+    PHTmessage *p_r = new PHTmessage;
+    p_r->ParseFromString(reply);
     messageType_data m_t;
-    m_t = checkMessageType(&p_r);
+    m_t = checkMessageType(p_r);
     cout<<"Checking reply from server...\n";
 
     switch ( m_t )
@@ -200,10 +200,12 @@ vector<Proposals *> requestProposalsWithStatus(int )
         case PHTmessage::DATA:
             {
                 cout<<"       DATA found\n";
-                //Proposals *p = p_r.mutable_proposal(0);
-                Proposals *p = p_r.mutable_proposal();
-                cout<<p<<endl;
-                cout<<p->proposal_id()<<endl;
+
+                cout<<p_r->DebugString()<<endl;
+               
+                Proposals p = p_r->proposal(0);
+                cout<<p.proposal_id()<<endl;
+
                 break;
             }
         case PHTmessage::ERROR:
