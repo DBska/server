@@ -179,14 +179,14 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
     stringstream cmd;
     
     cmd<<"select proposal_id from Proposals where proposal_status = "<<p_status<<";";
-    cout<<cmd.str()<<endl;
+    //cout<<cmd.str()<<endl;
     vector<int> ps(2000);
     sql << cmd.str(), into(ps);
     cout<<"Found "<<ps.size()<<" proposals\n";
 
     for (int id=0; id<ps.size(); id++)
     {
-        cout<<"Retrieving proposal "<<ps[id]<<endl;
+        //cout<<"Retrieving proposal "<<ps[id]<<endl;
         // Proposals
         Proposals *p = new Proposals;
         string abstract;
@@ -199,7 +199,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
         p->set_proposal_id(ps[id]);
         p->set_abstract(abstract);
         p->set_more_info(more_info);
-
+        
         ProposalStatus proposal_status;
         ProposalType proposal_type;
         switch ( atoi(pst.c_str()) )

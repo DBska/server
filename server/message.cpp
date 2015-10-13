@@ -68,11 +68,17 @@ void allProposalsWithStatus(int sock, int p_stat)
 
     p_s = readAllProposalsFromDB(p_stat);
     cout<<"Size: "<<p_s.size()<<endl;
+    //cout<<p_s[0]->proposal_id()<<" "<<p_s[0]->abstract()<<endl;
     PHTmessage *p_msg = new PHTmessage;
     p_msg->set_type(PHTmessage::DATA);
-    Proposals *p_tmp;
-    p_tmp = p_msg->add_proposal();
-    p_tmp->set_proposal_id( p_s[0]->proposal_id() );
+
+    for (int ip=0; ip<p_s.size(); ip++)
+    {
+        Proposals *p_tmp;
+        p_tmp = p_msg->add_proposal();
+        *p_tmp = *p_s[ip];
+        //p_tmp->set_proposal_id( p_s[ip]->proposal_id() );
+    }
     //p_msg.set_allocated_proposal(p_s[0]);
 
     // Serializing to a string the data to send

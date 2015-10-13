@@ -204,7 +204,7 @@ vector<Proposals *> requestProposalsWithStatus(int )
                 cout<<p_r->DebugString()<<endl;
                
                 Proposals p = p_r->proposal(0);
-                cout<<p.proposal_id()<<endl;
+                cout<<p.abstract()<<endl;
 
                 break;
             }
