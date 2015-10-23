@@ -50,7 +50,7 @@ int Connect::receiveMessage(string &message)
 
     // Convert message data into a string for de-serialization
     message.assign(reinterpret_cast<const char*>(&(msg[0])),msg.size());
-
+cout<<"out\n";
     return n;
 }
     

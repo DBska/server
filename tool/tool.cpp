@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 {
     cout<<"Building a test proposal\n";
     bool set_full_proposal = false;
-    bool send_proposal = false;
+    bool send_proposal = true;
 
     // Setting up the message to send
     Proposals *proposal = new Proposals;
@@ -89,6 +89,7 @@ int main(int argc, char *argv[])
             setProposal(proposal);
         }
         cout<<"Sending the proposal to DB\n";
+        cout<<proposal->DebugString();
         // Sending proposal to database via ODA_API:
         string proposal_id;
         string error_message;
@@ -111,13 +112,14 @@ int main(int argc, char *argv[])
         {
             updateProposal(p_id,proposal2);
             cout<<"Local update done\n";
-            API_ODA::modifyProposal(*proposal2,error_message);
+            cout<<"..."<<proposal2->DebugString();
+            API_ODA::modifyProposal(proposal2,error_message);
             cout<<"Server message for UPDATE: "<<error_message<<endl;
         }
     }
 
     // Retrieving proposals list
-    requestProposalsWithStatus();
+    //requestProposalsWithStatus();
 
     return 0;
 }

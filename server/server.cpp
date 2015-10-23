@@ -171,7 +171,7 @@ void processing(int sock, Error &err)
 
     int n;
     n = read(sock,&(msg[0]),mLength); // Receive the string data
-
+cout<<n<<endl;
     string message;   // Convert message data into a string for de-serialization
     message.assign(reinterpret_cast<const char*>(&(msg[0])),msg.size());
 
@@ -185,6 +185,7 @@ void processing(int sock, Error &err)
         err.writeErrorMessage(emsg);
 	exit(-1);
     }
+    cout<<p_oda->DebugString();
     // Parsing the message. Only one proposal at a time can be inserted.
     //vector<string> command;
     //command = parsingMessage(p_oda);

@@ -30,7 +30,7 @@ void insertProposal(int sock, data_s dat, Error &err)
     // can be returned. Otherwise there are some errors that must be returned to
     // the client.
 
-    PHTmessage p_msg;
+    PHTmessage *p_msg = new PHTmessage;
     string reply_msg;
     Answer *a = new Answer;
     
@@ -38,7 +38,7 @@ void insertProposal(int sock, data_s dat, Error &err)
     if ( e_msg.size() == 0 ) // no error(s). Operation ok, must return the ID
     {
         reply_msg = new_proposal_id;
-        p_msg.set_type(PHTmessage::ANSWER);
+        p_msg->set_type(PHTmessage::ANSWER);
 
         a->set_answer(reply_msg);
         cout<<"   sending ANSWER\n";
@@ -46,17 +46,18 @@ void insertProposal(int sock, data_s dat, Error &err)
     else // error(s). Must return the error.
     {
         reply_msg = e_msg;
-        p_msg.set_type(PHTmessage::ERROR);
+        p_msg->set_type(PHTmessage::ERROR);
 
         a->set_answer(reply_msg);
         cout<<"   sending ERROR\n";
     }
-
+cout<<"rrrrrrrrrrrrrrrrrrr "<<reply_msg<<endl;
     // Serializing and sending of reply
-    p_msg.set_allocated_answer(a);
+    p_msg->set_allocated_answer(a);
+cout<<p_msg->DebugString();
 
     string msg;
-    p_msg.SerializeToString(&msg);
+    p_msg->SerializeToString(&msg);
     replyToClient(sock,msg);
 }
 

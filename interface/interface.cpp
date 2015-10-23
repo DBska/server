@@ -32,33 +32,35 @@ string insertNewProposal(Proposals *proposal, string &error_message)
     PHTmessage *pht_data = new PHTmessage;
     pht_data->set_type(PHTmessage::DATA);
     //pht_data->set_allocated_proposal(proposal);
-    proposal = pht_data->add_proposal();
+    Proposals *p_temp;
+    p_temp = pht_data->add_proposal();
+    *p_temp = *proposal;
     // Serializing to a string the data to send
     string message;
     if (!pht_data->SerializeToString(&message))
     {
 	    cerr<<"ERROR: Can not serialize the message.\n";
     }
-
     connection.sendMessage(message);
 
     string reply;
     connection.receiveMessage(reply);
-    PHTmessage p_r;
-    p_r.ParseFromString(reply);
+    PHTmessage *p_r = new PHTmessage;
+    p_r->ParseFromString(reply);
+    cout<<p_r->DebugString();
     messageType_data m_t;
-    m_t = checkMessageType(&p_r);
+    m_t = checkMessageType(p_r);
     Answer *a = 0;
     cout<<"Checking reply from server...\n";
     switch ( m_t )
     {
         case PHTmessage::ANSWER:
-                a = p_r.mutable_answer();
+                a = p_r->mutable_answer();
                 proposal_id = a->answer();
                 cout<<"       ANSWER found\n";
                 break;
         case PHTmessage::ERROR:
-                a = p_r.mutable_answer();
+                a = p_r->mutable_answer();
                 error_message = a->answer();
                 cout<<"       ERROR found\n";
                 break;
@@ -76,7 +78,7 @@ string insertNewProposal(Proposals *proposal, string &error_message)
 }
 
 
-void modifyProposal(Proposals &proposal, string &error_message)
+void modifyProposal(Proposals *proposal, string &error_message)
 {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -94,8 +96,9 @@ void modifyProposal(Proposals &proposal, string &error_message)
     // Preparing the message to send
     PHTmessage *pht_data = new PHTmessage;
     pht_data->set_type(PHTmessage::DATA);
-    Proposals *p_p = &proposal;
+    Proposals *p_p; 
     p_p = pht_data->add_proposal();
+    *p_p = *proposal;
     //pht_data->set_allocated_proposal(&proposal);
     
     // Serializing to a string the data to send
@@ -111,10 +114,10 @@ void modifyProposal(Proposals &proposal, string &error_message)
     
     string reply;
     connection.receiveMessage(reply);
-    PHTmessage p_r;
-    p_r.ParseFromString(reply);
+    PHTmessage *p_r = new PHTmessage;
+    p_r->ParseFromString(reply);
     messageType_data m_t;
-    m_t = checkMessageType(&p_r);
+    m_t = checkMessageType(p_r);
     Answer *a = 0;
 
     cout<<"Checking reply from server...\n";
@@ -124,7 +127,7 @@ void modifyProposal(Proposals &proposal, string &error_message)
                 cout<<"       ANSWER found\n";
                 break;
         case PHTmessage::ERROR:
-                a = p_r.mutable_answer();
+                a = p_r->mutable_answer();
                 error_message = a->answer();
                 cout<<"       ERROR found\n";
                 break;
