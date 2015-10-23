@@ -24,7 +24,8 @@ class Connect
         struct hostent *server;
 
     public:
-        Connect() { portno = 3303; hostname = "localhost"; };
+        //Connect() { portno = 3303; hostname = "localhost"; };
+        Connect() { portno = 5200; hostname = "spock.oats.inaf.it"; };
         ~Connect() { };
         void Close() { close(sockfd); };
         int openSocket();
