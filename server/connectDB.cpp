@@ -241,6 +241,86 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
         }
         p->set_proposal_type(proposal_type);
 
+        //tab_name.push_back("CoAuthors");
+        CoAuthors *coa = new CoAuthors;
+       
+        int author_id, proposal_id, coAuthorsID;
+        sql<<"select author_id, proposal_id, coAuthorsID from CoAuthors where proposal_id=:id;", use(ps[id]), 
+            into(author_id), into(proposal_id), into(coAuthorsID);
+
+        coa->set_author_id(author_id);
+        coa->set_proposal_id(proposal_id);
+        coa->set_coauthorsid(coAuthorsID);
+
+        p->set_allocated_m_coauthors(coa);
+        //tab_name.push_back("ProposalEditors");
+        ProposalEditors *ped = new ProposalEditors;
+
+        int isPI, proposalEditorsID;
+        string aid;
+        sql<<"select author_id, isPI, more_info, proposal_id from ProposalEditors where proposal_id=:id;", use(ps[id]), 
+            into(aid), into(isPI), into(more_info), into(proposal_id);
+
+        ped->set_author_id(aid);
+        ped->set_ispi(isPI);
+        ped->set_more_info(more_info);
+        ped->set_proposal_id(proposal_id);
+
+        p->set_allocated_m_proposaleditors(ped);
+        //tab_name.push_back("Reviews");
+        Reviews *rev = new Reviews;
+
+        string grade_rank, review_comments;
+        int reviewer_id, reviewsID;
+        sql<<"select grade_rank, proposal_id, review_comments, reviewer_id from Reviews where proposal_id=:id;", use(ps[id]), 
+            into(grade_rank), into(proposal_id), into(review_comments), into(reviewer_id);
+
+        rev->set_grade_rank(grade_rank);
+        rev->set_proposal_id(proposal_id);
+        rev->set_review_comments(review_comments);
+        rev->set_reviewer_id(reviewer_id);
+
+        p->set_allocated_m_reviews(rev);
+        //tab_name.push_back("ScienceGoals");
+        ScienceGoals *scg = new ScienceGoals;
+
+        double frequence;
+        string ins_conf, tgt_det;
+        sql<<"select frequence, instrument_configurations, more_info, target_details from ScienceGoals where proposal_id=:id;", use(ps[id]), 
+            into(frequence), into(ins_conf), into(more_info), into(tgt_det);
+
+        scg->set_frequence(frequence);
+        scg->set_instrument_configurations(ins_conf);
+        scg->set_more_info(more_info);
+        scg->set_target_details(tgt_det);
+
+        p->set_allocated_m_sciencegoals(scg);
+        //tab_name.push_back("SupportingDocuments");
+        SupportingDocuments *sd = new SupportingDocuments;
+
+        string prep, sc_j, tec_j;
+        sql<<"select preprints, scientific_justification, technical_justification from SupportingDocuments where proposal_id=:id;", use(ps[id]), 
+            into(prep), into(sc_j), into(tec_j);
+
+        sd->set_preprints(prep);
+        sd->set_scientific_justification(sc_j);
+        sd->set_technical_justification(tec_j);
+
+        p->set_allocated_m_supportingdocuments(sd);
+        //tab_name.push_back("TACReviews");
+        TACReviews *tr = new TACReviews;
+
+        string com, fg;
+        int tac_id;
+        sql<<"select comments, final_grade, tac_id from TACReviews where proposal_id=:id;", use(ps[id]), 
+            into(com), into(fg), into(tac_id);
+
+        tr->set_comments(com);
+        tr->set_final_grade(fg);
+        tr->set_tac_id(tac_id);
+
+        p->set_allocated_m_tacreviews(tr);
+        // Adding proposal to the list
         p_w_s.push_back(p);
     }
     
