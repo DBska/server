@@ -11,7 +11,7 @@ class write {
   // Main function:  Reads the entire address book from a file,
   //   adds one person based on user input, then writes it back out to the same
   //   file.
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     PHTmessageOuterClass.PHTmessage.Builder message = PHTmessageOuterClass.PHTmessage.newBuilder();
 
 
@@ -24,8 +24,8 @@ class write {
     message.addProposal(proposal);
 
     // Write the new address book back to disk.
-    //FileOutputStream output = new FileOutputStream("file_name");
-    //message.build().writeTo(output);
-    //output.close();
+    FileOutputStream output = new FileOutputStream("file_name");
+    message.build().writeTo(output);
+    output.close();
   }
 }
