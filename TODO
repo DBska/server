@@ -1,23 +1,18 @@
-- DONE Redirect cerr to a string for handling soci error in server.cpp try-catch block. 
-
-- Add client read of soci error string
-
-- Adding server message back to tool with any soci error string. If error string == NULL, operation success must be sent to the tool.
+- NULL handling with soci must be done with boost for all fields that must be
+  retrieved
 
 - Add locking table and rollback to server DB interaction
 
-- Tool should stay in the loop until a SUCCESS message is received from server
+- DONE Redirect cerr to a string for handling soci error in server.cpp try-catch block. 
+
+- DONE Add client read of soci error string
+
+- DONE Adding server message back to tool with any soci error string. If error string == NULL, operation success must be sent to the tool.
+
+
+- DONE Tool should stay in the loop until a SUCCESS message is received from server
 
 - DONE a tool directory is under development: it simulates the compilation of odaclient interface. Must be added to repository.
 
-- STILL UNSOLVED !! DONE TEST. THAT PART OF THE CODE MISSES TWO messages. Only the last one is
-stored. A test must be performed to see if a message m1(int, string, m2, m3) is
-parsed correctly. I suspect that the m2 part is not examined. URGENT. The code
-is in parser.cpp:156.
-
-- Correct behaviour at point 8
-
-- in server.cpp close(newsockfd) should be done before try-catch block.
-  Otherwise an error on accept() is generated: the sock is still binded!!
 
 
