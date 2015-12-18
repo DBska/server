@@ -5,6 +5,10 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.OutputStream;
+import java.io.*;
+
+import java.net.*;
 import PHT.*;
 
 class write {
@@ -17,15 +21,38 @@ class write {
 
     message.setType(PHTmessageOuterClass.PHTmessage.MessageType.DATA);
 
+    System.out.println(message.hasType());
+
     ProposalsOuterClass.Proposals.Builder proposal =  ProposalsOuterClass.Proposals.newBuilder();
     proposal.setAbstract("ahahahahah");
     proposal.setProposalStatus(ProposalStatusOuterClass.ProposalStatus.Draft);
+    proposal.setProposalType(ProposalTypeOuterClass.ProposalType.TOO);
 
     message.addProposal(proposal);
+    System.out.println(message.build().toString());
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream ps = new PrintStream(baos); 
+    message.build().writeTo(ps);
+    byte [] test;
+    test = baos.toByteArray();
+    System.out.println(test.length);
+
+
+    Socket mys;
+    mys = new Socket("localhost",3303);
+    DataOutputStream msg = new DataOutputStream(mys.getOutputStream());
+    
+    msg.writeInt(test.length);
+    msg.flush();
+    msg.write(test);
+    msg.flush();
+    msg.close();
+
 
     // Write the new address book back to disk.
-    FileOutputStream output = new FileOutputStream("file_name");
-    message.build().writeTo(output);
-    output.close();
+    //FileOutputStream output = new FileOutputStream("file_name");
+    //message.build().writeTo(output);
+    //output.close();
   }
 }

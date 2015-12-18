@@ -104,13 +104,13 @@ void replyToClient(int sock, string reply_msg)
     n = write(sock,&dataLength_s,sizeof(uint32_t));
     if (n < 0)
     {
-        cerr<<"ERROR writing to socket the message length";
+        cerr<<"ERROR writing to socket the message length\n";
     }
     
     // 2) The actual message is sent. n stores the actual length sent.
     n = write(sock,reply_msg.c_str(),dataLength_s);
     if (n < 0) 
     {
-        cerr<<"ERROR writing to the message socket";
+        cerr<<"ERROR writing to the message socket\n";
     }
 }

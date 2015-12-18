@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
     }
 
     // Retrieving proposals list
-    //requestProposalsWithStatus();
+    requestProposalsWithStatus();
 
     return 0;
 }

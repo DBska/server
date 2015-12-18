@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     	newsockfd = accept(sockfd, 
                           (struct sockaddr *) &cli_addr, 
               	           &clilen);
-        cout<<newsockfd<<endl;
+        //cout<<newsockfd<<endl;
         if (newsockfd < 0)
         {
             //time_t now = time(0);
@@ -164,14 +164,13 @@ void processing(int sock, Error &err)
     mLength = ntohl(mLength); // Ensure host system byte order
     int dataLength = static_cast<int>(mLength);
     cout<<"Message of "<<dataLength<<" elements arrived!\n";
-	
+    
     // 2) The message itself. It is stored in a char [], however a vector<char> could and should be used.
     vector<uint8_t> msg; // Allocating a buffer of approriate length
     msg.resize(mLength,0x00);
 
     int n;
     n = read(sock,&(msg[0]),mLength); // Receive the string data
-cout<<n<<endl;
     string message;   // Convert message data into a string for de-serialization
     message.assign(reinterpret_cast<const char*>(&(msg[0])),msg.size());
 
@@ -183,6 +182,7 @@ cout<<n<<endl;
     {
         string emsg = "ERROR. Can not parse the received message.";
         err.writeErrorMessage(emsg);
+        cout<<p_oda->DebugString();
 	exit(-1);
     }
     cout<<p_oda->DebugString();
