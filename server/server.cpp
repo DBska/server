@@ -10,6 +10,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sstream>
+#include <unistd.h>
 //#include <ctime>
 //#include <algorithm>
 #include <sys/types.h> 
@@ -28,12 +29,16 @@ using namespace std;
 using namespace PHT; // namespace for using google protocol buffer
 using namespace soci; // namespace for using soci library 
 
+const int portno = 3303; 
 
 void processing(int sock, Error &err);
 
 
 int main(int argc, char *argv[])
 {
+    bool demonized = false;
+
+    if (demonized) daemon(0,0);
     // Creating lerr stringstream to send back to the client for managing
     // errors.
     //stringstream lerr;
@@ -46,7 +51,8 @@ int main(int argc, char *argv[])
 
     Error err("server_error.txt");
 
-    int sockfd, newsockfd, portno;
+    int sockfd, newsockfd;
+    //int portno;
     pid_t pid;
     socklen_t clilen;
      
@@ -56,7 +62,7 @@ int main(int argc, char *argv[])
 
     // Checking the calling statement of the program is correct:
     // server port
-    if (argc < 2)
+    if (argc < 2 && !demonized)
     {
         //error("ERROR, no port provided\n");
         cout<<"usage: "<<argv[0]<<" port\n";
@@ -71,7 +77,7 @@ int main(int argc, char *argv[])
        //cerr<<"ERROR opening socket";
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
-    portno = atoi(argv[1]);
+    //portno = atoi(argv[1]);
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(portno);
@@ -87,7 +93,7 @@ int main(int argc, char *argv[])
      
     clilen = sizeof(cli_addr);
 
-    // starting the listening loop. It has a brutal stop: Ctrl-C....
+    // starting the listening loop. 
     while (1)
     {
     	newsockfd = accept(sockfd, 

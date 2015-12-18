@@ -188,7 +188,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
 
     for (int id=0; id<ps.size(); id++)
     {
-        //cout<<"Retrieving proposal "<<ps[id]<<endl;
+        cout<<"Retrieving proposal "<<ps[id]<<endl;
         // Proposals
         Proposals *p = new Proposals;
         string abstract;
