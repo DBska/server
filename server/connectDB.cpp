@@ -1,5 +1,5 @@
 #include "connectDB.h"
-
+#include <boost-optional.h>
 
 //void writeToDB(vector<string> command)
 string writeToDB(data_s dat)
@@ -192,7 +192,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
         // Proposals
         Proposals *p = new Proposals;
         string abstract;
-        string more_info;
+        boost::optional<string> more_info;
         string pst;
         string pty;
         sql<<"select abstract, more_info, proposal_status, proposal_type from Proposals where proposal_id=:id;", use(ps[id]), 
@@ -200,7 +200,10 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
 
         p->set_proposal_id(ps[id]);
         p->set_abstract(abstract);
-        p->set_more_info(more_info);
+        if (more_info.is_initialized())
+        {
+            p->set_more_info(more_info.get());
+        }
         
         ProposalStatus proposal_status;
         ProposalType proposal_type;
@@ -263,7 +266,10 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
 
         ped->set_author_id(aid);
         ped->set_ispi(isPI);
-        ped->set_more_info(more_info);
+        if (more_info.is_initialized())
+        {
+            ped->set_more_info(more_info.get()); // boost
+        }
         ped->set_proposal_id(proposal_id);
 
         p->set_allocated_m_proposaleditors(ped);
@@ -291,7 +297,10 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
 
         scg->set_frequence(frequence);
         scg->set_instrument_configurations(ins_conf);
-        scg->set_more_info(more_info);
+        if (more_info.is_initialized())
+        {
+            scg->set_more_info(more_info.get()); //boost
+        }
         scg->set_target_details(tgt_det);
 
         p->set_allocated_m_sciencegoals(scg);
