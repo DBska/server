@@ -8,7 +8,7 @@ string writeToDB(data_s dat)
     // Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
     // should be put in the for(i) above.
     session sql(mysql, "db=PHT user=marco password=Marco74");
-    //session sql(mysql, "db=PHT user=control");
+    //session sql(mysql, "db=PHT user=controls password=Wrufu6ac");
     transaction tr(sql);
 
     // before inserting, printing the currente number of Proposals
