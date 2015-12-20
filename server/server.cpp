@@ -36,7 +36,7 @@ void processing(int sock, Error &err);
 
 int main(int argc, char *argv[])
 {
-    bool demonized = false;
+    bool demonized = true;
 
     if (demonized) daemon(0,0);
     // Creating lerr stringstream to send back to the client for managing

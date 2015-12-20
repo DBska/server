@@ -73,7 +73,7 @@ namespace API_ODA {
 
     string insertNewProposal(Proposals *proposal, string &error_message);
     void modifyProposal(Proposals *proposal, string &error_message );
-    vector<Proposals *> requestProposalsWithStatus(int status);
+    vector<Proposals > requestProposalsWithStatus(int status);
     messageType_data checkMessageType(PHTmessage *);
     void setProposalData(const Message *, const Descriptor *, const Reflection *);
 }

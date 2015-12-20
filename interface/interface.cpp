@@ -156,11 +156,11 @@ messageType_data checkMessageType(PHTmessage *oda_msg)
 }
 
 
-vector<Proposals *> requestProposalsWithStatus(int )
+vector<Proposals > requestProposalsWithStatus(int )
 {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
     
-    vector<Proposals *> p_list;
+    vector<Proposals > p_list;
 
     int n;
     string proposal_id = "-1";
@@ -193,7 +193,10 @@ vector<Proposals *> requestProposalsWithStatus(int )
     string reply;
     connection.receiveMessage(reply);
     PHTmessage *p_r = new PHTmessage;
-    p_r->ParseFromString(reply);
+    if ( !p_r->ParseFromString(reply) )
+    {
+        cout<<"ERROR deserializing\n";
+    }
     messageType_data m_t;
     m_t = checkMessageType(p_r);
     cout<<"Checking reply from server...\n";
@@ -203,12 +206,7 @@ vector<Proposals *> requestProposalsWithStatus(int )
         case PHTmessage::DATA:
             {
                 cout<<"       DATA found\n";
-
-                cout<<p_r->DebugString()<<endl;
-               
-                Proposals p = p_r->proposal(0);
-                cout<<p.abstract()<<endl;
-
+                //cout<<p_r->DebugString()<<endl;
                 break;
             }
         case PHTmessage::ERROR:
@@ -217,7 +215,18 @@ vector<Proposals *> requestProposalsWithStatus(int )
         default:
             cerr<<"ERROR: reply from server not yet implemented"<<endl;
     }
-
+    cout<<"Numbbb: "<<p_r->proposal_size()<<endl;
+    bool debug = true;
+    if (debug) 
+    {
+        int np = p_r->proposal_size();
+        for (int i=0; i<np; i++)
+        {
+            Proposals p_ = p_r->proposal(i);
+            p_list.push_back(p_);
+            cout<<"ID: "<<p_.proposal_id()<<" "<<p_.abstract()<<endl;
+        }
+    }
     // Closing connection
     connection.Close();
 

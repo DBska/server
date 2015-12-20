@@ -75,13 +75,14 @@ void allProposalsWithStatus(int sock, int p_stat)
 
     for (int ip=0; ip<p_s.size(); ip++)
     {
-        Proposals *p_tmp;
+        Proposals *p_tmp = NULL;
         p_tmp = p_msg->add_proposal();
         *p_tmp = *p_s[ip];
-        //p_tmp->set_proposal_id( p_s[ip]->proposal_id() );
     }
     //p_msg.set_allocated_proposal(p_s[0]);
 
+    cout<<"Number of proposals: "<<p_msg->proposal_size()<<endl;
+    //p_msg->DebugString();
     // Serializing to a string the data to send
     string message;
     if (!p_msg->SerializeToString(&message))
