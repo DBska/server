@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.lang.*;
 import PHT.*;
 
 class example {
@@ -16,7 +17,14 @@ class example {
     StringBuffer proposal_id = new StringBuffer("");
     proposal_id = apioda.insertNewProposal(proposal.build(),error);
   
-    System.out.println("Error: "+error);
+    System.out.println("Error new insert: "+error);
     System.out.println("Proposal ID: "+proposal_id);
+
+    proposal.setAbstract("eheheheheheh");
+    int id = Integer.parseInt(proposal_id.toString());
+    proposal.setProposalId(id);
+    //System.out.println(proposal.getAbstract());
+    apioda.modifyProposal(proposal.build(),error);
+    System.out.println("Error modify: "+error);
   }
 }
