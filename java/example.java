@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.lang.*;
+import java.util.Vector;
 import PHT.*;
 
 class example {
@@ -26,5 +27,11 @@ class example {
     //System.out.println(proposal.getAbstract());
     apioda.modifyProposal(proposal.build(),error);
     System.out.println("Error modify: "+error);
+
+    Vector<ProposalsOuterClass.Proposals> p_l = new Vector<ProposalsOuterClass.Proposals>();
+    System.out.println("Requesting proposals list with status: "+PHT.ProposalStatusOuterClass.ProposalStatus.Draft);
+    p_l = apioda.requestProposalsWithStatus(PHT.ProposalStatusOuterClass.ProposalStatus.Draft);
+
+    System.out.println("Found : "+p_l.size());
   }
 }
