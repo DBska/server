@@ -4,6 +4,7 @@ all:
 	$(MAKE) -C client
 	$(MAKE) -C interface
 	$(MAKE) -C tool
+	$(MAKE) -C java
 
 proto:
 	$(MAKE) -C proto
@@ -24,5 +25,6 @@ clean:
 	$(MAKE) -C proto clean
 	$(MAKE) -C interface clean
 	$(MAKE) -C tool clean
+	$(MAKE) -C java clean
 
 
