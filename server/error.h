@@ -22,9 +22,10 @@ class Error
     public:
         Error(string file_name);
         ~Error();
-        void writeErrorMessage(string &message);
+        void writeErrorMessage(string message);
         string ErrorMessages();
 };
 
+void print(string file, string what);
 
 #endif 

@@ -1,7 +1,15 @@
 
 #include "error.h"
 
-void Error::writeErrorMessage(string &message)
+void print(string file, string what)
+{
+    fstream output(file.c_str(), ios::out | ios::binary);
+    for (int i=0; i<what.length(); i++)
+        output<<what[i];
+    output.close();
+}
+
+void Error::writeErrorMessage(string message)
 {
     time_t now = time(0);
     //string dt = ctime(&now);

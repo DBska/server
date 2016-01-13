@@ -1,5 +1,79 @@
 #include "message.h"
 
+
+
+void writeToSocket(int sock, string message, Error &err)
+{
+    int r_s = message.size();
+    char bytes[BUF_SIZE];
+    bzero(bytes,sizeof(bytes));
+    bytes[0] = (r_s >> 24) & 0xFF;
+    bytes[1] = (r_s >> 16) & 0xFF;
+    bytes[2] = (r_s >> 8) & 0xFF;
+    bytes[3] = r_s & 0xFF;
+    
+    int n;
+    n= write(sock,bytes,sizeof(bytes));
+    cout<<"Sending message of size: "<<r_s<<" /// "<<n<<endl;
+    n = write(sock,message.c_str(),r_s);
+    if (n < 0) err.writeErrorMessage("ERROR writing to socket");
+}
+
+bool readFromSocket(int sock, string &answer, Error &err)
+{
+    bool red = false;
+    // Exchanging message length:
+    char buffer[BUF_SIZE];
+    bzero(buffer,BUF_SIZE);
+
+    int n = 0;
+    n = read(sock,buffer,BUF_SIZE);
+    //fstream output("blobIN.bin", ios::out | ios::binary);
+    //output<<buffer[0]<<buffer[1]<<buffer[2]<<buffer[3];
+    //output.close();
+
+    if (n < 0) err.writeErrorMessage("ERROR reading from socket");
+    if ( n>BUF_SIZE) err.writeErrorMessage("ERROR int too big");
+    if (n != 0)
+    {
+        cout<<"START READING... "<<buffer<<endl;
+        int val = 0;
+
+        val = (val << 8) + buffer[0];
+        val = (val << 8) + buffer[1];
+        val = (val << 8) + buffer[2];
+        val = (val << 8) + buffer[3];
+        
+        cout<<"value: "<<val<<" //// n: "<<n<<endl;
+     
+        char message[val+1];
+        bzero(message,val);
+
+        // Reading message:
+        n = read(sock,message,sizeof(message));
+        cout<<"red: "<<n<<" out of "<<val<<endl;
+        if (n<val) 
+        {
+            cout<<"Error in sending data..aborting\n";
+            exit(1);
+        }
+        for (int j=0; j<val; j++)
+            answer.push_back(message[j]);
+        cout<<answer.length()<<" "<<val<<" "<<val+1<<endl;
+        cout<<" $$$$ "<<n-val<<endl;
+        cout<<"STOP READING...\n";
+        
+        //fstream output2("blob2.bin", ios::out | ios::binary);
+        //for (int i=0; i<val; i++)
+        //    output2<<message[i];
+        //output2.close();
+        
+        red = true;
+    }
+
+    return red;
+}
+
 void insertProposal(int sock, data_s dat, Error &err)
 {
     // inserting the data into the DB
@@ -58,11 +132,12 @@ cout<<p_msg->DebugString();
 
     string msg;
     p_msg->SerializeToString(&msg);
-    replyToClient(sock,msg);
+    //replyToClient(sock,msg);
+    writeToSocket(sock,msg,err);
 }
 
 
-void allProposalsWithStatus(int sock, int p_stat)
+void allProposalsWithStatus(int sock, int p_stat, Error &err)
 {
     cout<<"HERE\n";
     vector<Proposals *> p_s;
@@ -89,29 +164,10 @@ void allProposalsWithStatus(int sock, int p_stat)
     {
 	    cerr<<"ERROR: Can not serialize the message.\n";
     }
-    replyToClient(sock,message);
+    //cout<<p_msg->DebugString();
+    print("list.bin",message);
+    writeToSocket(sock,message,err);
+    //replyToClient(sock,message);
 }
 
-void replyToClient(int sock, string reply_msg)
-{
-    int n;
 
-    // Sendig back to tool DB results
-    uint32_t dataLength_s = htonl(reply_msg.size()); // convert int to network byte order. 
-
-    // The message e is divided in two parts:
-    // 1) First message sent is the length of the message with the serialization
-    cout<<"Sending "<<reply_msg.size()<<" elements to tool\n";
-    n = write(sock,&dataLength_s,sizeof(uint32_t));
-    if (n < 0)
-    {
-        cerr<<"ERROR writing to socket the message length\n";
-    }
-    
-    // 2) The actual message is sent. n stores the actual length sent.
-    n = write(sock,reply_msg.c_str(),dataLength_s);
-    if (n < 0) 
-    {
-        cerr<<"ERROR writing to the message socket\n";
-    }
-}

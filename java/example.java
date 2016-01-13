@@ -9,7 +9,7 @@ class example {
   public static void main(String[] args) throws Exception {
     // Definition of a Proposals with given fields:
     ProposalsOuterClass.Proposals.Builder proposal =  ProposalsOuterClass.Proposals.newBuilder();
-    proposal.setAbstract("ahahahahah");
+    proposal.setAbstract("ahaha????hahah");
     proposal.setProposalStatus(ProposalStatusOuterClass.ProposalStatus.Draft);
     proposal.setProposalType(ProposalTypeOuterClass.ProposalType.TOO);
 

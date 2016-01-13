@@ -27,6 +27,7 @@ using namespace std;
 using namespace PHT;
 using namespace soci;
 
+const int BUF_SIZE = 4;
 
 enum messageType_data
 {
@@ -38,8 +39,8 @@ enum messageType_data
 
 messageType_data selectMessageType();
 void insertProposal(int sock, data_s dat, Error &err); // either new or updating an existing one
-void allProposalsWithStatus(int sock, int );
-void replyToClient(int sock, string reply_msg);
-
+void allProposalsWithStatus(int sock, int p_stat, Error &err);
+bool readFromSocket(int sock, string &answer, Error &err);
+void writeToSocket(int sock, string message, Error &err);
 
 #endif

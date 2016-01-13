@@ -36,7 +36,7 @@ void processing(int sock, Error &err);
 
 int main(int argc, char *argv[])
 {
-    bool demonized = true;
+    bool demonized = false;
 
     if (demonized) daemon(0,0);
     // Creating lerr stringstream to send back to the client for managing
@@ -163,6 +163,7 @@ int main(int argc, char *argv[])
 
 void processing(int sock, Error &err)
 {
+    /*
     // The message is received in two parts: 1) its lengths 2) the message
     // 1) The length of the message to be received
     uint32_t mLength;
@@ -179,6 +180,12 @@ void processing(int sock, Error &err)
     n = read(sock,&(msg[0]),mLength); // Receive the string data
     string message;   // Convert message data into a string for de-serialization
     message.assign(reinterpret_cast<const char*>(&(msg[0])),msg.size());
+*/
+    
+    bool is_a_message = false;
+    string message;
+    is_a_message = readFromSocket(sock,message,err);
+    if ( !is_a_message ) return;
 
     // De-serialization starts here
     PHTmessage *p_oda = new PHTmessage;
@@ -191,7 +198,9 @@ void processing(int sock, Error &err)
         cout<<p_oda->DebugString();
 	exit(-1);
     }
+    cout<<"Printing debug message string\n";
     cout<<p_oda->DebugString();
+    cout<<"done"<<endl;
     // Parsing the message. Only one proposal at a time can be inserted.
     //vector<string> command;
     //command = parsingMessage(p_oda);
@@ -212,7 +221,7 @@ void processing(int sock, Error &err)
                 cout<<"Query found...\n";
                 //cout<< (p_oda->mutable_query())->query() <<endl;
                 int p_status = (p_oda->mutable_query())->query();
-                allProposalsWithStatus(sock,p_status);
+                allProposalsWithStatus(sock,p_status,err);
                 break;
             }
         default:
