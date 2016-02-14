@@ -37,18 +37,18 @@ public class apioda {
         System.out.println("Length: "+msg_l);
         byte [] result = toByteArray(msg_l);
 
-        FileOutputStream output2 = new FileOutputStream("blobOUTlen.bin");
-        output2.write(result);
-        output2.close();
+        //FileOutputStream output2 = new FileOutputStream("blobOUTlen.bin");
+        //output2.write(result);
+        //output2.close();
 
         out.write(result);
         out.flush();
         out.write(msg);
         out.flush();
 
-        FileOutputStream output = new FileOutputStream("blobOUT.bin");
-        output.write(msg);
-        output.close();
+        //FileOutputStream output = new FileOutputStream("blobOUT.bin");
+        //output.write(msg);
+        //output.close();
 
   }
   public static byte [] readFromSocket(DataInputStream in) throws Exception {
@@ -69,7 +69,7 @@ public class apioda {
         System.out.println("Received message length: "+cn);
         byte [] buffer = new byte[cn];
         in.readFully(buffer,0,cn);
-        print("inside.bin",buffer);
+        //print("inside.bin",buffer);
         //String reply = new String(buffer, 0, cn);
         System.out.println("Message Length: "+buffer.length);
     
