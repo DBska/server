@@ -29,7 +29,16 @@ class example {
   
     System.out.println("Error new insert: "+error);
     System.out.println("Proposal ID: "+proposal_id);
-/*
+
+    // Requesting proposal with ID = my_proposal_ID
+    int my_proposal_id = 779;
+    ProposalsOuterClass.Proposals pID = apioda.getProposalWithID(my_proposal_id);
+    ScienceGoalsOuterClass.ScienceGoals sg = pID.getMScienceGoals();
+
+    System.out.println("Retrieved proposal: "+pID.getProposalId());
+    System.out.println("ScienceGoals Frequency: "+sg.getFrequence());
+
+    /*
     proposal.setAbstract("testAbs");
     int id = Integer.parseInt(proposal_id.toString());
     proposal.setProposalId(id);

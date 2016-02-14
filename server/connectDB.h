@@ -21,6 +21,7 @@ const string use_db = "db=PHT user=marco password=Marco74";
 
 string writeToDB(data_s );
 vector<Proposals *> readAllProposalsFromDB(int p_status);
+Proposals * readProposalFromDB(int pid);
 string getDataValue(row &r, int i);
 
 #endif

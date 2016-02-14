@@ -170,4 +170,26 @@ void allProposalsWithStatus(int sock, int p_stat, Error &err)
     //replyToClient(sock,message);
 }
 
+void proposalWithID(int sock, int pid, Error &err)
+{
+    cout<<"HERE\n";
+    Proposals *p_s;
+    p_s = readProposalFromDB(pid);
+    
+    PHTmessage *p_msg = new PHTmessage;
+    p_msg->set_type(PHTmessage::DATA);
+
+    Proposals *p_tmp = NULL;
+    p_tmp = p_msg->add_proposal();
+    *p_tmp = *p_s;
+
+    // Serializing to a string the data to send
+    string message;
+    if (!p_msg->SerializeToString(&message))
+    {
+	    cerr<<"ERROR: Can not serialize the message.\n";
+    }
+    //cout<<p_msg->DebugString();
+    writeToSocket(sock,message,err);
+}
 

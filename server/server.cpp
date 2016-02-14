@@ -221,7 +221,15 @@ void processing(int sock, Error &err)
                 cout<<"Query found...\n";
                 //cout<< (p_oda->mutable_query())->query() <<endl;
                 int p_status = (p_oda->mutable_query())->query();
-                allProposalsWithStatus(sock,p_status,err);
+                if (p_status > 0)
+                {
+                    allProposalsWithStatus(sock,p_status,err);
+                }
+                if (p_status<0)
+                {
+                    p_status = (-1) * p_status;
+                    proposalWithID(sock,p_status,err);
+                }
                 break;
             }
         default:

@@ -42,5 +42,6 @@ void insertProposal(int sock, data_s dat, Error &err); // either new or updating
 void allProposalsWithStatus(int sock, int p_stat, Error &err);
 bool readFromSocket(int sock, string &answer, Error &err);
 void writeToSocket(int sock, string message, Error &err);
+void proposalWithID(int sock, int pid, Error &err);
 
 #endif

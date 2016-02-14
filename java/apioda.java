@@ -76,6 +76,74 @@ public class apioda {
         return buffer;
   }
 
+  // Return proposal with given id 
+  public static ProposalsOuterClass.Proposals getProposalWithID(int pid)  throws Exception   
+  {
+    ProposalsOuterClass.Proposals p_v;
+    PHTmessageOuterClass.PHTmessage.Builder message = PHTmessageOuterClass.PHTmessage.newBuilder();
+    // PHTmessage TYPE:
+    message.setType(PHTmessageOuterClass.PHTmessage.MessageType.QUERY);
+    //System.out.println("222 "+message.hasType());
+
+    PHTmessageOuterClass.Query.Builder query = PHTmessageOuterClass.Query.newBuilder();
+    
+    int i_status = pid * (-1); // negative number to distinquish on server side from a status 
+    query.setQuery(i_status);
+    System.out.println("Searching for proposal with ID: "+pid);
+
+    // Adding query to the message
+    message.setQuery(query);
+    //System.out.println(message.build().toString());
+
+    // Preparing transmission:
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream ps = new PrintStream(baos);
+    
+    // Serialization
+    message.build().writeTo(ps);
+
+    // Length of binary string
+    byte [] tmp;
+    tmp = baos.toByteArray();
+    //System.out.println(tmp.length);
+
+    // TCP/IP connection
+    Socket socket = connect();
+    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+    // Data sending:
+    //System.out.println("Sending message of "+tmp.length);
+    writeToSocket(out,tmp);
+
+    // reply from the server:
+    DataInputStream in = new DataInputStream(socket.getInputStream());
+    byte [] reply = readFromSocket(in);
+
+    System.out.println("--> "+reply.length);
+    PHTmessageOuterClass.PHTmessage m2;
+    print("arrived.bin",reply);
+    m2 = PHTmessageOuterClass.PHTmessage.parseFrom(reply);
+    System.out.println("--> HERE");
+    //System.out.println("zz "+m2.toString());
+    //System.out.println(m2.getType());
+    PHTmessageOuterClass.Answer a;
+    if (m2.getType()== PHTmessageOuterClass.PHTmessage.MessageType.DATA)
+    {
+        //a = m2.getAnswer();
+        //error_message.delete(0,error_message.length()).append(a.getAnswer());
+    }
+    if (m2.getType()== PHTmessageOuterClass.PHTmessage.MessageType.ERROR)
+    {
+        System.out.println("Not yet implemented..");
+    }
+
+    p_v = m2.getProposal(0);
+
+    socket.close();
+
+    return p_v;
+  }
+
+
   // Main function: Send data to the server on localhost:5200 
   public static StringBuffer insertNewProposal(ProposalsOuterClass.Proposals proposal, StringBuffer error_message) throws Exception {
     // PHTmessage instance:
@@ -95,9 +163,9 @@ public class apioda {
     
     // Serialization
     message.build().writeTo(ps);
-        FileOutputStream outputT = new FileOutputStream("serial.bin");
-        outputT.write(baos.toByteArray());
-        outputT.close();
+        //FileOutputStream outputT = new FileOutputStream("serial.bin");
+        //outputT.write(baos.toByteArray());
+        //outputT.close();
 
 
     // Length of binary string

@@ -1,7 +1,6 @@
 #include "connectDB.h"
 #include <boost-optional.h>
 
-//void writeToDB(vector<string> command)
 string writeToDB(data_s dat)
 {
     string proposal_id = "";
@@ -154,6 +153,162 @@ string writeToDB(data_s dat)
     sql.close();
 
     return proposal_id;
+}
+
+Proposals * readProposalFromDB(int pid)
+{
+    cout<<"Reading DB..\n";
+
+    session sql(mysql, use_db);
+
+    // Extracting the total number of proposals and storing each proposal_id in
+    // vector<int> p_id
+    stringstream cmd;
+    
+    cout<<"Retrieving proposal "<<pid<<endl;
+    // Proposals
+    Proposals *p = new Proposals;
+    string abstract;
+    boost::optional<string> more_info;
+    string pst;
+    string pty;
+    sql<<"select abstract, more_info, proposal_status, proposal_type from Proposals where proposal_id=:id;", use(pid), 
+    into(abstract), into(more_info), into(pst), into(pty);
+
+    p->set_proposal_id(pid);
+    p->set_abstract(abstract);
+    if (more_info.is_initialized())
+    {
+        p->set_more_info(more_info.get());
+    }
+        
+    ProposalStatus proposal_status;
+    ProposalType proposal_type;
+    switch ( atoi(pst.c_str()) )
+    {
+        case PHT::Draft:
+            proposal_status = PHT::Draft;
+            break;
+        case PHT::Accepted:
+            proposal_status = PHT::Accepted;
+            break;
+        case PHT::Rejected:
+            proposal_status = PHT::Rejected;
+            break;
+        case PHT::Submitted:
+            proposal_status = PHT::Submitted;
+            break;
+        case PHT::Merged:
+            proposal_status = PHT::Merged;
+            break;
+    }
+    p->set_proposal_status(proposal_status);
+        
+    switch ( atoi(pty.c_str()) )
+    {
+        case PHT::TOO:
+            proposal_type = PHT::TOO;
+            break;
+        case PHT::DDT:
+            proposal_type = PHT::DDT;
+            break;
+        case PHT::PI:
+            proposal_type = PHT::PI;
+            break;
+        case PHT::KeyScienceProject:
+            proposal_type = PHT::KeyScienceProject;
+            break;
+    }
+    p->set_proposal_type(proposal_type);
+
+    //tab_name.push_back("CoAuthors");
+    CoAuthors *coa = new CoAuthors;
+   
+    int author_id, proposal_id, coAuthorsID;
+    sql<<"select author_id, proposal_id, coAuthorsID from CoAuthors where proposal_id=:id;", use(pid), 
+            into(author_id), into(proposal_id), into(coAuthorsID);
+
+    coa->set_author_id(author_id);
+    coa->set_proposal_id(proposal_id);
+    coa->set_coauthorsid(coAuthorsID);
+
+    p->set_allocated_m_coauthors(coa);
+    //tab_name.push_back("ProposalEditors");
+    ProposalEditors *ped = new ProposalEditors;
+    int isPI, proposalEditorsID;
+    string aid;
+    sql<<"select author_id, isPI, more_info, proposal_id from ProposalEditors where proposal_id=:id;", use(pid), 
+        into(aid), into(isPI), into(more_info), into(proposal_id);
+
+    ped->set_author_id(aid);
+    ped->set_ispi(isPI);
+    if (more_info.is_initialized())
+    {
+        ped->set_more_info(more_info.get()); // boost
+    }
+    ped->set_proposal_id(proposal_id);
+
+    p->set_allocated_m_proposaleditors(ped);
+    //tab_name.push_back("Reviews");
+    Reviews *rev = new Reviews;
+
+    string grade_rank, review_comments;
+    int reviewer_id, reviewsID;
+    sql<<"select grade_rank, proposal_id, review_comments, reviewer_id from Reviews where proposal_id=:id;", use(pid), 
+        into(grade_rank), into(proposal_id), into(review_comments), into(reviewer_id);
+
+    rev->set_grade_rank(grade_rank);
+    rev->set_proposal_id(proposal_id);
+    rev->set_review_comments(review_comments);
+    rev->set_reviewer_id(reviewer_id);
+
+    p->set_allocated_m_reviews(rev);
+    //tab_name.push_back("ScienceGoals");
+    ScienceGoals *scg = new ScienceGoals;
+
+    double frequence;
+    string ins_conf, tgt_det;
+    sql<<"select frequence, instrument_configurations, more_info, target_details from ScienceGoals where proposal_id=:id;", use(pid), 
+        into(frequence), into(ins_conf), into(more_info), into(tgt_det);
+
+    scg->set_frequence(frequence);
+    scg->set_instrument_configurations(ins_conf);
+    if (more_info.is_initialized())
+    {
+        scg->set_more_info(more_info.get()); //boost
+    }
+    scg->set_target_details(tgt_det);
+
+    p->set_allocated_m_sciencegoals(scg);
+    //tab_name.push_back("SupportingDocuments");
+    SupportingDocuments *sd = new SupportingDocuments;
+
+    string prep, sc_j, tec_j;
+    sql<<"select preprints, scientific_justification, technical_justification from SupportingDocuments where proposal_id=:id;", use(pid), 
+        into(prep), into(sc_j), into(tec_j);
+
+    sd->set_preprints(prep);
+    sd->set_scientific_justification(sc_j);
+    sd->set_technical_justification(tec_j);
+
+    p->set_allocated_m_supportingdocuments(sd);
+    //tab_name.push_back("TACReviews");
+    TACReviews *tr = new TACReviews;
+
+    string com, fg;
+    int tac_id;
+    sql<<"select comments, final_grade, tac_id from TACReviews where proposal_id=:id;", use(pid), 
+        into(com), into(fg), into(tac_id);
+
+    tr->set_comments(com);
+    tr->set_final_grade(fg);
+    tr->set_tac_id(tac_id);
+    p->set_allocated_m_tacreviews(tr);
+    // Adding proposal to the list
+    
+    sql.close();
+
+    return p;
 }
 
 
