@@ -9,9 +9,18 @@ class example {
   public static void main(String[] args) throws Exception {
     // Definition of a Proposals with given fields:
     ProposalsOuterClass.Proposals.Builder proposal =  ProposalsOuterClass.Proposals.newBuilder();
-    proposal.setAbstract("ahaha????hahah");
+    proposal.setAbstract("My new survey abstract");
     proposal.setProposalStatus(ProposalStatusOuterClass.ProposalStatus.Draft);
     proposal.setProposalType(ProposalTypeOuterClass.ProposalType.TOO);
+
+    // Adding Science Goals
+    ScienceGoalsOuterClass.ScienceGoals.Builder sciencegoals = ScienceGoalsOuterClass.ScienceGoals.newBuilder();
+    sciencegoals.setFrequence(117.10);
+    sciencegoals.setInstrumentConfigurations("Twin interferometer");
+    sciencegoals.setMoreInfo("--");
+    sciencegoals.setTargetDetails("Jupiter and its satellites");
+    proposal.setMScienceGoals(sciencegoals);
+
 
     // Sending proposal
     StringBuffer error = new StringBuffer("");
@@ -20,8 +29,8 @@ class example {
   
     System.out.println("Error new insert: "+error);
     System.out.println("Proposal ID: "+proposal_id);
-
-    proposal.setAbstract("eheheheheheh");
+/*
+    proposal.setAbstract("testAbs");
     int id = Integer.parseInt(proposal_id.toString());
     proposal.setProposalId(id);
     //System.out.println(proposal.getAbstract());
@@ -33,5 +42,6 @@ class example {
     p_l = apioda.requestProposalsWithStatus(PHT.ProposalStatusOuterClass.ProposalStatus.Draft);
 
     System.out.println("Found : "+p_l.size());
+    */
   }
 }

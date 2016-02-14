@@ -7,8 +7,7 @@ string writeToDB(data_s dat)
     string proposal_id = "";
     // Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
     // should be put in the for(i) above.
-    session sql(mysql, "db=PHT user=marco password=Marco74");
-    //session sql(mysql, "db=PHT user=controls password=Wrufu6ac");
+    session sql(mysql, use_db);
     transaction tr(sql);
 
     // before inserting, printing the currente number of Proposals
@@ -173,8 +172,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
     tab_name.push_back("SupportingDocuments");
     tab_name.push_back("TACReviews");
 
-    session sql(mysql, "db=PHT user=marco password=Marco74");
-    //session sql(mysql, "db=PHT user=control");
+    session sql(mysql, use_db);
 
     // Extracting the total number of proposals and storing each proposal_id in
     // vector<int> p_id

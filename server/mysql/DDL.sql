@@ -40,7 +40,7 @@ CREATE TABLE `TACReviews`
 	`comments` VARCHAR(50) 	 NULL,
 	`final_grade` VARCHAR(50) 	 NULL,
 	`tac_id` INTEGER 	 NULL ,
-	`tACReviewsID` INTEGER NOT NULL,
+	`tACReviewsID` INTEGER NOT NULL AUTO_INCREMENT,
 	`proposal_id` INTEGER 	 NULL,
 	CONSTRAINT `PK_TACReviews` PRIMARY KEY (`tACReviewsID`)
 )
@@ -52,7 +52,7 @@ CREATE TABLE `SupportingDocuments`
 	`preprints` VARCHAR(50) 	 NULL,
 	`scientific_justification` VARCHAR(50) 	 NULL,
 	`technical_justification` VARCHAR(50) 	 NULL,
-	`supportingDocumentsID` INTEGER NOT NULL,
+	`supportingDocumentsID` INTEGER NOT NULL AUTO_INCREMENT,
 	`proposal_id` INTEGER 	 NULL,
 	CONSTRAINT `PK_SupportingDocuments` PRIMARY KEY (`supportingDocumentsID`)
 )
@@ -65,7 +65,7 @@ CREATE TABLE `ScienceGoals`
 	`instrument_configurations` VARCHAR(50) 	 NULL,
 	`more_info` VARCHAR(50) 	 NULL,
 	`target_details` VARCHAR(50) 	 NULL,
-	`scienceGoalsID` INTEGER NOT NULL,
+	`scienceGoalsID` INTEGER NOT NULL AUTO_INCREMENT,
 	`proposal_id` INTEGER 	 NULL,
 	CONSTRAINT `PK_ScienceGoals` PRIMARY KEY (`scienceGoalsID`)
 )
@@ -77,7 +77,7 @@ CREATE TABLE `Reviews`
 	`grade_rank` VARCHAR(50) 	 NULL,
 	`proposal_id` INTEGER 	 NOT NULL,
 	`review_comments` VARCHAR(50) 	 NULL,
-	`reviewer_id` INTEGER 	 NULL,
+	`reviewer_id` INTEGER 	 NULL AUTO_INCREMENT,
 	`reviewsID` INTEGER NOT NULL,
 	CONSTRAINT `PK_Reviews` PRIMARY KEY (`reviewsID`)
 )
@@ -102,7 +102,7 @@ CREATE TABLE `ProposalEditors`
 	`isPI` BOOL 	 NULL,
 	`more_info` VARCHAR(50) 	 NULL,
 	`proposal_id` INTEGER 	 NOT NULL,
-	`proposalEditorsID` INTEGER NOT NULL,
+	`proposalEditorsID` INTEGER NOT NULL AUTO_INCREMENT,
 	CONSTRAINT `PK_ProposalEditors` PRIMARY KEY (`proposalEditorsID`)
 )
 
@@ -112,7 +112,7 @@ CREATE TABLE `CoAuthors`
 (
 	`author_id` INTEGER 	 NULL,
 	`proposal_id` INTEGER 	 NOT NULL,
-	`coAuthorsID` INTEGER NOT NULL,
+	`coAuthorsID` INTEGER NOT NULL AUTO_INCREMENT,
 	CONSTRAINT `PK_CoAuthors` PRIMARY KEY (`coAuthorsID`)
 )
 

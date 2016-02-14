@@ -11,8 +11,8 @@ public class apioda {
   }
   public static Socket connect() throws Exception {
         Socket socket;
-        //socket = new Socket("localhost",3303);
-        socket = new Socket("spock.oats.inaf.it",5200);
+        socket = new Socket("localhost",3303);
+        //socket = new Socket("spock.oats.inaf.it",5200);
 
         return socket;
     }
