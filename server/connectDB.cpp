@@ -229,7 +229,7 @@ Proposals * readProposalFromDB(int pid)
             into(author_id), into(proposal_id), into(coAuthorsID);
 
     coa->set_author_id(author_id);
-    coa->set_proposal_id(proposal_id);
+    //coa->set_proposal_id(proposal_id); // not necessary
     coa->set_coauthorsid(coAuthorsID);
 
     p->set_allocated_m_coauthors(coa);
@@ -405,7 +405,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
             into(author_id), into(proposal_id), into(coAuthorsID);
 
         coa->set_author_id(author_id);
-        coa->set_proposal_id(proposal_id);
+        //coa->set_proposal_id(proposal_id); // not necessary
         coa->set_coauthorsid(coAuthorsID);
 
         p->set_allocated_m_coauthors(coa);

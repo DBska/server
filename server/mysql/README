@@ -7,4 +7,5 @@ To insert a fictitious set of data stored in file pht.data, use the following sy
 
 mysql>source /absolute_path/to_file/file.name; /* non usare apici */
 
-
+Per alterare una colonna in una tabella:
+alter table ScienceGoals modify scienceGoalsID int not null auto_increment;

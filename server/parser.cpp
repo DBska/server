@@ -10,7 +10,6 @@
  * \param *p_oda a pointer to the global message
  * \return a vector<string> where each line is an SQL command
  */
-//vector<string> parsingMessage(PHTmessage *p_oda)
 data_s parsingMessage(PHTmessage *p_oda)
 {
     cout<<"parsing...\n";
@@ -74,6 +73,26 @@ data_s parsingMessage(PHTmessage *p_oda)
     // return command;
 }
 
+void insertFieldData(const Message *m, const Reflection *r, const Descriptor *d, data_s &dat, stringstream &data);
+void insertFieldData(const Message *m, const Reflection *r, const Descriptor *d, data_s &dat, stringstream &data)
+{
+	int t = dat.table.size() - 1;
+	vector< const FieldDescriptor * > fj;
+        r->ListFields(*m,&fj);
+
+	for (int i=0; i<fj.size(); i++) 
+        {
+		if ( r->HasField(*m,fj[i]) )
+                {
+			cout<<"----"<<fj[i]->name()<<endl;
+        		dat.name[t].push_back( fj[i]->name() );
+	        	dat.value[t].push_back( returnField(m,fj[i],r) );
+        		data<<"("<<fj[i]->name()<<";"<<returnField(m,fj[i],r)<<") ";
+		}
+	}
+}
+
+
 /*! This function is recursive, and decompose the data in the PHTmessage into
  * tables and variables name; values. The assumption is that a message is a
  * TABLE. Any non message type field inside the message under consideration, is
@@ -83,23 +102,22 @@ data_s parsingMessage(PHTmessage *p_oda)
  * INSERT INTO message_name (name1,name2,..) VALUES (value1,value2,...);
  *
  */ 
-//vector<string> writeTableCommand(const Message *m, const Descriptor *d, const Reflection *r)
 data_s writeTableCommand(const Message *m, const Descriptor *d, const Reflection *r)
 {
     // The vector<string> contains the SQL commands for inserting values
     vector<string> command;
     stringstream data;
 
-    cout<<"IN\n";
+    cout<<"IN WRITE TABLE COMMAND\n";
     data<<"INSERT INTO "<<d->name()<<" (";
 
     bool loop_message = true;
-    const Message *mc = m;
-    const Reflection *rc = r;
-    const Descriptor *dc = d;
-    const Message *mnew = m;
-    const Reflection *rnew = r;
-    const Descriptor *dnew = d;
+    //const Message *mc = m;
+    //const Reflection *rc = r;
+    //const Descriptor *dc = d;
+    const Message *mnew = 0;//m;
+    const Reflection *rnew = 0;//r;
+    const Descriptor *dnew = 0;//d;
     data_s dat;
 
     // The strategy of this block of code is as follows: of the message m
@@ -109,52 +127,48 @@ data_s writeTableCommand(const Message *m, const Descriptor *d, const Reflection
     // float,...) are stored in two vectors: one for the names (name) and one
     // for the corresponding values (value). A check on value to see if it is
     // set is also done.
-    while (loop_message)
+    // The following two commands extract all the fields set into this message.
+    vector< const FieldDescriptor * > fj;
+    r->ListFields(*m,&fj);
+    dat.table.push_back(d->name());
+    int t = 0;//dat.table.size() - 1;
+    for (int i=0; i<fj.size(); i++) 
     {
-        bool found_new_message = false;
-        // The following two commands extract all the fields set into this message.
-        vector< const FieldDescriptor * > fj;
-        rc->ListFields(*mc,&fj);
-        dat.table.push_back(dc->name());
-        int t = dat.table.size() - 1;
-
-        for (int i=0; i<fj.size(); i++) 
+        if ( fj[i]->type() == FieldDescriptor::TYPE_MESSAGE)
         {
-            if ( fj[i]->type() == FieldDescriptor::TYPE_MESSAGE)
-            {
-                found_new_message = true;
-                mnew = &(rc->GetMessage(*mc,fj[i]));
-                dnew = fj[i]->message_type();
-                rnew = mnew->GetReflection();
+            mnew = &(r->GetMessage(*m,fj[i]));
+            dnew = fj[i]->message_type();
+            rnew = mnew->GetReflection();
+	    dat.table.push_back(dnew->name());
+	    insertFieldData(mnew, rnew, dnew, dat, data);
 
-                cout<<"Found new table:"<<fj[i]->name()<<endl;
-            }
-            else
-            {
-                // Check to see if the value has been inserted. If not, the field is
-                // discarded
-                if ( rc->HasField(*mc,fj[i]) )
-                {
-                    cout<<"----"<<fj[i]->name()<<endl;
-                    dat.name[t].push_back( fj[i]->name() );
-                    dat.value[t].push_back( returnField(mc,fj[i],rc) );
-                    data<<"("<<fj[i]->name()<<";"<<returnField(mc,fj[i],rc)<<") ";
-                }
-            }
-        }
-        // Checking if the message and its structure has been fully parsed
-        if ( !found_new_message ) 
-        {
-            loop_message = false;
+            cout<<"Found new table:"<<fj[i]->name()<<endl;
         }
         else
         {
-            mc = mnew;
-            rc = rnew;
-            dc = dnew;
+            // Check to see if the value has been inserted. If not, the field is
+            // discarded
+            if ( r->HasField(*m,fj[i]) )
+            {
+                cout<<"----"<<fj[i]->name()<<endl;
+                dat.name[t].push_back( fj[i]->name() );
+                dat.value[t].push_back( returnField(m,fj[i],r) );
+                data<<"("<<fj[i]->name()<<";"<<returnField(m,fj[i],r)<<") ";
+            }
         }
+        // Checking if the message and its structure has been fully parsed
+        //if ( !found_new_message ) 
+        //{
+        //    loop_message = false;
+        //}
+        //else
+        //{
+        //    mc = mnew;
+        //    rc = rnew;
+        //    dc = dnew;
+        //}
     }
-    cout<<"OUT\n";
+    cout<<"OUT WRITE TABLE COMMAND\n";
 
     return dat;
 }

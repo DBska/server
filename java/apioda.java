@@ -1,3 +1,4 @@
+import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.net.*;
 import java.util.Vector;
@@ -24,6 +25,18 @@ public class apioda {
             (b[0] & 0xFF) << 24;
     }    
   public static byte[] toByteArray(int value) {
+    //System.out.println("int "+value);
+    //System.out.println("aa "+(byte)(value>>24));
+    //System.out.println("bb "+(byte)(value>>16));
+    //System.out.println("cc "+(byte)(value>>8));
+    //System.out.println("dd "+(byte)(value));
+    
+    //byte [] bb = new byte[] { (byte)(value >> 24),
+    //    (byte)(value >> 16),
+    //    (byte)(value >> 8),
+    //    (byte)value };
+    //System.out.println("back "+byteArrayToInt(bb));
+
     return new byte[] { 
         (byte)(value >> 24),
         (byte)(value >> 16),
@@ -75,6 +88,18 @@ public class apioda {
     
         return buffer;
   }
+
+  // Upload a file to the server
+  public static void uploadFile(int pid,String path_file_name) throws Exception
+  {
+    System.out.println("Uploading file: "+Integer.toString(pid)+path_file_name);
+    // Reading path_file_name. this is the full path plus name: ie /home/my_path/to_file/filename.ppp
+    File file = new File(path_file_name);
+    byte[] fBytes = FileUtils.readFileToByteArray(file);
+    //String fileContent = new String(fBytes);
+    //System.out.println(fileContent);
+  }
+
 
   // Return proposal with given id 
   public static ProposalsOuterClass.Proposals getProposalWithID(int pid)  throws Exception   
@@ -155,7 +180,7 @@ public class apioda {
 
     // Adding proposal to the message
     message.addProposal(proposal);
-    //System.out.println(message.build().toString());
+    System.out.println(message.build().toString());
 
     // Preparing transmission:
     ByteArrayOutputStream baos = new ByteArrayOutputStream();

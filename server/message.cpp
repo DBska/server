@@ -36,13 +36,14 @@ bool readFromSocket(int sock, string &answer, Error &err)
     if ( n>BUF_SIZE) err.writeErrorMessage("ERROR int too big");
     if (n != 0)
     {
-        cout<<"START READING... "<<buffer<<endl;
+        cout<<"START READING... "<<endl;
         int val = 0;
+	
+	val =   buffer[3] & 0xFF | 
+	       (buffer[2] & 0xFF) << 8  |
+	       (buffer[1] & 0xFF) << 16 |
+               (buffer[0] & 0xFF) << 24;
 
-        val = (val << 8) + buffer[0];
-        val = (val << 8) + buffer[1];
-        val = (val << 8) + buffer[2];
-        val = (val << 8) + buffer[3];
         
         cout<<"value: "<<val<<" //// n: "<<n<<endl;
      
