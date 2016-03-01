@@ -32,7 +32,12 @@ Required libraries
 To run, the software requires the following libraries:
 1. SOCI - The C++ Database Access Library. Version: 3.2.2
 2. BOOST C++ Libraries. Version: 1.59.0
-3. Google Protocol Buffer. Version: 3.0.0
+3. Google Protocol Buffer. Version: 2.6.1
+
+To compile java code from protocol buffer, one need to generate the com.google.protocol buffer javas. Follow this step:
+Inside the protoc-2.6.1 directory, go inside java. Run "mvn install" and then
+"protoc --java_out=src/main/java -I../src ../src/google/protobuf/descriptor.proto"
+After these two steps it is possibile to copy from inside src/main the package com.google.protocol and use it to compile the java code.
 
 Directory structure
 ===================
