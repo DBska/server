@@ -219,17 +219,25 @@ void processing(int sock, Error &err)
         case PHTmessage::QUERY:
             {
                 cout<<"Query found...\n";
+				Query *m_query = p_oda->mutable_query();
                 //cout<< (p_oda->mutable_query())->query() <<endl;
-                int p_status = (p_oda->mutable_query())->query();
-                if (p_status > 0)
-                {
-                    allProposalsWithStatus(sock,p_status,err);
-                }
-                if (p_status<0)
-                {
-                    p_status = (-1) * p_status;
-                    proposalWithID(sock,p_status,err);
-                }
+				if ( m_query->file_to_upload() )
+				{
+					uploadFile(m_query->file_name(), m_query->file_data());	
+				}
+				else
+				{
+		            int p_status = m_query->query();
+			        if (p_status > 0)
+		        	{
+		            	allProposalsWithStatus(sock,p_status,err);
+			        }
+		        	if (p_status<0)
+		            {
+			            p_status = (-1) * p_status;
+		        		proposalWithID(sock,p_status,err);
+		        	}
+				 }
                 break;
             }
         default:

@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Vector;
 import PHT.*;
+import com.google.protobuf.ByteString;
 
 public class apioda {
   public static void print(String file, byte [] what) throws Exception {
@@ -90,16 +91,69 @@ public class apioda {
   }
 
   // Upload a file to the server
-  public static void uploadFile(int pid,String path_file_name) throws Exception
+  public static void uploadFile(int pid, String path, String file_name) throws Exception
   {
-    System.out.println("Uploading file: "+Integer.toString(pid)+path_file_name);
+    String local_path_file_name = path+file_name;
+    String ODA_file_name = Integer.toString(pid)+"_"+file_name;	
+    System.out.println("Uploading file: "+path+file_name);
+    System.out.println("ODA file name: "+ODA_file_name);
     // Reading path_file_name. this is the full path plus name: ie /home/my_path/to_file/filename.ppp
-    File file = new File(path_file_name);
+    File file = new File(local_path_file_name);
     byte[] fBytes = FileUtils.readFileToByteArray(file);
     //String fileContent = new String(fBytes);
     //System.out.println(fileContent);
-  }
 
+    PHTmessageOuterClass.PHTmessage.Builder message = PHTmessageOuterClass.PHTmessage.newBuilder();
+    // PHTmessage TYPE:
+    message.setType(PHTmessageOuterClass.PHTmessage.MessageType.QUERY);
+    PHTmessageOuterClass.Query.Builder query = PHTmessageOuterClass.Query.newBuilder();
+    
+    boolean file_to_upload = true; // must be true to upload a file
+    query.setFileToUpload(file_to_upload);
+    query.setFileName(ODA_file_name);
+    query.setFileData( ByteString.copyFrom(fBytes) );
+
+    // Adding query to the message
+    message.setQuery(query);
+    //System.out.println(message.build().toString());
+
+    // Preparing transmission:
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream ps = new PrintStream(baos);
+    
+    // Serialization
+    message.build().writeTo(ps);
+
+    // Length of binary string
+    byte [] tmp;
+    tmp = baos.toByteArray();
+
+    // TCP/IP connection
+    Socket socket = connect();
+    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+    // Data sending:
+    //System.out.println("Sending message of "+tmp.length);
+    writeToSocket(out,tmp);
+/*
+    // reply from the server:
+    DataInputStream in = new DataInputStream(socket.getInputStream());
+    byte [] reply = readFromSocket(in);
+
+//    System.out.println("--> "+reply.length);
+    PHTmessageOuterClass.PHTmessage m2;
+//    print("arrived.bin",reply);
+    m2 = PHTmessageOuterClass.PHTmessage.parseFrom(reply);
+    //System.out.println("--> HERE");
+    //System.out.println("zz "+m2.toString());
+    //System.out.println(m2.getType());
+    PHTmessageOuterClass.Answer a;
+    if (m2.getType()== PHTmessageOuterClass.PHTmessage.MessageType.DATA)
+    {
+        a = m2.getAnswer();
+        System.out.println(a.getAnswer());
+    }
+*/
+  }
 
   // Return proposal with given id 
   public static ProposalsOuterClass.Proposals getProposalWithID(int pid)  throws Exception   
@@ -145,7 +199,7 @@ public class apioda {
 
     System.out.println("--> "+reply.length);
     PHTmessageOuterClass.PHTmessage m2;
-    print("arrived.bin",reply);
+    //print("arrived.bin",reply);
     m2 = PHTmessageOuterClass.PHTmessage.parseFrom(reply);
     System.out.println("--> HERE");
     //System.out.println("zz "+m2.toString());

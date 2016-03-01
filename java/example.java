@@ -51,11 +51,11 @@ class example {
 	
     	
     // Inserting supporting documents for given proposal_id:
-    int pid = Integer.parseInt("dsds5");
+    int pid = Integer.parseInt("5");
     System.out.println("Val: "+pid);
-    apioda.uploadFile(pid,"./supportingDocuments/"+scifile);
-//    apioda.uploadFile("./supportingDocuments/"+techfile);
-//    apioda.uploadFile("./supportingDocuments/"+preprint);
+    apioda.uploadFile(pid,"./supportingDocuments/",scifile);
+    apioda.uploadFile(pid,"./supportingDocuments/",techfile);
+    apioda.uploadFile(pid,"./supportingDocuments/",preprint);
 /*
     // Requesting proposal with ID = my_proposal_ID
     int my_proposal_id = 9;

@@ -1,11 +1,18 @@
-all:
-	javac apioda.java
+all: example.class apioda.class
+
+example.class: example.java
 	javac example.java
 
-.PHONY: clean
+apioda.class: apioda.java
+	javac apioda.java
+
+.PHONY: clean cleanall
 
 clean:
 	rm -rf *.class
-	rm PHT/*.class
+
+cleanall: 
+	rm -rf *.class
+	rm -rf PHT/*.class
 
 

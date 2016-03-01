@@ -1,6 +1,18 @@
 #include "message.h"
 
+void uploadFile(string file_name, string file_data)
+{
+   string path = "./documents/";
+   string path_file= "";
+   path_file = path+file_name;
+   cout<<"Writing file: "<<path_file<<endl;
+   ofstream file;
+   file.open(path_file.c_str());
 
+   file<<file_data;
+
+   file.close();
+}
 
 void writeToSocket(int sock, string message, Error &err)
 {
@@ -46,7 +58,7 @@ bool readFromSocket(int sock, string &answer, Error &err)
 
         
         cout<<"value: "<<val<<" //// n: "<<n<<endl;
-     
+    	// With 4 bytes the masimum integer is 2^32-1
         char message[val+1];
         bzero(message,val);
 

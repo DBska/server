@@ -34,7 +34,8 @@ enum messageType_data
     DATA = 1,
     QUERY,
     ANSWER,
-    ERROR
+    ERROR,
+    PST
 };
 
 messageType_data selectMessageType();
@@ -43,5 +44,6 @@ void allProposalsWithStatus(int sock, int p_stat, Error &err);
 bool readFromSocket(int sock, string &answer, Error &err);
 void writeToSocket(int sock, string message, Error &err);
 void proposalWithID(int sock, int pid, Error &err);
+void uploadFile(string file_name, string file_data);
 
 #endif
