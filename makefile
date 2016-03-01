@@ -1,9 +1,9 @@
 all:
 	$(MAKE) -C proto
 	$(MAKE) -C server
-	$(MAKE) -C client
-	$(MAKE) -C interface
-	$(MAKE) -C tool
+#	$(MAKE) -C client
+#	$(MAKE) -C interface
+#	$(MAKE) -C tool
 	$(MAKE) -C java
 
 proto:
