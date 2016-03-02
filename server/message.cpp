@@ -40,9 +40,9 @@ bool readFromSocket(int sock, string &answer, Error &err)
 
     int n = 0;
     n = read(sock,buffer,BUF_SIZE);
-    //fstream output("blobIN.bin", ios::out | ios::binary);
-    //output<<buffer[0]<<buffer[1]<<buffer[2]<<buffer[3];
-    //output.close();
+    fstream output("blobIN.pdf", ios::out );
+    output<<buffer[0]<<buffer[1]<<buffer[2]<<buffer[3];
+    output.close();
 
     if (n < 0) err.writeErrorMessage("ERROR reading from socket");
     if ( n>BUF_SIZE) err.writeErrorMessage("ERROR int too big");
@@ -51,21 +51,26 @@ bool readFromSocket(int sock, string &answer, Error &err)
         cout<<"START READING... "<<endl;
         int val = 0;
 	
-	val =   buffer[3] & 0xFF | 
-	       (buffer[2] & 0xFF) << 8  |
-	       (buffer[1] & 0xFF) << 16 |
+		val =   buffer[3] & 0xFF | 
+	    	   (buffer[2] & 0xFF) << 8  |
+	       	   (buffer[1] & 0xFF) << 16 |
                (buffer[0] & 0xFF) << 24;
 
         
         cout<<"value: "<<val<<" //// n: "<<n<<endl;
     	// With 4 bytes the masimum integer is 2^32-1
         char message[val+1];
-        bzero(message,val);
+        bzero(message,val+1);
 
         // Reading message:
-        n = read(sock,message,sizeof(message));
-        cout<<"red: "<<n<<" out of "<<val<<endl;
-        if (n<val) 
+		int len = 0 ;
+		while (len < val )
+		{
+        	n = read(sock,message+len,val-len);
+			len += n;
+		}
+        cout<<"red: "<<len<<" out of "<<val<<endl;
+        if (len<val) 
         {
             cout<<"Error in sending data..aborting\n";
             exit(1);
@@ -73,7 +78,6 @@ bool readFromSocket(int sock, string &answer, Error &err)
         for (int j=0; j<val; j++)
             answer.push_back(message[j]);
         cout<<answer.length()<<" "<<val<<" "<<val+1<<endl;
-        cout<<" $$$$ "<<n-val<<endl;
         cout<<"STOP READING...\n";
         
         //fstream output2("blob2.bin", ios::out | ios::binary);

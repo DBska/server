@@ -195,8 +195,9 @@ void processing(int sock, Error &err)
     {
         string emsg = "ERROR. Can not parse the received message.";
         err.writeErrorMessage(emsg);
+		cout<<"!!! ERROR in PARSING !!!"<<endl;
         cout<<p_oda->DebugString();
-	exit(-1);
+		exit(-1);
     }
     cout<<"Printing debug message string\n";
     cout<<p_oda->DebugString();
