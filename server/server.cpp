@@ -163,25 +163,6 @@ int main(int argc, char *argv[])
 
 void processing(int sock, Error &err)
 {
-    /*
-    // The message is received in two parts: 1) its lengths 2) the message
-    // 1) The length of the message to be received
-    uint32_t mLength;
-    read(sock,&mLength,sizeof(uint32_t)); // Receive the message length
-    mLength = ntohl(mLength); // Ensure host system byte order
-    int dataLength = static_cast<int>(mLength);
-    cout<<"Message of "<<dataLength<<" elements arrived!\n";
-    
-    // 2) The message itself. It is stored in a char [], however a vector<char> could and should be used.
-    vector<uint8_t> msg; // Allocating a buffer of approriate length
-    msg.resize(mLength,0x00);
-
-    int n;
-    n = read(sock,&(msg[0]),mLength); // Receive the string data
-    string message;   // Convert message data into a string for de-serialization
-    message.assign(reinterpret_cast<const char*>(&(msg[0])),msg.size());
-*/
-    
     bool is_a_message = false;
     string message;
     is_a_message = readFromSocket(sock,message,err);
@@ -203,13 +184,8 @@ void processing(int sock, Error &err)
     //cout<<p_oda->DebugString();
     //cout<<"done"<<endl;
     // Parsing the message. Only one proposal at a time can be inserted.
-    //vector<string> command;
-    //command = parsingMessage(p_oda);
     data_s dat;
     dat = parsingMessage(p_oda);
-    //cout<<"Command(s) detected:"<<endl;
-    //for (int i=0; i<command.size(); i++)
-    //    cout<<command[i]<<endl;
 
     // Check message type:
     switch ( p_oda->type() )
@@ -241,6 +217,8 @@ void processing(int sock, Error &err)
 				 }
                 break;
             }
+		case PHTmessage::PST:
+			break;
         default:
             string emsg = "ERROR: message type not yet implemented";
             err.writeErrorMessage(emsg);
