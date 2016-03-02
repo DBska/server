@@ -8,7 +8,7 @@ ifeq ($(wildcard src/*.cc),)
 endif
 ifeq ($(wildcard PHT/*.java),)
 	protoc --java_out=. *.proto
-	rm ../java/PHT/*.java
+	rm -f ../java/PHT/*.java
 	cp ./PHT/*.java ../java/PHT
 endif
 
