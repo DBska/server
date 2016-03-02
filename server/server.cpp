@@ -24,6 +24,7 @@
 #include "error.h"
 #include "message.h"
 #include "data_struct.h"
+#include "pst.h"
 
 using namespace std;
 using namespace PHT; // namespace for using google protocol buffer
