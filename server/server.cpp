@@ -199,9 +199,9 @@ void processing(int sock, Error &err)
         cout<<p_oda->DebugString();
 		exit(-1);
     }
-    cout<<"Printing debug message string\n";
-    cout<<p_oda->DebugString();
-    cout<<"done"<<endl;
+    //cout<<"Printing debug message string\n";
+    //cout<<p_oda->DebugString();
+    //cout<<"done"<<endl;
     // Parsing the message. Only one proposal at a time can be inserted.
     //vector<string> command;
     //command = parsingMessage(p_oda);

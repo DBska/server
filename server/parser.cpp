@@ -13,7 +13,7 @@
 data_s parsingMessage(PHTmessage *p_oda)
 {
     cout<<"parsing...\n";
-    cout<<p_oda->DebugString();
+    //cout<<p_oda->DebugString();
     //vector<string> command;
     data_s dat;
     const Descriptor *d = p_oda->GetDescriptor();
