@@ -1,0 +1,8 @@
+package PHT;
+
+message Column
+{
+    optional string name = 1;
+    optional string type = 2;
+    optional string value = 3;	
+}
