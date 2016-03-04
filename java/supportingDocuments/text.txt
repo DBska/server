@@ -1,0 +1,190 @@
+
+Lessons Learned Home
+
+    Home
+    View All Accidents
+    Airplane Life Cycle
+    Accident Threat Categories / Groupings
+    Accident Common Themes
+    Searching / Sorting
+    Site Map
+
+        TWA 800 at Atlantic Ocean
+            Accident Overview
+            Accident Board Findings
+            Accident Board Recommendations
+            Relevant Regulations
+            Prevailing Cultural / Organizational Factors
+            Key Safety Issue(s)
+            Safety Assumptions
+            Precursors
+            Resulting Safety Initiatives
+            Airworthiness Directives (ADs) Issued
+            Common Themes
+            Related Accidents / Incidents
+            Lessons Learned
+
+Accident Overview
+Photo of TWA accident airplane, registration number N93119
+Photo of TWA accident airplane, registration number N93119
+
+On July 17, 1996 at 2031 EDT, TWA Flight 800, a Boeing model 747-131, registration number N93119, crashed into the Atlantic Ocean about eight miles south of East Moriches, New York, after taking off from John F. Kennedy International Airport. The airplane was being operated on an instrument flight rules (IFR) flight plan under the provisions of Title 14, Code of Federal Regulation (CFR), Part 121, on a regularly scheduled flight to Charles De Gaulle International Airport (CDG), Paris, France.
+
+The airplane was manufactured in November 1971, and had accumulated about 93,303 flight hours and 16,869 cycles. On board the airplane were 212 passengers and 18 crewmembers. The airplane was completely destroyed, and all 230 passengers and crew members on board were killed.
+Illustration of Flight path of TWA 800
+Illustration of Flight path of TWA 800. The boxes represent debris fields.
+
+The crash was the result of a sudden and catastrophic in-flight breakup. Witnesses saw an explosion and then debris descending to the ocean. The flight crew did not report a problem to air traffic control. There was no weather or other external factors that influenced the breakup.
+
+Several early eyewitness accounts also reported having seen a missile, or missile contrail, in the vicinity of the airplane at the time of the explosion. This prompted early speculation that the accident may have been the result of an act of terrorism. Because of these early claims, it was believed prudent to approach the investigation both as a potential crime scene, as well as an accident scene. The investigation of TWA Flight 800 was unprecedented in that, as a result of the dual initial focus, both the Federal Bureau of Investigation (FBI) and the National Transportation Safety Board (NTSB) co-led the investigation. This required both a crime scene "chain-of-custody" process to be applied for all wreckage as well as "normal" aircraft accident recovery cataloguing processes. Recovered parts were thoroughly examined for evidence of bomb/missile debris fragments, explosive residue, or any other evidence of a hostile act. None were found.
+Photos of Recovery of and Wreckage of TWA 800 - NTSB Docket Photo
+Photos of Recovery of and Wreckage of TWA 800 - NTSB Docket Photos
+
+NTSB Illustration of Breakup pattern of TWA 800
+NTSB illustration of Breakup pattern of TWA 800
+NTSB Illustration of TWA 800 debris field
+NTSB illustration of TWA 800 debris fields
+
+Three debris fields were identified based on distribution of wreckage on the ocean floor. The general debris fields were noted as depicted in the graphics to the right.
+
+These animations and diagrams were created by the NTSB to illustrate airplane breakup and debris fields.
+
+Select here to view an animation reconstructing the final flight path of this aircraft.
+
+The NTSB determined the cause of the accident was an explosion of the center wing fuel tank, resulting from ignition of the flammable fuel/air vapors in the tank. The source of ignition energy could not be determined with certainty. Of the ignition sources evaluated by the investigation, the most likely scenario was a combination of a latent fault of an electronic fuel quantity indicating system component within the fuel tank, combined with a short circuit or other fault outside of the tank. This scenario would result in a high-energy electrical arc within the fuel tank that could ignite the flammable vapors.
+
+Flammable Fuel Tank
+
+Illustration of 747-131 Center Wing Tank (CWT)
+Illustration of 747-131 Center Wing Tank (CWT)
+View Larger Image
+
+
+Illustration of 747-131 fuel tanks and capacities
+Illustration of 747-131 fuel tanks and capacities
+View Larger Image
+
+The 747-100 contains seven fuel tanks. The explosion which initiated the breakup was believed to have originated in the center wing tank (CWT). The following diagrams illustrate the 747-100 fuel tanks.
+
+For structural reasons, wing tanks are filled first, and then any remaining fuel needed for a particular flight is put into the CWT. The volume of the 747-131's CWT, by all standards, is large. It has a Jet A fuel capacity of 86,363 pounds (12,890 gallons). Based on the length of TWA's flight to Paris, fuel in the center wing tank was not required. As with all transport airplanes, even this "empty" tank still contains a small amount of unusable fuel, estimated at around 50 gallons, and resides in small "pockets" and trapped areas on the lower tank surface.
+
+The investigation established that prior to departure the airplane had been exposed to high ambient temperatures at JFK. Two air conditioning (AC) packs (1 and 3) had been running for about 2 ½ hours prior to the flight. The combination of high ambient airport temperatures and operation of the AC packs, which are located below the center wing tanks, influenced the resultant temperatures within the tank. An "unintended" effect of the proximity of air conditioning packs and the center wing tank was that the air conditioning packs transferred heat into the fuel tank. The majority of transport airplanes in service today have a similar arrangement of center tank and air conditioning equipment, and undergo similar effects.
+Photo of Air Conditioning pack on a 747
+Photo of Air Conditioning pack on a 747 - located below the center wing tank
+
+Top and side views of the 747-100's wing center section and air conditioning system
+Top and side views of the 747-100's wing center section and air conditioning system
+View Larger
+
+Based on a NTSB-sponsored flight emulation of TWA 800 using a 747-121 (documented in the NTSB report), the highest ullage temperature measured within the CWT was 145 degrees F, which occurred just before the airplane began to taxi for takeoff. These high temperatures had the result of increasing evaporation of the small amount of fuel at the bottom of the tank, and thus increasing the flammability of the resulting fuel vapor/air mixture in the empty center tank.
+
+All seven fuel tanks on the 747-100, including the center wing tank, are vented to ambient atmospheric pressure, so after the flight took off and gained altitude, the pressure within the fuel tanks began to drop. Because the center wing tank has minimal ability to reject heat, the internal temperature drops slowly as the flight progresses. Based on the previously mentioned NTSB-sponsored emulation flight, the CWT temperatures at 13,700 feet (at the time of the TWA 800 explosion) were estimated to range from 103 to 127 degrees F.
+
+The following animation illustrates the flammability characteristics of Jet A fuel and the ullage space vapors for the center wing and main wing tanks of a 747-100.
+
+Click here to view TWA 800 Flammability Envelope Animation.
+Diagram of Calculated Contours for Different Ignition Energies (Jet A Fuel)
+Diagram of Calculated Contours for Different Ignition Energies (Jet A Fuel)
+View Larger Image
+
+During the course of the investigation, the relationship between the fuel tank ullage space temperature and the energy level required for vapor ignition became a key factor in determining the flammability of the center wing tank. It was learned that the center wing tank vapor temperatures, at the altitude and temperature conditions of the flight at the time of the tank explosion, were optimal for ignition, and therefore minimal ignition energy levels were required for a tank explosion to occur. As a result, the number of potential ignition sources, rather than being ruled out by the level of energy required for an explosion, were expanded. High-energy failure events, such as fuel pump disintegration, as well as low-energy events, such as static discharge, all became candidate plausible sources from an ignition energy perspective.
+Fuel Tank Safety Strategies
+
+For large commercial transport airplanes such as the 747, the fuel tank safety strategy is predicated upon potential threats that can be identified in two basic categories:
+Example of a frayed fuel pump wire
+Example of a frayed fuel pump wire,
+representative of post-accident inspection findings
+on commercial aircraft (not from TWA 800)
+Example of chafed Wire in Wire Harness
+Example of chafed Wire in Wire Harness
+representative of post-accident inspection
+program(not from TWA 800)
+
+    Internal threats, such as wiring failures, pump failures, etc.
+
+    Environmental threats, such as lightning and, high-intensity radiated fields (HIRF) external to the fuel tank.
+
+For protection against the known/assumed internal threats, the 747 and all other commercial transport airplanes incorporated as a design philosophy, ignition prevention within the fuel tank. This includes expected in-tank failure conditions, system malfunctions, and all adjacent sources that may influence tank temperature (bleed air duct failures, etc.). This design approach is generally referred to as "explosion proof" capability.
+
+All components within the 747 were shown to be explosion proof during the course of their approval. For example, the FQIS probes were shown to withstand several thousand volts of electrical overload without resulting in a spark, or overheating. This was believed to provide a large margin of safety, since the operating voltage of the FQIS probes is just a few volts. Similarly, all pumps which communicate with the fuel tank were shown to withstand mechanical and electrical failures, such as locked rotor events, bearing failures, wire shorts, etc., without resulting in a hot surface or spark within the tank.
+
+Further, it was assumed that since all fuel tank components were "explosion proof," in-tank FQIS components did not require periodic maintenance, and were left "on-condition" for the life of the airplane. On-condition is a maintenance term applicable to airplane systems or components which are not generally inspected or maintained on a prescribed schedule, but rather addresses only when a malfunction or failure occurs. It was assumed that the system would stop providing fuel quantity indication, or otherwise passively fail, before a hazardous ignition threat existed.
+
+For environmental threats, such as lightning, the tank arrangement, structure, and components were shown to be free from hazardous sparks or temperatures from both the direct and indirect effects of a lightning strike. Following a lightning-caused fuel tank explosion accident involving a Pan American 707 near Elkton, Maryland in 1963, extensive research was conducted. This culminated in the issuance of regulations and policies related to lightning protection of transport airplanes.
+Photo of Arc-through of In-tank Fuel Pump Housing
+Photo of Arc-through of In-tank Fuel Pump Housing representative of post-accident inspection program (not from TWA 800)
+Photo of a Commercial Airplane Lightning Strike During Takeoff
+Photo of a Commercial Airplane Lightning Strike
+During Takeoff from an Airport in Japan
+
+During the course of the TWA 800 accident investigation, investigators inspected dozens of aircraft of various models, including the 747, and reviewed thousands of records related to fuel tank service problems. The product of these reviews identified numerous shortcomings in safety features related to explosion-proof integrity. These ranged from unexpected failure conditions (e.g., fuel quantity indicating system probe contamination), missing parts (e.g., pumps misassembled following overhaul), and other potential in-tank ignition sources.
+
+Three general conclusions were drawn from this intensive review:
+
+    The 747-100 fuel system arrangement and components were similar to many other aircraft being produced and in service. For example, pumps, probes, wiring, and other features were common to those of other airplane models.
+    Numerous potential in-tank ignition sources were identified on the 747 and many other in-service airplane models.
+    Reliance only on ignition prevention as a safety strategy was not providing an acceptable level of safety.
+
+Examples of Arc-through of In-Tank Electrical Conduit and Fuel Pump Impeller Heat Damage
+Examples of Arc-through of In-Tank Electrical Conduit and Fuel Pump Impeller Heat Damage (not from TWA 800)
+TWA 800 Fuel Tank Ignition Source
+
+The exact ignition source that ignited the flammable fuel vapors in the CWT of TWA Flight 800 was not able to be determined with certainty. However, following extensive review of recovered wreckage, available flight recorder information, and examination of many similar aircraft, the most likely scenario identified by the NTSB involved a combination of a latent fault in the fuel quantity indication system (FQIS) with an out-of-tank wiring fault.
+Photo of 747 FQIS Probe - NTSB Docket Photo
+Photo of 747 FQIS Probe - NTSB Docket Photo
+
+The 747-131 FQIS utilizes a number of probes distributed throughout the fuel tank, as shown in this illustration. Wiring from these probes runs out of the tank and forward to the cockpit, where gauges interpret the signals and indicate the amount of fuel in each fuel tank.
+
+The NTSB identified the most likely scenario as some type of latent fault with a fuel quantity sensor, combined with a subsequent active fault. The latency in this case, apparently did not affect normal operation of the sensor, however it may have produced a high-energy electrical arc when higher voltage was inadvertently introduced onto the wires that lead into the fuel tank and to the fuel quantity sensor. The NTSB report and subsequent analysis revealed several possibilities for a latent fault. One of the scenarios involves a certain type of corrosion/contamination involving sulfide deposits that can build up over time between the electrical contacts on the FQIS probes (sulfur is present in Jet A fuel). These deposits don't affect normal FQIS operation, but can create an arc if exposed to higher voltages.
+Diagrams of Fuel Quantity System and Probes
+Diagrams of Fuel Quantity System and Probes
+View Larger Image
+
+The most likely scenario, cited by the NTSB for introducing a high-energy electrical source into the fuel tank, was a short circuit in a wire bundle outside the fuel tank, allowing high voltage (115 VAC) into the low voltage wires that run into the fuel tank. An animation of this failure is available at the following link:
+
+Click here to view TWA 800 Ignition Source Animation.
+
+The high voltage introduced to the FQIS probe may have caused an electrical arc, which ignited the flammable fuel vapors. The resulting pressure spike began a series of cascading structural failures that culminated with the in-flight breakup of TWA Flight 800.
+Photo of Reconstructed Fuselage Looking into Center Wing Tank
+Photo of Reconstructed Fuselage Looking into Center Wing Tank - NTSB Docket Photo
+Accident Memorial
+
+TWA Flight 800 International Memorial was created in 2002 in honor of the 230 passengers and crew that were killed on July 17, 1996. The memorial is located in Smith Point County Park, Long Island, New York, near the site of the accident.
+Photo of TWA Flight 800 International Memorial
+Photos of TWA Flight 800 International Memorial - Photo copyright Frank A. Lombardi, used with permission
+
+Back to top
+
+U.S. Department of Transportation
+Federal Aviation Administration
+800 Independence Avenue, SW
+Washington, DC 20591
+1-866-TELL-FAA (1-866-835-5322)
+
+Readers & Viewers
+
+    PDF
+    Powerpoint
+    Zip
+    Word
+    Excel
+
+Web Policies
+
+    Web Policies & Notices
+    Privacy Policy
+
+Government Sites
+
+    DOT.gov
+    USA.gov
+    Plainlanguage.gov
+    Recovery.gov
+    Regulations.gov
+    Data.gov
+
+Contact Us
+
+    Contact Information 
+
+
