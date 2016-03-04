@@ -29,8 +29,8 @@ class example {
     proposal.setMScienceGoals(sciencegoals);
 
     // Adding SupportingDocuments:
-	// First you need to insert the local file name and local path into the DB. Then, once you have the proposal id,
-	// one can insert the files.
+    // First you need to insert the local file name and local path into the DB. Then, once you have the proposal id,
+    // one can insert the files.
     SupportingDocumentsOuterClass.SupportingDocuments.Builder supdocs = SupportingDocumentsOuterClass.SupportingDocuments.newBuilder();
 
     String scifile = "1457_e.pdf";	
@@ -51,16 +51,17 @@ class example {
     System.out.println("Error new insert: "+error);
     System.out.println("Proposal ID: "+proposal_id);
 	   
-	// Here, after I inserted the proposal in the DB, I can upload the files of this proposal using 
-	// its proposal_id.
+    // Here, after I inserted the proposal in the DB, I can upload the files of this proposal using 
+    // its proposal_id.
     // Inserting supporting documents for given proposal_id:
     int pid = Integer.parseInt(proposal_id.toString());
     System.out.println("Val: "+pid);
     apioda.uploadFile(pid,"./supportingDocuments/",scifile);
-    apioda.uploadFile(pid,"./supportingDocuments/",techfile);
-    apioda.uploadFile(pid,"./supportingDocuments/",preprint);
+    //apioda.uploadFile(pid,"./supportingDocuments/",techfile);
+    //apioda.uploadFile(pid,"./supportingDocuments/",preprint);
 
-	// The following part demostrates how to use other apioda method.
+    /*
+    // The following part demostrates how to use other apioda method.
 
     // Requesting proposal with ID = my_proposal_ID
     int my_proposal_id = 9;
@@ -72,8 +73,8 @@ class example {
     System.out.println("ScienceGoals Frequency: "+sg.getFrequence());
 
  
- 	// Modifyng an existing proposal in the DB, with a known proposal_id (in the following case, the
-	// same as the latest proposal inserted.
+    // Modifyng an existing proposal in the DB, with a known proposal_id (in the following case, the
+    // same as the latest proposal inserted.
     proposal.setAbstract("testAbs");
     int id = Integer.parseInt(proposal_id.toString());
     proposal.setProposalId(id);
@@ -81,12 +82,12 @@ class example {
     apioda.modifyProposal(proposal.build(),error);
     System.out.println("Error modify: "+error);
 
-	// Returning all proposals with a given status
+    // Returning all proposals with a given status
     Vector<ProposalsOuterClass.Proposals> p_l = new Vector<ProposalsOuterClass.Proposals>();
     System.out.println("Requesting proposals list with status: "+PHT.ProposalStatusOuterClass.ProposalStatus.Draft);
     p_l = apioda.requestProposalsWithStatus(PHT.ProposalStatusOuterClass.ProposalStatus.Draft);
 
     System.out.println("Found : "+p_l.size());
-   
+   */
   }
 }

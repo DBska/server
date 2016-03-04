@@ -51,24 +51,27 @@ bool readFromSocket(int sock, string &answer, Error &err)
         cout<<"START READING... "<<endl;
         int val = 0;
 	
-		val =   buffer[3] & 0xFF | 
-	    	   (buffer[2] & 0xFF) << 8  |
-	       	   (buffer[1] & 0xFF) << 16 |
+	val =   buffer[3] & 0xFF | 
+               (buffer[2] & 0xFF) << 8  |
+               (buffer[1] & 0xFF) << 16 |
                (buffer[0] & 0xFF) << 24;
-
         
         cout<<"value: "<<val<<" //// n: "<<n<<endl;
     	// With 4 bytes the masimum integer is 2^32-1
-        char message[val+1];
+        //char message [val+1];
+        char *message = new char [val+1];
         bzero(message,val+1);
-
+cout<<"here\n";
         // Reading message:
-		int len = 0 ;
-		while (len < val )
-		{
-        	n = read(sock,message+len,val-len);
-			len += n;
-		}
+        int len = 0 ;
+        n = 0; 
+        while (len < val )
+	{
+            cout<<".";
+            n = read(sock,message+len,val-len);
+	    len += n;
+	}
+        cout<<endl;
         cout<<"red: "<<len<<" out of "<<val<<endl;
         if (len<val) 
         {
@@ -86,7 +89,10 @@ bool readFromSocket(int sock, string &answer, Error &err)
         //output2.close();
         
         red = true;
+
+        delete [] message;
     }
+
 
     return red;
 }
