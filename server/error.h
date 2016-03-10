@@ -16,7 +16,7 @@ class Error
 {
     private:
         stringstream lerr;
-        streambuf *old_cerr;
+//        streambuf *old_cerr;
         ofstream out;
 
     public:

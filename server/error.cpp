@@ -36,7 +36,7 @@ Error::Error(string file_name)
     // directory:
     out.open(file_name.c_str(),ios_base::app);
     //old_cerr = new streambuf;
-    old_cerr = cerr.rdbuf();
+//    old_cerr = cerr.rdbuf();
     cerr.rdbuf( out.rdbuf() );
 }
 
@@ -44,6 +44,6 @@ Error::~Error()
 {
     // Redirecting cerr to original stream and closing local output file
     out.close();
-    cerr.rdbuf(old_cerr);
-    delete old_cerr;
+ //   cerr.rdbuf(old_cerr);
+ //   delete old_cerr;
 }
