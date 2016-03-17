@@ -46,8 +46,12 @@ class example {
     // Sending proposal
     StringBuffer error = new StringBuffer("");
     StringBuffer proposal_id = new StringBuffer("");
-    proposal_id = apioda.insertNewProposal(proposal.build(),error);
-  
+
+    for (int i=1; i<1000; i++)
+    {
+        proposal_id = apioda.insertNewProposal(proposal.build(),error);
+    }
+/*  
     System.out.println("Error new insert: "+error);
     System.out.println("Proposal ID: "+proposal_id);
 	   
@@ -55,12 +59,13 @@ class example {
     // its proposal_id.
     // Inserting supporting documents for given proposal_id:
     int pid = Integer.parseInt(proposal_id.toString());
+    //int pid = 813;
     System.out.println("Val: "+pid);
     apioda.uploadFile(pid,"./supportingDocuments/",scifile);
-    //apioda.uploadFile(pid,"./supportingDocuments/",techfile);
-    //apioda.uploadFile(pid,"./supportingDocuments/",preprint);
+    apioda.uploadFile(pid,"./supportingDocuments/",techfile);
+    apioda.uploadFile(pid,"./supportingDocuments/",preprint);
 
-    /*
+    
     // The following part demostrates how to use other apioda method.
 
     // Requesting proposal with ID = my_proposal_ID

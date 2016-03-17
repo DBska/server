@@ -46,9 +46,9 @@ public class apioda {
     }
   public static void writeToSocket(DataOutputStream out, byte[] msg) throws Exception {
         //send
-        System.out.println("IN byte[] DataOutputStream");
+        //System.out.println("IN byte[] DataOutputStream");
         int msg_l = msg.length;
-        System.out.println("Length: "+msg_l);
+        //System.out.println("Length: "+msg_l);
         byte [] result = toByteArray(msg_l);
 
         //FileOutputStream output2 = new FileOutputStream("blobOUTlen.bin");
@@ -67,7 +67,7 @@ public class apioda {
   }
   public static byte [] readFromSocket(DataInputStream in) throws Exception {
         
-        System.out.println("READ byte[] DataInputStream");
+        //System.out.println("READ byte[] DataInputStream");
         byte [] bb =  new byte[4];
         in.readFully(bb,0,4);
         int cn = byteArrayToInt(bb);
@@ -80,12 +80,12 @@ public class apioda {
             System.out.print(c);
          }*/
 
-        System.out.println("Received message length: "+cn);
+        //System.out.println("Received message length: "+cn);
         byte [] buffer = new byte[cn];
         in.readFully(buffer,0,cn);
         //print("inside.bin",buffer);
         //String reply = new String(buffer, 0, cn);
-        System.out.println("Message Length: "+buffer.length);
+        //System.out.println("Message Length: "+buffer.length);
     
         return buffer;
   }
@@ -96,7 +96,7 @@ public class apioda {
     String local_path_file_name = path+file_name;
     String ODA_file_name = Integer.toString(pid)+"_"+file_name;	
     System.out.println("Uploading file: "+path+file_name);
-    System.out.println("ODA file name: "+ODA_file_name);
+    //System.out.println("ODA file name: "+ODA_file_name);
     // Reading path_file_name. this is the full path plus name: ie /home/my_path/to_file/filename.ppp
     File file = new File(local_path_file_name);
     byte[] fBytes = FileUtils.readFileToByteArray(file);
@@ -197,11 +197,11 @@ public class apioda {
     DataInputStream in = new DataInputStream(socket.getInputStream());
     byte [] reply = readFromSocket(in);
 
-    System.out.println("--> "+reply.length);
+    //System.out.println("--> "+reply.length);
     PHTmessageOuterClass.PHTmessage m2;
     //print("arrived.bin",reply);
     m2 = PHTmessageOuterClass.PHTmessage.parseFrom(reply);
-    System.out.println("--> HERE");
+    //System.out.println("--> HERE");
     //System.out.println("zz "+m2.toString());
     //System.out.println(m2.getType());
     PHTmessageOuterClass.Answer a;
@@ -234,7 +234,7 @@ public class apioda {
 
     // Adding proposal to the message
     message.addProposal(proposal);
-    System.out.println(message.build().toString());
+    //System.out.println(message.build().toString());
 
     // Preparing transmission:
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -250,7 +250,7 @@ public class apioda {
     // Length of binary string
     byte [] tmp;
     tmp = baos.toByteArray();
-    System.out.println("insert proposal message length: "+tmp.length);
+    //System.out.println("insert proposal message length: "+tmp.length);
 
     // TCP/IP connection
     Socket socket = connect();
@@ -380,11 +380,11 @@ public class apioda {
     DataInputStream in = new DataInputStream(socket.getInputStream());
     byte [] reply = readFromSocket(in);
 
-    System.out.println("--> "+reply.length);
+    //System.out.println("--> "+reply.length);
     PHTmessageOuterClass.PHTmessage m2;
     print("arrived.bin",reply);
     m2 = PHTmessageOuterClass.PHTmessage.parseFrom(reply);
-    System.out.println("--> HERE");
+    //System.out.println("--> HERE");
     //System.out.println("zz "+m2.toString());
     //System.out.println(m2.getType());
     PHTmessageOuterClass.Answer a;

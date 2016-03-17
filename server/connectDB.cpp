@@ -1,12 +1,13 @@
 #include "connectDB.h"
 #include <boost-optional.h>
 
-string writeToDB(data_s dat)
+//string writeToDB(data_s dat)
+string writeToDB(data_s dat, session &sql)
 {
     string proposal_id = "";
     // Inserting the data into the DB with SOCI. I know it is only ONE data. The following part of the code
     // should be put in the for(i) above.
-    session sql(mysql, use_db);
+    //session sql(mysql, use_db);
     transaction tr(sql);
 
     // before inserting, printing the currente number of Proposals
@@ -155,11 +156,12 @@ string writeToDB(data_s dat)
     return proposal_id;
 }
 
-Proposals * readProposalFromDB(int pid)
+//Proposals * readProposalFromDB(int pid)
+Proposals * readProposalFromDB(int pid, session &sql)
 {
     cout<<"Reading DB..\n";
 
-    session sql(mysql, use_db);
+    //session sql(mysql, use_db);
 
     // Extracting the total number of proposals and storing each proposal_id in
     // vector<int> p_id
@@ -312,7 +314,8 @@ Proposals * readProposalFromDB(int pid)
 }
 
 
-vector<Proposals *> readAllProposalsFromDB(int p_status)
+//vector<Proposals *> readAllProposalsFromDB(int p_status)
+vector<Proposals *> readAllProposalsFromDB(int p_status, session &sql)
 {
     cout<<"Reading DB..\n";
     vector<Proposals *> p_w_s;
@@ -327,7 +330,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status)
     tab_name.push_back("SupportingDocuments");
     tab_name.push_back("TACReviews");
 
-    session sql(mysql, use_db);
+    //session sql(mysql, use_db);
 
     // Extracting the total number of proposals and storing each proposal_id in
     // vector<int> p_id

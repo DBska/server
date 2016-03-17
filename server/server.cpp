@@ -11,14 +11,11 @@
 #include <unistd.h>
 #include <sstream>
 #include <unistd.h>
-//#include <ctime>
-//#include <algorithm>
-#include <sys/types.h> 
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <pthread.h>
 #include "PHTmessage.pb.h"
-//#include "soci.h"
-//#include "mysql/soci-mysql.h"
 #include "connectDB.h"
 #include "parser.h"
 #include "error.h"
@@ -28,146 +25,91 @@
 
 using namespace std;
 using namespace PHT; // namespace for using google protocol buffer
-using namespace soci; // namespace for using soci library 
+using namespace soci; // namespace for using soci library
 
-const int portno = 3303; 
+int portno = 5200; // default port if code is demonized
 
-void processing(int sock, Error &err);
+//void processing(int sock, Error &err);
+void* processing(void *);
 
 
 int main(int argc, char *argv[])
 {
+    // Flag to activate demonization of the server.
     bool demonized = false;
 
     if (demonized) daemon(0,0);
-    // Creating lerr stringstream to send back to the client for managing
-    // errors.
-    //stringstream lerr;
-    
-    // Redirecting cerr output to file "server_error.txt" in server/server
-    // directory:
-    //ofstream out("server_error.txt",ios_base::app);
-    //streambuf *old_cerr = cerr.rdbuf();
-    //cerr.rdbuf( out.rdbuf() );
 
     Error err("server_error.txt");
 
-    int sockfd, newsockfd;
-    //int portno;
-    pid_t pid;
+    int socket_desc, new_socket;
+    int *new_sock;
     socklen_t clilen;
-     
-    string buffer; // a vector<char> should be better...
+
+    string buffer;
     struct sockaddr_in serv_addr, cli_addr;
-    int n;
 
     // Checking the calling statement of the program is correct:
-    // server port
+    // $server port_no
     if (argc < 2 && !demonized)
     {
-        //error("ERROR, no port provided\n");
         cout<<"usage: "<<argv[0]<<" port\n";
         exit(1);
     }
     // Opening the socket
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0) 
+    socket_desc = socket(AF_INET, SOCK_STREAM, 0);
+    if (socket_desc < 0)
     {
         string emsg = "ERROR: socket not opened";
         err.writeErrorMessage(emsg);
-       //cerr<<"ERROR opening socket";
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
-    //portno = atoi(argv[1]);
+    if (!demonized)
+        portno = atoi(argv[1]);
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(portno);
-    if (bind(sockfd, (struct sockaddr *) &serv_addr,
-             sizeof(serv_addr)) < 0) 
+    if (bind(socket_desc, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
     {
-             //cerr<<"ERROR on binding";
-             string emsg = "ERROR: binding";
-             err.writeErrorMessage(emsg);
+        string emsg = "ERROR: binding";
+        err.writeErrorMessage(emsg);
     }
 
-    listen(sockfd,5);
-     
+    listen(socket_desc,5);
+
     clilen = sizeof(cli_addr);
 
-    // starting the listening loop. 
-    while (1)
+    // starting the listening loop.
+    while ( (new_socket = accept(socket_desc,(struct sockaddr *) &cli_addr, &clilen)) )
     {
-    	newsockfd = accept(sockfd, 
-                          (struct sockaddr *) &cli_addr, 
-              	           &clilen);
-        //cout<<newsockfd<<endl;
-        if (newsockfd < 0)
+        cout<<new_socket<<" "<<&new_socket<<endl;
+        pthread_t sniffer_thread;
+        //new_sock = (int*)malloc(1);
+        new_sock = new int;
+        *new_sock = new_socket;
+        if ( pthread_create(&sniffer_thread, NULL, processing, (void *) new_sock) <0 )
         {
-            //time_t now = time(0);
-            //string dt = ctime(&now);
-            //dt.erase( remove(dt.begin(), dt.end(), '\n'), dt.end() );
-            //cerr<<dt<<" "<<"ERROR on accept\n";
             string emsg = "ERROR: on accept";
             err.writeErrorMessage(emsg);
             exit(1);
         }
-
-        signal(SIGCHLD,SIG_IGN); // this is needed to avoid zombies until the parent is dead
-
-        // The following fork() is used to allow different client to connect to the server
-        pid = fork();
-	if (pid>0) cout<<"Forking with child PID "<<pid<<endl; // Parent process
- 	if (pid<0)
-        {
-            string emsg = "ERROR: no fork";
-            err.writeErrorMessage(emsg);
-            //cerr<<"ERROR on fork";
-        }
-	 if (pid==0)
-	 {
-	    close(sockfd);
-            // The following try-catch block prints error from DB operations to
-            // err.
-            //try
-            //{
-	        processing(newsockfd,err);
-	        exit(0);
-            //}
-            //catch (mysql_soci_error const &e)
-            //{
-            //    string msg;
-            //    msg = "MYSQL ERROR: " + e.err_num_ + space + e.what() + "\n";
-            //    err.writeErrorMessage(msg);
-                //cerr<<"MySQL error: "<<e.err_num_<<" "<<e.what()<<endl;
-            //}
-            //catch (exception const &e)
-            //{
-            //    stringstream tmp;
-            //    string msg;
-            //    tmp<<e.what();
-            //   msg = "SOCI ERROR: " + tmp.str() + "\n";
-            //    err.writeErrorMessage(msg);
-                //cerr<<"Soci error: "<<e.what()<<endl;
-            //}
-	 }
-	 else close(newsockfd);
     } /* end of while for server listening */
 
-    //Closing the socket
-    close(sockfd); // Should also be moved into try-catch block (?)
-    // Redirecting cerr to original stream
-    //out.close();
-    //cerr.rdbuf(old_cerr);
+    /* never here */
 
-    return 0; /* never here */
-   }	    
+    return 0;
+   }
 
-void processing(int sock, Error &err)
+void* processing(void *socket_desc)
 {
+    Error err("server_error_processing.txt");
     bool is_a_message = false;
     string message;
+    int sock = *(int*)socket_desc;
+    cout<<"inside\n";
+
     is_a_message = readFromSocket(sock,message,err);
-    if ( !is_a_message ) return;
+    if ( !is_a_message ) return 0;
 
     // De-serialization starts here
     PHTmessage *p_oda = new PHTmessage;
@@ -197,29 +139,27 @@ void processing(int sock, Error &err)
         case PHTmessage::QUERY:
             {
                 cout<<"Query found...\n";
-				Query *m_query = p_oda->mutable_query();
+		Query *m_query = p_oda->mutable_query();
                 //cout<< (p_oda->mutable_query())->query() <<endl;
-				if ( m_query->file_to_upload() )
-				{
-					uploadFile(m_query->file_name(), m_query->file_data());	
-				}
-				else
-				{
-		            int p_status = m_query->query();
-			        if (p_status > 0)
-		        	{
-		            	allProposalsWithStatus(sock,p_status,err);
-			        }
-		        	if (p_status<0)
-		            {
-			            p_status = (-1) * p_status;
-		        		proposalWithID(sock,p_status,err);
-		        	}
-				 }
+		if ( m_query->file_to_upload() )
+		{
+		    uploadFile(m_query->file_name(), m_query->file_data());
+		}
+		else
+		{
+		    int p_status = m_query->query();
+		    if (p_status > 0)
+		    {
+		        allProposalsWithStatus(sock,p_status,err);
+		    }
+		    if (p_status<0)
+		    {
+		        p_status = (-1) * p_status;
+		        proposalWithID(sock,p_status,err);
+		    }
+		}
                 break;
             }
-		case PHTmessage::PST:
-			break;
         default:
             string emsg = "ERROR: message type not yet implemented";
             err.writeErrorMessage(emsg);
@@ -228,5 +168,11 @@ void processing(int sock, Error &err)
     // Cleaning memory
     delete p_oda;
 
+    // Free the socket pointer
+    //free(socket_desc);
+    //delete socket_desc;
+
     cout<<"done\n";
+
+    return 0;
 }
