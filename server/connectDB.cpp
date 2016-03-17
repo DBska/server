@@ -136,6 +136,7 @@ string writeToDB(data_s dat, session &sql)
     cout<<"Table Proposals now has "<<count<<" entries"<<endl;
 
     // Printing the new table on screen
+    /*
     rowset<row> rs = (sql.prepare << "select proposal_id, abstract from Proposals");
 
     // iteration through the resultset:
@@ -149,7 +150,7 @@ string writeToDB(data_s dat, session &sql)
              << " Abstract: " << row.get<string>(1)  << endl;
         r++;
     }
-
+    */
     tr.commit();
     sql.close();
 

@@ -32,6 +32,7 @@ using namespace soci; // namespace for using soci library
 
 int portno = 5200; // default port if code is demonized
 const string use_db = "db=PHT user=marco password=Marco74";
+//const string use_db = "db=PHT user=controls password=Wrufu6ac";
 
 
 //void processing(int sock, Error &err);
@@ -174,6 +175,7 @@ void* processing(void *socket_desc)
 
     // Cleaning memory
     delete p_oda;
+    sql.close();
 
     // Free the socket pointer
     //free(socket_desc);

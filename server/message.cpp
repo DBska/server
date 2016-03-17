@@ -2,7 +2,7 @@
 
 void uploadFile(string file_name, string file_data)
 {
-   string path = "./documents/";
+   string path = "./documents/"; // ABSOLUTE PATH ON SPOCK
    string path_file= "";
    path_file = path+file_name;
    cout<<"Writing file: "<<path_file<<endl;
