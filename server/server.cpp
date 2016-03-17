@@ -22,19 +22,24 @@
 #include "message.h"
 #include "data_struct.h"
 #include "pst.h"
+#include "soci.h"
+#include "mysql/soci-mysql.h"
+
 
 using namespace std;
 using namespace PHT; // namespace for using google protocol buffer
 using namespace soci; // namespace for using soci library
 
 int portno = 5200; // default port if code is demonized
+const string use_db = "db=PHT user=marco password=Marco74";
+
 
 //void processing(int sock, Error &err);
 void* processing(void *);
 
-
 int main(int argc, char *argv[])
 {
+
     // Flag to activate demonization of the server.
     bool demonized = false;
 
@@ -84,8 +89,7 @@ int main(int argc, char *argv[])
     {
         cout<<new_socket<<" "<<&new_socket<<endl;
         pthread_t sniffer_thread;
-        //new_sock = (int*)malloc(1);
-        new_sock = new int;
+        new_sock = (int*)malloc(1);
         *new_sock = new_socket;
         if ( pthread_create(&sniffer_thread, NULL, processing, (void *) new_sock) <0 )
         {
@@ -102,6 +106,9 @@ int main(int argc, char *argv[])
 
 void* processing(void *socket_desc)
 {
+    // Opening connection to the DB:
+    session sql(mysql, use_db);
+    
     Error err("server_error_processing.txt");
     bool is_a_message = false;
     string message;
@@ -134,7 +141,7 @@ void* processing(void *socket_desc)
     switch ( p_oda->type() )
     {
         case PHTmessage::DATA:
-            insertProposal(sock,dat,err);
+            insertProposal(sock,dat,err,sql);
             break;
         case PHTmessage::QUERY:
             {
@@ -150,12 +157,12 @@ void* processing(void *socket_desc)
 		    int p_status = m_query->query();
 		    if (p_status > 0)
 		    {
-		        allProposalsWithStatus(sock,p_status,err);
+		        allProposalsWithStatus(sock,p_status,err,sql);
 		    }
 		    if (p_status<0)
 		    {
 		        p_status = (-1) * p_status;
-		        proposalWithID(sock,p_status,err);
+		        proposalWithID(sock,p_status,err,sql);
 		    }
 		}
                 break;

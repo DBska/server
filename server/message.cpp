@@ -97,7 +97,7 @@ cout<<"here\n";
     return red;
 }
 
-void insertProposal(int sock, data_s dat, Error &err)
+void insertProposal(int sock, data_s dat, Error &err, session &sql)
 {
     // inserting the data into the DB
     string new_proposal_id;
@@ -106,7 +106,7 @@ void insertProposal(int sock, data_s dat, Error &err)
 
     try
     {
-        new_proposal_id = writeToDB(dat);
+        new_proposal_id = writeToDB(dat, sql);
     }
     catch (mysql_soci_error const &e)
     {
@@ -160,12 +160,12 @@ cout<<p_msg->DebugString();
 }
 
 
-void allProposalsWithStatus(int sock, int p_stat, Error &err)
+void allProposalsWithStatus(int sock, int p_stat, Error &err, session &sql)
 {
     cout<<"HERE\n";
     vector<Proposals *> p_s;
 
-    p_s = readAllProposalsFromDB(p_stat);
+    p_s = readAllProposalsFromDB(p_stat,sql);
     cout<<"Size: "<<p_s.size()<<endl;
     //cout<<p_s[0]->proposal_id()<<" "<<p_s[0]->abstract()<<endl;
     PHTmessage *p_msg = new PHTmessage;
@@ -193,11 +193,11 @@ void allProposalsWithStatus(int sock, int p_stat, Error &err)
     //replyToClient(sock,message);
 }
 
-void proposalWithID(int sock, int pid, Error &err)
+void proposalWithID(int sock, int pid, Error &err, session &sql)
 {
     cout<<"HERE\n";
     Proposals *p_s;
-    p_s = readProposalFromDB(pid);
+    p_s = readProposalFromDB(pid,sql);
     
     PHTmessage *p_msg = new PHTmessage;
     p_msg->set_type(PHTmessage::DATA);

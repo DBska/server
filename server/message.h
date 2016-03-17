@@ -20,6 +20,7 @@
 #include "PHTmessage.pb.h"
 #include "data_struct.h"
 #include "soci.h"
+#include "mysql/soci-mysql.h"
 #include "error.h"
 #include "connectDB.h"
 
@@ -39,11 +40,11 @@ enum messageType_data
 };
 
 messageType_data selectMessageType();
-void insertProposal(int sock, data_s dat, Error &err); // either new or updating an existing one
-void allProposalsWithStatus(int sock, int p_stat, Error &err);
+void insertProposal(int sock, data_s dat, Error &err, session &sql); // either new or updating an existing one
+void allProposalsWithStatus(int sock, int p_stat, Error &err, session &sql);
 bool readFromSocket(int sock, string &answer, Error &err);
 void writeToSocket(int sock, string message, Error &err);
-void proposalWithID(int sock, int pid, Error &err);
+void proposalWithID(int sock, int pid, Error &err, session &sql);
 void uploadFile(string file_name, string file_data);
 
 #endif
