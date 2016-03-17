@@ -47,12 +47,13 @@ class example {
     StringBuffer error = new StringBuffer("");
     StringBuffer proposal_id = new StringBuffer("");
 
-    for (int i=1; i<1000; i++)
-    {
-        proposal_id = apioda.insertNewProposal(proposal.build(),error);
-        System.out.println(i+" ID: "+proposal_id);
-    }
-/*  
+    // Loop for inserting multiple proposals
+    //for (int i=1; i<1000; i++)
+    //{
+    //    proposal_id = apioda.insertNewProposal(proposal.build(),error);
+    //    System.out.println(i+" ID: "+proposal_id);
+    //}
+  
     System.out.println("Error new insert: "+error);
     System.out.println("Proposal ID: "+proposal_id);
 	   
@@ -94,6 +95,6 @@ class example {
     p_l = apioda.requestProposalsWithStatus(PHT.ProposalStatusOuterClass.ProposalStatus.Draft);
 
     System.out.println("Found : "+p_l.size());
-   */
+   
   }
 }
