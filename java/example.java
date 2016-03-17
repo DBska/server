@@ -50,6 +50,7 @@ class example {
     for (int i=1; i<1000; i++)
     {
         proposal_id = apioda.insertNewProposal(proposal.build(),error);
+        System.out.println(i+" ID: "+proposal_id);
     }
 /*  
     System.out.println("Error new insert: "+error);
