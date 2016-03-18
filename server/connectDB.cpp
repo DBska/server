@@ -400,7 +400,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status, session &sql)
                 break;
         }
         p->set_proposal_type(proposal_type);
-
+cout<<"proposal done\n";
         //tab_name.push_back("CoAuthors");
         CoAuthors *coa = new CoAuthors;
        
@@ -416,6 +416,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status, session &sql)
         //tab_name.push_back("ProposalEditors");
         ProposalEditors *ped = new ProposalEditors;
 
+cout<<"CoAuthors done\n";
         int isPI, proposalEditorsID;
         string aid;
         sql<<"select author_id, isPI, more_info, proposal_id from ProposalEditors where proposal_id=:id;", use(ps[id]), 
@@ -430,6 +431,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status, session &sql)
         ped->set_proposal_id(proposal_id);
 
         p->set_allocated_m_proposaleditors(ped);
+cout<<"ProposalEditors done\n";
         //tab_name.push_back("Reviews");
         Reviews *rev = new Reviews;
 
@@ -444,6 +446,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status, session &sql)
         rev->set_reviewer_id(reviewer_id);
 
         p->set_allocated_m_reviews(rev);
+cout<<"Reviewers done\n";
         //tab_name.push_back("ScienceGoals");
         ScienceGoals *scg = new ScienceGoals;
 
@@ -461,6 +464,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status, session &sql)
         scg->set_target_details(tgt_det);
 
         p->set_allocated_m_sciencegoals(scg);
+cout<<"ScienceGoals done\n";
         //tab_name.push_back("SupportingDocuments");
         SupportingDocuments *sd = new SupportingDocuments;
 
@@ -473,6 +477,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status, session &sql)
         sd->set_technical_justification(tec_j);
 
         p->set_allocated_m_supportingdocuments(sd);
+cout<<"SupportingDocuments done\n";
         //tab_name.push_back("TACReviews");
         TACReviews *tr = new TACReviews;
 
@@ -486,6 +491,7 @@ vector<Proposals *> readAllProposalsFromDB(int p_status, session &sql)
         tr->set_tac_id(tac_id);
 
         p->set_allocated_m_tacreviews(tr);
+cout<<"TACReviews done\n";
         // Adding proposal to the list
         p_w_s.push_back(p);
     }

@@ -54,6 +54,7 @@ class example {
     //    System.out.println(i+" ID: "+proposal_id);
     //}
   
+    proposal_id = apioda.insertNewProposal(proposal.build(),error);
     System.out.println("Error new insert: "+error);
     System.out.println("Proposal ID: "+proposal_id);
 	   
@@ -71,7 +72,7 @@ class example {
     // The following part demostrates how to use other apioda method.
 
     // Requesting proposal with ID = my_proposal_ID
-    int my_proposal_id = 9;
+    int my_proposal_id = pid;
     ProposalsOuterClass.Proposals pID = apioda.getProposalWithID(my_proposal_id);
     ScienceGoalsOuterClass.ScienceGoals sg = pID.getMScienceGoals();
  
