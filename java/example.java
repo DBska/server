@@ -15,6 +15,7 @@ class example {
     proposal.setProposalStatus(ProposalStatusOuterClass.ProposalStatus.Draft);
     proposal.setProposalType(ProposalTypeOuterClass.ProposalType.TOO);
 
+
     // Adding CoAuthors
     CoAuthorsOuterClass.CoAuthors.Builder coa = CoAuthorsOuterClass.CoAuthors.newBuilder();
     coa.setAuthorId(57);
@@ -90,12 +91,25 @@ class example {
     apioda.modifyProposal(proposal.build(),error);
     System.out.println("Error modify: "+error);
 
+
+StringBuffer my_error = new StringBuffer("");
+ProposalsOuterClass.Proposals.Builder proposal_new = ProposalsOuterClass.Proposals.newBuilder();
+proposal_new.setProposalId(Integer.parseInt(proposal_id.toString()));
+ScienceGoalsOuterClass.ScienceGoals.Builder scienceGoals = ScienceGoalsOuterClass.ScienceGoals.newBuilder();
+scienceGoals.setTargetDetails("TEST mio");
+scienceGoals.setFrequence(666.6);
+scienceGoals.setInstrumentConfigurations("TEST mio");
+scienceGoals.setMoreInfo("TEST mio");
+proposal_new.setMScienceGoals(scienceGoals);
+apioda.modifyProposal(proposal_new.build(),my_error);
+/*
     // Returning all proposals with a given status
     Vector<ProposalsOuterClass.Proposals> p_l = new Vector<ProposalsOuterClass.Proposals>();
     System.out.println("Requesting proposals list with status: "+PHT.ProposalStatusOuterClass.ProposalStatus.Draft);
     p_l = apioda.requestProposalsWithStatus(PHT.ProposalStatusOuterClass.ProposalStatus.Draft);
 
     System.out.println("Found : "+p_l.size());
-   
+*/
   }
 }
+
