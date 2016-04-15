@@ -18,6 +18,7 @@ The repository contains the following branches:
 *master*: A fictitious oda.proto is used between client and server. The code
 works, however one MUST define in mysql a table Proposal with the following
 fields: id (int) and title (varchar(40)). Otherwise soci lib does not work.
+OBSOLETE.
 
 *pht*: a new PHT message structure. A proto directory is also present,
 describing the structure of the message. A makefile is provided to generate all
@@ -25,11 +26,12 @@ the necessary C++ classes. In directory server/server it is also present a
 directory mysql with a DDL.sql. That file should be used to build a db named PHT for
 testing the soci connection from the server code. The db should be
 build before running the code. This is the current working code.
+CURRENT.
 
 Required libraries
 ==================
 
-To run, the software requires the following libraries:
+The software requires the following libraries:
 1. SOCI - The C++ Database Access Library. Version: 3.2.2
 2. BOOST C++ Libraries. Version: 1.59.0
 3. Google Protocol Buffer. Version: 2.6.1
@@ -44,21 +46,27 @@ Directory structure
 
 After downloading the repository you will find the following structure inside the server directory:
 ```
-server/
-├── client
-│   ├── client.cpp
-│   └── makefile
-├── interface
-│   ├── interface.cpp
-│   ├── interface.h
+├── java
+│   ├── apioda.java
+│   ├── com
+│   │   └── google
+│   │       └── protobuf
+│   ├── example.java
 │   ├── makefile
-│   ├── socket.cpp
-│   └── socket.h
+│   ├── org
+│   │   └── apache
+│   │       └── commons
+│   │           └── io
+│   ├── PHT
+│   ├── README
+│   ├── supportingDocuments
+│   └── test_loop
 ├── makefile
 ├── proto
 │   ├── CoAuthors.proto
+│   ├── Column.proto
 │   ├── makefile
-│   ├── PHT Class DiagramV2.png
+│   ├── PHT
 │   ├── PHTmessage.proto
 │   ├── ProposalEditors.proto
 │   ├── Proposals.proto
@@ -67,7 +75,7 @@ server/
 │   ├── Reviews.proto
 │   ├── ScienceGoals.proto
 │   ├── src
-│   │   └── makefile
+│   │   ├── makefile
 │   ├── SupportingDocuments.proto
 │   └── TACReviews.proto
 ├── README.md
@@ -75,32 +83,20 @@ server/
 │   ├── connectDB.cpp
 │   ├── connectDB.h
 │   ├── data_struct.h
+│   ├── error.cpp
+│   ├── error.h
 │   ├── makefile
+│   ├── message.cpp
+│   ├── message.h
 │   ├── mysql
 │   │   ├── DDL.sql
+│   │   ├── pht.data
+│   │   ├── pht.sql
 │   │   └── README
 │   ├── parser.cpp
 │   ├── parser.h
 │   ├── server.cpp
-│   └── server_error.txt
 ├── TODO
-├── tool
-│   ├── include
-│   │   ├── CoAuthors.pb.h
-│   │   ├── interface.h
-│   │   ├── PHTmessage.pb.h
-│   │   ├── ProposalEditors.pb.h
-│   │   ├── Proposals.pb.h
-│   │   ├── ProposalStatus.pb.h
-│   │   ├── ProposalType.pb.h
-│   │   ├── Reviews.pb.h
-│   │   ├── ScienceGoals.pb.h
-│   │   ├── socket.h
-│   │   ├── SupportingDocuments.pb.h
-│   │   └── TACReviews.pb.h
-│   ├── library
-│   ├── makefile
-│   └── tool.cpp
 └── VERSION
 ```
 
