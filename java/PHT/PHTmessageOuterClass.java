@@ -528,6 +528,15 @@ public final class PHTmessageOuterClass {
      * <code>optional bytes file_data = 4;</code>
      */
     com.google.protobuf.ByteString getFileData();
+
+    /**
+     * <code>optional bool delete_file = 5 [default = false];</code>
+     */
+    boolean hasDeleteFile();
+    /**
+     * <code>optional bool delete_file = 5 [default = false];</code>
+     */
+    boolean getDeleteFile();
   }
   /**
    * Protobuf type {@code PHT.Query}
@@ -600,6 +609,11 @@ public final class PHTmessageOuterClass {
             case 34: {
               bitField0_ |= 0x00000008;
               fileData_ = input.readBytes();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              deleteFile_ = input.readBool();
               break;
             }
           }
@@ -729,11 +743,27 @@ public final class PHTmessageOuterClass {
       return fileData_;
     }
 
+    public static final int DELETE_FILE_FIELD_NUMBER = 5;
+    private boolean deleteFile_;
+    /**
+     * <code>optional bool delete_file = 5 [default = false];</code>
+     */
+    public boolean hasDeleteFile() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional bool delete_file = 5 [default = false];</code>
+     */
+    public boolean getDeleteFile() {
+      return deleteFile_;
+    }
+
     private void initFields() {
       query_ = 0L;
       fileToUpload_ = false;
       fileName_ = "";
       fileData_ = com.google.protobuf.ByteString.EMPTY;
+      deleteFile_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -760,6 +790,9 @@ public final class PHTmessageOuterClass {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBytes(4, fileData_);
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBool(5, deleteFile_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -784,6 +817,10 @@ public final class PHTmessageOuterClass {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, fileData_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, deleteFile_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -910,6 +947,8 @@ public final class PHTmessageOuterClass {
         bitField0_ = (bitField0_ & ~0x00000004);
         fileData_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000008);
+        deleteFile_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -954,6 +993,10 @@ public final class PHTmessageOuterClass {
           to_bitField0_ |= 0x00000008;
         }
         result.fileData_ = fileData_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.deleteFile_ = deleteFile_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -983,6 +1026,9 @@ public final class PHTmessageOuterClass {
         }
         if (other.hasFileData()) {
           setFileData(other.getFileData());
+        }
+        if (other.hasDeleteFile()) {
+          setDeleteFile(other.getDeleteFile());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1186,6 +1232,38 @@ public final class PHTmessageOuterClass {
         return this;
       }
 
+      private boolean deleteFile_ ;
+      /**
+       * <code>optional bool delete_file = 5 [default = false];</code>
+       */
+      public boolean hasDeleteFile() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional bool delete_file = 5 [default = false];</code>
+       */
+      public boolean getDeleteFile() {
+        return deleteFile_;
+      }
+      /**
+       * <code>optional bool delete_file = 5 [default = false];</code>
+       */
+      public Builder setDeleteFile(boolean value) {
+        bitField0_ |= 0x00000010;
+        deleteFile_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool delete_file = 5 [default = false];</code>
+       */
+      public Builder clearDeleteFile() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        deleteFile_ = false;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:PHT.Query)
     }
 
@@ -1269,40 +1347,28 @@ public final class PHTmessageOuterClass {
 
     /**
      * <code>optional .PHT.Answer answer = 4;</code>
+     *
+     * <pre>
+     *repeated Column column = 5;
+     * </pre>
      */
     boolean hasAnswer();
     /**
      * <code>optional .PHT.Answer answer = 4;</code>
+     *
+     * <pre>
+     *repeated Column column = 5;
+     * </pre>
      */
     PHT.PHTmessageOuterClass.Answer getAnswer();
     /**
      * <code>optional .PHT.Answer answer = 4;</code>
+     *
+     * <pre>
+     *repeated Column column = 5;
+     * </pre>
      */
     PHT.PHTmessageOuterClass.AnswerOrBuilder getAnswerOrBuilder();
-
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    java.util.List<PHT.ColumnOuterClass.Column> 
-        getColumnList();
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    PHT.ColumnOuterClass.Column getColumn(int index);
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    int getColumnCount();
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    java.util.List<? extends PHT.ColumnOuterClass.ColumnOrBuilder> 
-        getColumnOrBuilderList();
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    PHT.ColumnOuterClass.ColumnOrBuilder getColumnOrBuilder(
-        int index);
   }
   /**
    * Protobuf type {@code PHT.PHTmessage}
@@ -1401,14 +1467,6 @@ public final class PHTmessageOuterClass {
               bitField0_ |= 0x00000004;
               break;
             }
-            case 42: {
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-                column_ = new java.util.ArrayList<PHT.ColumnOuterClass.Column>();
-                mutable_bitField0_ |= 0x00000010;
-              }
-              column_.add(input.readMessage(PHT.ColumnOuterClass.Column.PARSER, extensionRegistry));
-              break;
-            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1419,9 +1477,6 @@ public final class PHTmessageOuterClass {
       } finally {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
           proposal_ = java.util.Collections.unmodifiableList(proposal_);
-        }
-        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-          column_ = java.util.Collections.unmodifiableList(column_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1659,56 +1714,33 @@ public final class PHTmessageOuterClass {
     private PHT.PHTmessageOuterClass.Answer answer_;
     /**
      * <code>optional .PHT.Answer answer = 4;</code>
+     *
+     * <pre>
+     *repeated Column column = 5;
+     * </pre>
      */
     public boolean hasAnswer() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
      * <code>optional .PHT.Answer answer = 4;</code>
+     *
+     * <pre>
+     *repeated Column column = 5;
+     * </pre>
      */
     public PHT.PHTmessageOuterClass.Answer getAnswer() {
       return answer_;
     }
     /**
      * <code>optional .PHT.Answer answer = 4;</code>
+     *
+     * <pre>
+     *repeated Column column = 5;
+     * </pre>
      */
     public PHT.PHTmessageOuterClass.AnswerOrBuilder getAnswerOrBuilder() {
       return answer_;
-    }
-
-    public static final int COLUMN_FIELD_NUMBER = 5;
-    private java.util.List<PHT.ColumnOuterClass.Column> column_;
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    public java.util.List<PHT.ColumnOuterClass.Column> getColumnList() {
-      return column_;
-    }
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    public java.util.List<? extends PHT.ColumnOuterClass.ColumnOrBuilder> 
-        getColumnOrBuilderList() {
-      return column_;
-    }
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    public int getColumnCount() {
-      return column_.size();
-    }
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    public PHT.ColumnOuterClass.Column getColumn(int index) {
-      return column_.get(index);
-    }
-    /**
-     * <code>repeated .PHT.Column column = 5;</code>
-     */
-    public PHT.ColumnOuterClass.ColumnOrBuilder getColumnOrBuilder(
-        int index) {
-      return column_.get(index);
     }
 
     private void initFields() {
@@ -1716,7 +1748,6 @@ public final class PHTmessageOuterClass {
       proposal_ = java.util.Collections.emptyList();
       query_ = PHT.PHTmessageOuterClass.Query.getDefaultInstance();
       answer_ = PHT.PHTmessageOuterClass.Answer.getDefaultInstance();
-      column_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1747,9 +1778,6 @@ public final class PHTmessageOuterClass {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeMessage(4, answer_);
       }
-      for (int i = 0; i < column_.size(); i++) {
-        output.writeMessage(5, column_.get(i));
-      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1774,10 +1802,6 @@ public final class PHTmessageOuterClass {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, answer_);
-      }
-      for (int i = 0; i < column_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, column_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1891,7 +1915,6 @@ public final class PHTmessageOuterClass {
           getProposalFieldBuilder();
           getQueryFieldBuilder();
           getAnswerFieldBuilder();
-          getColumnFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1920,12 +1943,6 @@ public final class PHTmessageOuterClass {
           answerBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000008);
-        if (columnBuilder_ == null) {
-          column_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
-        } else {
-          columnBuilder_.clear();
-        }
         return this;
       }
 
@@ -1983,15 +2000,6 @@ public final class PHTmessageOuterClass {
         } else {
           result.answer_ = answerBuilder_.build();
         }
-        if (columnBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010)) {
-            column_ = java.util.Collections.unmodifiableList(column_);
-            bitField0_ = (bitField0_ & ~0x00000010);
-          }
-          result.column_ = column_;
-        } else {
-          result.column_ = columnBuilder_.build();
-        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2042,32 +2050,6 @@ public final class PHTmessageOuterClass {
         }
         if (other.hasAnswer()) {
           mergeAnswer(other.getAnswer());
-        }
-        if (columnBuilder_ == null) {
-          if (!other.column_.isEmpty()) {
-            if (column_.isEmpty()) {
-              column_ = other.column_;
-              bitField0_ = (bitField0_ & ~0x00000010);
-            } else {
-              ensureColumnIsMutable();
-              column_.addAll(other.column_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.column_.isEmpty()) {
-            if (columnBuilder_.isEmpty()) {
-              columnBuilder_.dispose();
-              columnBuilder_ = null;
-              column_ = other.column_;
-              bitField0_ = (bitField0_ & ~0x00000010);
-              columnBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getColumnFieldBuilder() : null;
-            } else {
-              columnBuilder_.addAllMessages(other.column_);
-            }
-          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2568,12 +2550,20 @@ public final class PHTmessageOuterClass {
           PHT.PHTmessageOuterClass.Answer, PHT.PHTmessageOuterClass.Answer.Builder, PHT.PHTmessageOuterClass.AnswerOrBuilder> answerBuilder_;
       /**
        * <code>optional .PHT.Answer answer = 4;</code>
+       *
+       * <pre>
+       *repeated Column column = 5;
+       * </pre>
        */
       public boolean hasAnswer() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
        * <code>optional .PHT.Answer answer = 4;</code>
+       *
+       * <pre>
+       *repeated Column column = 5;
+       * </pre>
        */
       public PHT.PHTmessageOuterClass.Answer getAnswer() {
         if (answerBuilder_ == null) {
@@ -2584,6 +2574,10 @@ public final class PHTmessageOuterClass {
       }
       /**
        * <code>optional .PHT.Answer answer = 4;</code>
+       *
+       * <pre>
+       *repeated Column column = 5;
+       * </pre>
        */
       public Builder setAnswer(PHT.PHTmessageOuterClass.Answer value) {
         if (answerBuilder_ == null) {
@@ -2600,6 +2594,10 @@ public final class PHTmessageOuterClass {
       }
       /**
        * <code>optional .PHT.Answer answer = 4;</code>
+       *
+       * <pre>
+       *repeated Column column = 5;
+       * </pre>
        */
       public Builder setAnswer(
           PHT.PHTmessageOuterClass.Answer.Builder builderForValue) {
@@ -2614,6 +2612,10 @@ public final class PHTmessageOuterClass {
       }
       /**
        * <code>optional .PHT.Answer answer = 4;</code>
+       *
+       * <pre>
+       *repeated Column column = 5;
+       * </pre>
        */
       public Builder mergeAnswer(PHT.PHTmessageOuterClass.Answer value) {
         if (answerBuilder_ == null) {
@@ -2633,6 +2635,10 @@ public final class PHTmessageOuterClass {
       }
       /**
        * <code>optional .PHT.Answer answer = 4;</code>
+       *
+       * <pre>
+       *repeated Column column = 5;
+       * </pre>
        */
       public Builder clearAnswer() {
         if (answerBuilder_ == null) {
@@ -2646,6 +2652,10 @@ public final class PHTmessageOuterClass {
       }
       /**
        * <code>optional .PHT.Answer answer = 4;</code>
+       *
+       * <pre>
+       *repeated Column column = 5;
+       * </pre>
        */
       public PHT.PHTmessageOuterClass.Answer.Builder getAnswerBuilder() {
         bitField0_ |= 0x00000008;
@@ -2654,6 +2664,10 @@ public final class PHTmessageOuterClass {
       }
       /**
        * <code>optional .PHT.Answer answer = 4;</code>
+       *
+       * <pre>
+       *repeated Column column = 5;
+       * </pre>
        */
       public PHT.PHTmessageOuterClass.AnswerOrBuilder getAnswerOrBuilder() {
         if (answerBuilder_ != null) {
@@ -2664,6 +2678,10 @@ public final class PHTmessageOuterClass {
       }
       /**
        * <code>optional .PHT.Answer answer = 4;</code>
+       *
+       * <pre>
+       *repeated Column column = 5;
+       * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<
           PHT.PHTmessageOuterClass.Answer, PHT.PHTmessageOuterClass.Answer.Builder, PHT.PHTmessageOuterClass.AnswerOrBuilder> 
@@ -2677,246 +2695,6 @@ public final class PHTmessageOuterClass {
           answer_ = null;
         }
         return answerBuilder_;
-      }
-
-      private java.util.List<PHT.ColumnOuterClass.Column> column_ =
-        java.util.Collections.emptyList();
-      private void ensureColumnIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
-          column_ = new java.util.ArrayList<PHT.ColumnOuterClass.Column>(column_);
-          bitField0_ |= 0x00000010;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          PHT.ColumnOuterClass.Column, PHT.ColumnOuterClass.Column.Builder, PHT.ColumnOuterClass.ColumnOrBuilder> columnBuilder_;
-
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public java.util.List<PHT.ColumnOuterClass.Column> getColumnList() {
-        if (columnBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(column_);
-        } else {
-          return columnBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public int getColumnCount() {
-        if (columnBuilder_ == null) {
-          return column_.size();
-        } else {
-          return columnBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public PHT.ColumnOuterClass.Column getColumn(int index) {
-        if (columnBuilder_ == null) {
-          return column_.get(index);
-        } else {
-          return columnBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public Builder setColumn(
-          int index, PHT.ColumnOuterClass.Column value) {
-        if (columnBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureColumnIsMutable();
-          column_.set(index, value);
-          onChanged();
-        } else {
-          columnBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public Builder setColumn(
-          int index, PHT.ColumnOuterClass.Column.Builder builderForValue) {
-        if (columnBuilder_ == null) {
-          ensureColumnIsMutable();
-          column_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          columnBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public Builder addColumn(PHT.ColumnOuterClass.Column value) {
-        if (columnBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureColumnIsMutable();
-          column_.add(value);
-          onChanged();
-        } else {
-          columnBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public Builder addColumn(
-          int index, PHT.ColumnOuterClass.Column value) {
-        if (columnBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureColumnIsMutable();
-          column_.add(index, value);
-          onChanged();
-        } else {
-          columnBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public Builder addColumn(
-          PHT.ColumnOuterClass.Column.Builder builderForValue) {
-        if (columnBuilder_ == null) {
-          ensureColumnIsMutable();
-          column_.add(builderForValue.build());
-          onChanged();
-        } else {
-          columnBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public Builder addColumn(
-          int index, PHT.ColumnOuterClass.Column.Builder builderForValue) {
-        if (columnBuilder_ == null) {
-          ensureColumnIsMutable();
-          column_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          columnBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public Builder addAllColumn(
-          java.lang.Iterable<? extends PHT.ColumnOuterClass.Column> values) {
-        if (columnBuilder_ == null) {
-          ensureColumnIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, column_);
-          onChanged();
-        } else {
-          columnBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public Builder clearColumn() {
-        if (columnBuilder_ == null) {
-          column_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
-          onChanged();
-        } else {
-          columnBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public Builder removeColumn(int index) {
-        if (columnBuilder_ == null) {
-          ensureColumnIsMutable();
-          column_.remove(index);
-          onChanged();
-        } else {
-          columnBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public PHT.ColumnOuterClass.Column.Builder getColumnBuilder(
-          int index) {
-        return getColumnFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public PHT.ColumnOuterClass.ColumnOrBuilder getColumnOrBuilder(
-          int index) {
-        if (columnBuilder_ == null) {
-          return column_.get(index);  } else {
-          return columnBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public java.util.List<? extends PHT.ColumnOuterClass.ColumnOrBuilder> 
-           getColumnOrBuilderList() {
-        if (columnBuilder_ != null) {
-          return columnBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(column_);
-        }
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public PHT.ColumnOuterClass.Column.Builder addColumnBuilder() {
-        return getColumnFieldBuilder().addBuilder(
-            PHT.ColumnOuterClass.Column.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public PHT.ColumnOuterClass.Column.Builder addColumnBuilder(
-          int index) {
-        return getColumnFieldBuilder().addBuilder(
-            index, PHT.ColumnOuterClass.Column.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .PHT.Column column = 5;</code>
-       */
-      public java.util.List<PHT.ColumnOuterClass.Column.Builder> 
-           getColumnBuilderList() {
-        return getColumnFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          PHT.ColumnOuterClass.Column, PHT.ColumnOuterClass.Column.Builder, PHT.ColumnOuterClass.ColumnOrBuilder> 
-          getColumnFieldBuilder() {
-        if (columnBuilder_ == null) {
-          columnBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              PHT.ColumnOuterClass.Column, PHT.ColumnOuterClass.Column.Builder, PHT.ColumnOuterClass.ColumnOrBuilder>(
-                  column_,
-                  ((bitField0_ & 0x00000010) == 0x00000010),
-                  getParentForChildren(),
-                  isClean());
-          column_ = null;
-        }
-        return columnBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:PHT.PHTmessage)
@@ -2954,17 +2732,17 @@ public final class PHTmessageOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020PHTmessage.proto\022\003PHT\032\014Column.proto\032\017P" +
-      "roposals.proto\"\030\n\006Answer\022\016\n\006answer\030\001 \001(\t" +
-      "\"[\n\005Query\022\r\n\005query\030\001 \001(\003\022\035\n\016file_to_uplo" +
-      "ad\030\002 \001(\010:\005false\022\021\n\tfile_name\030\003 \001(\t\022\021\n\tfi" +
-      "le_data\030\004 \001(\014\"\362\001\n\nPHTmessage\022)\n\004type\030\001 \002" +
-      "(\0162\033.PHT.PHTmessage.MessageType\022 \n\010propo" +
-      "sal\030\002 \003(\0132\016.PHT.Proposals\022\031\n\005query\030\003 \001(\013" +
-      "2\n.PHT.Query\022\033\n\006answer\030\004 \001(\0132\013.PHT.Answe" +
-      "r\022\033\n\006column\030\005 \003(\0132\013.PHT.Column\"B\n\013Messag" +
-      "eType\022\010\n\004DATA\020\001\022\t\n\005QUERY\020\002\022\n\n\006ANSWER\020\003\022\t",
-      "\n\005ERROR\020\004\022\007\n\003PST\020\005"
+      "\n\020PHTmessage.proto\022\003PHT\032\017Proposals.proto" +
+      "\"\030\n\006Answer\022\016\n\006answer\030\001 \001(\t\"w\n\005Query\022\r\n\005q" +
+      "uery\030\001 \001(\003\022\035\n\016file_to_upload\030\002 \001(\010:\005fals" +
+      "e\022\021\n\tfile_name\030\003 \001(\t\022\021\n\tfile_data\030\004 \001(\014\022" +
+      "\032\n\013delete_file\030\005 \001(\010:\005false\"\325\001\n\nPHTmessa" +
+      "ge\022)\n\004type\030\001 \002(\0162\033.PHT.PHTmessage.Messag" +
+      "eType\022 \n\010proposal\030\002 \003(\0132\016.PHT.Proposals\022" +
+      "\031\n\005query\030\003 \001(\0132\n.PHT.Query\022\033\n\006answer\030\004 \001" +
+      "(\0132\013.PHT.Answer\"B\n\013MessageType\022\010\n\004DATA\020\001" +
+      "\022\t\n\005QUERY\020\002\022\n\n\006ANSWER\020\003\022\t\n\005ERROR\020\004\022\007\n\003PS",
+      "T\020\005"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2977,7 +2755,6 @@ public final class PHTmessageOuterClass {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          PHT.ColumnOuterClass.getDescriptor(),
           PHT.ProposalsOuterClass.getDescriptor(),
         }, assigner);
     internal_static_PHT_Answer_descriptor =
@@ -2991,14 +2768,13 @@ public final class PHTmessageOuterClass {
     internal_static_PHT_Query_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PHT_Query_descriptor,
-        new java.lang.String[] { "Query", "FileToUpload", "FileName", "FileData", });
+        new java.lang.String[] { "Query", "FileToUpload", "FileName", "FileData", "DeleteFile", });
     internal_static_PHT_PHTmessage_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_PHT_PHTmessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PHT_PHTmessage_descriptor,
-        new java.lang.String[] { "Type", "Proposal", "Query", "Answer", "Column", });
-    PHT.ColumnOuterClass.getDescriptor();
+        new java.lang.String[] { "Type", "Proposal", "Query", "Answer", });
     PHT.ProposalsOuterClass.getDescriptor();
   }
 
