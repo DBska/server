@@ -21,7 +21,6 @@
 #include "error.h"
 #include "message.h"
 #include "data_struct.h"
-#include "pst.h"
 #include "soci.h"
 #include "mysql/soci-mysql.h"
 
