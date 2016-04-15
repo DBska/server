@@ -11,12 +11,9 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sstream>
-//#include <ctime>
-//#include <algorithm>
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
-
 #include "PHTmessage.pb.h"
 #include "data_struct.h"
 #include "soci.h"
@@ -46,5 +43,6 @@ bool readFromSocket(int sock, string &answer, Error &err);
 void writeToSocket(int sock, string message, Error &err);
 void proposalWithID(int sock, int pid, Error &err, session &sql);
 void uploadFile(string file_name, string file_data);
+void deleteFile(int pid, string file_name, session &sql);
 
 #endif

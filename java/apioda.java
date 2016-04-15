@@ -89,6 +89,45 @@ public class apioda {
     
         return buffer;
   }
+  // delete a file and its entry from ODA if present.
+  public static String deleteFile(int pid, String file_name) throws Exception
+  {
+    PHTmessageOuterClass.PHTmessage.Builder message = PHTmessageOuterClass.PHTmessage.newBuilder();
+    // PHTmessage TYPE:
+    message.setType(PHTmessageOuterClass.PHTmessage.MessageType.QUERY);
+    PHTmessageOuterClass.Query.Builder query = PHTmessageOuterClass.Query.newBuilder();
+    
+    boolean delete_file = true; // must be true to upload a file
+    query.setQuery(pid);
+    query.setDeleteFile(delete_file);
+    query.setFileName(file_name);
+
+    // Adding query to the message
+    message.setQuery(query);
+    //System.out.println(message.build().toString());
+
+    // Preparing transmission:
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream ps = new PrintStream(baos);
+    
+    // Serialization
+    message.build().writeTo(ps);
+
+    // Length of binary string
+    byte [] tmp;
+    tmp = baos.toByteArray();
+
+    // TCP/IP connection
+    Socket socket = connect();
+    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+    // Data sending:
+    //System.out.println("Sending message of "+tmp.length);
+    writeToSocket(out,tmp);
+
+    String error_message = "delete ok";
+
+    return error_message;	
+  }
 
   // Upload a file to the server
   public static void uploadFile(int pid, String path, String file_name) throws Exception

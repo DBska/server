@@ -1,5 +1,46 @@
 #include "message.h"
 
+void deleteFile(int pid, string file_name, session &sql)
+{
+	cout<<"deleting file "<<file_name<<endl;
+	cout<<"proposal: "<<pid<<endl;
+	
+	vector<string> doc_type;
+	doc_type.push_back("preprints");
+	doc_type.push_back("scientific_justification");
+	doc_type.push_back("technical_justification");
+
+	// searching which type of publication must be removed from table
+	stringstream cmd;
+	int type = -1; // at the end of the following loop it contains teh type of document to erase
+	for (int i=0; i<doc_type.size(); i++)
+	{
+	    row r ;
+            cmd<<"select count(*) from SupportingDocuments where "<<doc_type[i]<<"=\""<<file_name<<"\" and proposal_id ="<<pid<<";"<<endl;
+	    //cout<<cmd.str()<<endl;
+	    sql<<cmd.str(), into(r);
+	
+	    if ( r.size()==1 )
+	    {
+                type = i; 
+                break;
+            }
+	}
+	cout<<"Type "<<type<<endl;
+
+	// Deleting entry:
+        cmd.str("");
+	cmd<<"UPDATE SupportingDocuments SET "<<doc_type[type]<<"=\"not set\" WHERE proposal_id="<<pid<<";";
+cout<<cmd.str()<<endl;
+        //sql<<cmd.str();
+
+        // Deleting file:
+        cmd.str("");
+        cmd<<"rm -f ./documents/"<<pid<<"_"<<file_name;
+        cout<<cmd.str()<<endl;
+        system(cmd.str().c_str()); 
+}
+
 void uploadFile(string file_name, string file_data)
 {
    string path = "./documents/"; // ABSOLUTE PATH ON SPOCK

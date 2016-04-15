@@ -63,13 +63,14 @@ class example {
     // its proposal_id.
     // Inserting supporting documents for given proposal_id:
     int pid = Integer.parseInt(proposal_id.toString());
-    //int pid = 813;
     System.out.println("Val: "+pid);
     apioda.uploadFile(pid,"./supportingDocuments/",scifile);
     apioda.uploadFile(pid,"./supportingDocuments/",techfile);
     apioda.uploadFile(pid,"./supportingDocuments/",preprint);
 
-    
+
+
+/*    
     // The following part demostrates how to use other apioda method.
 
     // Requesting proposal with ID = my_proposal_ID
@@ -102,7 +103,7 @@ scienceGoals.setInstrumentConfigurations("TEST mio");
 scienceGoals.setMoreInfo("TEST mio");
 proposal_new.setMScienceGoals(scienceGoals);
 apioda.modifyProposal(proposal_new.build(),my_error);
-/*
+
     // Returning all proposals with a given status
     Vector<ProposalsOuterClass.Proposals> p_l = new Vector<ProposalsOuterClass.Proposals>();
     System.out.println("Requesting proposals list with status: "+PHT.ProposalStatusOuterClass.ProposalStatus.Draft);
@@ -110,6 +111,9 @@ apioda.modifyProposal(proposal_new.build(),my_error);
 
     System.out.println("Found : "+p_l.size());
 */
+    // Delete scifile and its entry in the database for proposal pid:
+    System.out.println("Deleting: "+pid+" File "+scifile);
+    apioda.deleteFile(pid,scifile);	    	
   }
 }
 

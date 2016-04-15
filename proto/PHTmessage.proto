@@ -1,6 +1,5 @@
 package PHT;
 
-import "Column.proto";
 import "Proposals.proto";
 
 message Answer
@@ -14,6 +13,7 @@ message Query
     optional bool file_to_upload = 2 [default = false];	
     optional string file_name = 3;
     optional bytes file_data = 4;
+    optional bool delete_file = 5 [default = false];
 }
 
 
@@ -26,5 +26,5 @@ message PHTmessage
     repeated Proposals proposal = 2;
     optional Query query = 3;
     optional Answer answer = 4;
-    repeated Column column = 5;
+    //repeated Column column = 5;
 }
