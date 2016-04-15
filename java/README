@@ -1,0 +1,5 @@
+This directory contains the following files:
+
+apioda.java: the java interface to ODA services
+example.java: an example on how to use the different methods of apioda
+test_loop: a bash file to simulate different requests from PHT
