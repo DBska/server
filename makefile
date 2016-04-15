@@ -1,9 +1,6 @@
 all:
 	$(MAKE) -C proto
 	$(MAKE) -C server
-#	$(MAKE) -C client
-#	$(MAKE) -C interface
-#	$(MAKE) -C tool
 	$(MAKE) -C java
 
 proto:
@@ -21,10 +18,7 @@ help:
 
 clean:
 	$(MAKE) -C server clean
-	$(MAKE) -C client clean
 	$(MAKE) -C proto clean
-	$(MAKE) -C interface clean
-	$(MAKE) -C tool clean
 	$(MAKE) -C java clean
 
 
