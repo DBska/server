@@ -171,27 +171,20 @@ public class apioda {
     Socket socket = connect();
     DataOutputStream out = new DataOutputStream(socket.getOutputStream());
     // Data sending:
-    //System.out.println("Sending message of "+tmp.length);
     writeToSocket(out,tmp);
-/*
+
     // reply from the server:
     DataInputStream in = new DataInputStream(socket.getInputStream());
     byte [] reply = readFromSocket(in);
 
-//    System.out.println("--> "+reply.length);
     PHTmessageOuterClass.PHTmessage m2;
-//    print("arrived.bin",reply);
     m2 = PHTmessageOuterClass.PHTmessage.parseFrom(reply);
-    //System.out.println("--> HERE");
-    //System.out.println("zz "+m2.toString());
-    //System.out.println(m2.getType());
     PHTmessageOuterClass.Answer a;
     if (m2.getType()== PHTmessageOuterClass.PHTmessage.MessageType.DATA)
     {
         a = m2.getAnswer();
         System.out.println(a.getAnswer());
     }
-*/
   }
 
   // Return proposal with given id 
@@ -311,10 +304,9 @@ public class apioda {
     PHTmessageOuterClass.Answer a;
     if (m2.getType()== PHTmessageOuterClass.PHTmessage.MessageType.ANSWER) 
     {
-        //System.out.println("here\n");
         a = m2.getAnswer();
-        //System.out.println("333 "+a.getAnswer());
-        proposal_id.delete(0,proposal_id.length()).append(a.getAnswer()); 
+        proposal_id.delete(0,proposal_id.length()).append(a.getAnswer());
+        checkUploading(Integer.parseInt(proposal_id.toString()),proposal);
     }
     if (m2.getType()== PHTmessageOuterClass.PHTmessage.MessageType.ERROR)
     {
@@ -326,6 +318,16 @@ public class apioda {
 
     return proposal_id;
   }
+
+   public static void checkUploading(int pid, ProposalsOuterClass.Proposals proposal) throws Exception
+   {
+	if ( !proposal.hasMSupportingDocuments() ) return;
+ 	SupportingDocumentsOuterClass.SupportingDocuments supdocs =  proposal.getMSupportingDocuments();
+	uploadFile(pid,"./supportingDocuments/",supdocs.getScientificJustification());
+	uploadFile(pid,"./supportingDocuments/",supdocs.getTechnicalJustification());
+	uploadFile(pid,"./supportingDocuments/",supdocs.getPreprints());
+        System.out.println("done");
+   }
 
 
     public static void modifyProposal(ProposalsOuterClass.Proposals proposal, StringBuffer error_message) throws Exception {
@@ -374,6 +376,8 @@ public class apioda {
         a = m2.getAnswer();
         error_message.delete(0,error_message.length()).append(a.getAnswer());
     }
+    int pid = (int) proposal.getProposalId();
+    checkUploading(pid,proposal);
 
     socket.close();
   }

@@ -42,7 +42,7 @@ void allProposalsWithStatus(int sock, int p_stat, Error &err, session &sql);
 bool readFromSocket(int sock, string &answer, Error &err);
 void writeToSocket(int sock, string message, Error &err);
 void proposalWithID(int sock, int pid, Error &err, session &sql);
-void uploadFile(string file_name, string file_data);
+void uploadFile(int sock, string file_name, string file_data, Error &err);
 void deleteFile(int pid, string file_name, session &sql);
 
 #endif

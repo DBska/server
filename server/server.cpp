@@ -144,20 +144,15 @@ void* processing(void *socket_desc)
             break;
         case PHTmessage::QUERY:
             {
-	cout<<"£$£££££££££££££££££££££££££££££££££££££££££\n";
                 cout<<"Query found...\n";
 		Query *m_query = p_oda->mutable_query();
-cout<<m_query->query()<<endl;
-cout<<m_query->delete_file()<<" "<<m_query->file_to_upload()<<endl;
                 //cout<< (p_oda->mutable_query())->query() <<endl;
 		if ( m_query->file_to_upload() ) /* File to upload request */
 		{
-	cout<<"33333333333333333333333333333333333\n";
-		    uploadFile(m_query->file_name(), m_query->file_data());
+		    uploadFile(sock, m_query->file_name(), m_query->file_data(), err);
 		}
 		if ( m_query->delete_file() ) /* File to delete */
                 {
-	cout<<"4444444444444444444444444444444\n";
 		   // If here, m_query->query() stores the proposal's pid
 		   deleteFile(m_query->query() , m_query->file_name(), sql);	
 		}

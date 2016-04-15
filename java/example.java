@@ -59,14 +59,10 @@ class example {
     System.out.println("Error new insert: "+error);
     System.out.println("Proposal ID: "+proposal_id);
 	   
-    // Here, after I inserted the proposal in the DB, I can upload the files of this proposal using 
-    // its proposal_id.
-    // Inserting supporting documents for given proposal_id:
+    // Deleting proposal file:
     int pid = Integer.parseInt(proposal_id.toString());
-    System.out.println("Val: "+pid);
-    apioda.uploadFile(pid,"./supportingDocuments/",scifile);
-    apioda.uploadFile(pid,"./supportingDocuments/",techfile);
-    apioda.uploadFile(pid,"./supportingDocuments/",preprint);
+    System.out.println("Deleting: "+pid+" File "+scifile);
+    apioda.deleteFile(pid,scifile);	    	
 
 
 
@@ -111,9 +107,6 @@ apioda.modifyProposal(proposal_new.build(),my_error);
 
     System.out.println("Found : "+p_l.size());
 */
-    // Delete scifile and its entry in the database for proposal pid:
-    System.out.println("Deleting: "+pid+" File "+scifile);
-    apioda.deleteFile(pid,scifile);	    	
   }
 }
 

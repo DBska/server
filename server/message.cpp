@@ -17,7 +17,6 @@ void deleteFile(int pid, string file_name, session &sql)
 	{
 	    row r ;
             cmd<<"select count(*) from SupportingDocuments where "<<doc_type[i]<<"=\""<<file_name<<"\" and proposal_id ="<<pid<<";"<<endl;
-	    //cout<<cmd.str()<<endl;
 	    sql<<cmd.str(), into(r);
 	
 	    if ( r.size()==1 )
@@ -31,17 +30,16 @@ void deleteFile(int pid, string file_name, session &sql)
 	// Deleting entry:
         cmd.str("");
 	cmd<<"UPDATE SupportingDocuments SET "<<doc_type[type]<<"=\"not set\" WHERE proposal_id="<<pid<<";";
-cout<<cmd.str()<<endl;
-        //sql<<cmd.str();
+        sql<<cmd.str();
 
         // Deleting file:
         cmd.str("");
-        cmd<<"rm -f ./documents/"<<pid<<"_"<<file_name;
+        cmd<<"rm ./documents/"<<pid<<"_"<<file_name;
         cout<<cmd.str()<<endl;
         system(cmd.str().c_str()); 
 }
 
-void uploadFile(string file_name, string file_data)
+void uploadFile(int sock, string file_name, string file_data, Error &err)
 {
    string path = "./documents/"; // ABSOLUTE PATH ON SPOCK
    string path_file= "";
@@ -53,6 +51,22 @@ void uploadFile(string file_name, string file_data)
    file<<file_data;
 
    file.close();
+
+   // Reply to client. It assumes everything is ok. Must be expanded to
+   // check any io error.
+   PHTmessage *p_msg = new PHTmessage;
+   string reply_msg;
+   Answer *a = new Answer;
+    
+   reply_msg = "upload ok";
+   p_msg->set_type(PHTmessage::ANSWER);
+   a->set_answer(reply_msg);
+   
+   // Serializing and sending of reply
+   p_msg->set_allocated_answer(a);
+   string msg;
+   p_msg->SerializeToString(&msg);
+   writeToSocket(sock,msg,err);
 }
 
 void writeToSocket(int sock, string message, Error &err)
