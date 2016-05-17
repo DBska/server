@@ -119,7 +119,7 @@ string writeToDB(data_s dat, session &sql)
             int nf = dat.name[t].size();
             for (int i=0; i<nf; i++)
             {
-                if ( dat.name[0][i] == "proposal_id" ) continue;
+                if ( dat.name[t][i] == "proposal_id" ) continue;
                 cmd<<"UPDATE "<<dat.table[t]<<" SET ";
                 cmd<<dat.name[t][i]<<"=\""<<dat.value[t][i]<<"\" WHERE proposal_id="<<proposal_id<<";";
                 // Executing mysql command 
@@ -152,7 +152,7 @@ string writeToDB(data_s dat, session &sql)
     }
     */
     tr.commit();
-    sql.close();
+    //sql.close();
 
     return proposal_id;
 }
@@ -309,7 +309,7 @@ Proposals * readProposalFromDB(int pid, session &sql)
     p->set_allocated_m_tacreviews(tr);
     // Adding proposal to the list
     
-    sql.close();
+    //sql.close();
 
     return p;
 }
@@ -496,7 +496,7 @@ cout<<"TACReviews done\n";
         p_w_s.push_back(p);
     }
     
-    sql.close();
+    //sql.close();
 
     return p_w_s;
 }
