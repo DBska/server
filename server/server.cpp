@@ -30,7 +30,7 @@ using namespace PHT; // namespace for using google protocol buffer
 using namespace soci; // namespace for using soci library
 
 int portno = 5200; // default port if code is demonized
-const string use_db = "db=PHT user=marco password=Marco74";
+const string use_db = "db=PHT user=root password=Administrator";
 //const string use_db = "db=PHT user=controls password=Wrufu6ac";
 
 
