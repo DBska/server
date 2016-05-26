@@ -15,15 +15,16 @@ void deleteFile(int pid, string file_name, session &sql)
 	int type = -1; // at the end of the following loop it contains teh type of document to erase
 	for (int i=0; i<doc_type.size(); i++)
 	{
-	    row r ;
+	    int t_i ;
             cmd<<"select count(*) from SupportingDocuments where "<<doc_type[i]<<"=\""<<file_name<<"\" and proposal_id ="<<pid<<";"<<endl;
-	    sql<<cmd.str(), into(r);
+	    sql<<cmd.str(), into(t_i);
 	
-	    if ( r.size()==1 )
+	    if (t_i != 0)
 	    {
-                type = i; 
+                type = i;
                 break;
             }
+            cmd.str("");
 	}
 	cout<<"Type "<<type<<endl;
 
