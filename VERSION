@@ -5,3 +5,5 @@ v3.0 : interface library added. Server can parse a generic PHT message.
 
 v4.0 : adding  insertProposal (new or updating). Error handling is fully
        functional.
+
+v6
